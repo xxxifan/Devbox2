@@ -1,4 +1,4 @@
-package com.xxxifan.devbox.library.base;
+package com.xxxifan.devbox.library.base.extended;
 
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -8,13 +8,14 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.xxxifan.devbox.library.R;
+import com.xxxifan.devbox.library.base.ActivityBuilder;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 /**
  * Created by xifan on 4/6/16.
  */
-public abstract class BaseDrawerActivity extends BaseToolbarActivity {
+public abstract class DrawerActivity extends ToolbarActivity {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -71,15 +72,11 @@ public abstract class BaseDrawerActivity extends BaseToolbarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            if (mDrawerLayout != null) {
-                mDrawerLayout.openDrawer(Gravity.LEFT);
-            } else {
-                super.onOptionsItemSelected(item);
-            }
+        if (item.getItemId() == android.R.id.home && mDrawerLayout != null) {
+            mDrawerLayout.openDrawer(Gravity.LEFT);
             return true;
         }
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     public DrawerLayout getDrawerLayout() {

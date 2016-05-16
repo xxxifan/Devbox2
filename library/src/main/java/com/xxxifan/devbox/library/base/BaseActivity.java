@@ -39,10 +39,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
     private List<UiController> mUiControllers;
+    private boolean mConfigured;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         onConfigActivity();
+        mConfigured = true;
         super.onCreate(savedInstanceState);
         lifecycleSubject.onNext(ActivityEvent.CREATE);
         setActivityView(getLayoutId());
@@ -138,6 +140,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public Drawable getCompatDrawable(@DrawableRes int resId) {
         return ContextCompat.getDrawable(this, resId);
+    }
+
+    protected boolean isConfigured() {
+        return mConfigured;
     }
 
     protected void registerEventBus(Object object) {

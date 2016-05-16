@@ -4,13 +4,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ViewStub
-        android:id="@+id/toolbar_stub"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height" />
+    <include layout="@layout/view_toolbar_dark"/>
 
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:background="@color/stroke" />-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@drawable/toolbar_shadow" />
 </LinearLayout>
