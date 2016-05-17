@@ -3,11 +3,18 @@ package com.xxxifan.devbox;
 import android.os.Bundle;
 import android.view.View;
 
-import com.xxxifan.devbox.library.base.extended.DrawerActivity;
+import com.xxxifan.devbox.library.base.Devbox;
+import com.xxxifan.devbox.library.base.extended.TranslucentDrawerActivity;
 
-public class MainActivity extends DrawerActivity {
+public class MainActivity extends TranslucentDrawerActivity {
 
     public static final String TAG = "MainActivity";
+
+    @Override
+    protected void onConfigActivity() {
+        super.onConfigActivity();
+        Devbox.init(getApplicationContext());
+    }
 
     @Override
     protected int getLayoutId() {

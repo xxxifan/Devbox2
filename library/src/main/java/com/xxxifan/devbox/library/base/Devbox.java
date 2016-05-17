@@ -14,6 +14,10 @@ public class Devbox {
     }
 
     public static Context getAppDelegate() {
+        if (sContext == null) {
+            throw new IllegalStateException("Application instance is null, please check you have " +
+                    "correct config");
+        }
         return sContext;
     }
 }

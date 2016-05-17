@@ -9,7 +9,6 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -140,10 +139,15 @@ public abstract class BaseActivity extends AppCompatActivity {
             throw new IllegalStateException("Invalid layout id");
         }
         View view = getLayoutInflater().inflate(layoutResID, null, false);
-        ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(MATCH_PARENT, MATCH_PARENT);
-        params.topMargin = getResources().getDimensionPixelSize(R.dimen.toolbar_height);
-        // TODO: 4/5/16 Transparent support
-        ((ViewGroup) containerView).addView(view, 0, params);
+//        if (containerView instanceof FrameLayout) {
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+            params.topMargin = getResources().getDimensionPixelSize(R.dimen.toolbar_height);
+            ((ViewGroup) containerView).addView(view, 0, params);
+//        } else {
+//            ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(MATCH_PARENT, MATCH_PARENT);
+//            params.topMargin = getResources().getDimensionPixelSize(R.dimen.toolbar_height);
+//            ((ViewGroup) containerView).addView(view, 0, params);
+//        }
     }
 
     @SuppressWarnings("unchecked")
@@ -169,6 +173,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public Drawable getCompatDrawable(@DrawableRes int resId) {
         return ContextCompat.getDrawable(this, resId);
+    }
+
+    protected boolean isConfigured() {
+        return mConfigured;
     }
 
     protected void checkConfigured() {

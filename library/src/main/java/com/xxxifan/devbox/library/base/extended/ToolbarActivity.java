@@ -43,11 +43,6 @@ public abstract class ToolbarActivity extends BaseActivity {
                 throw new IllegalStateException("Can't find toolbar");
             }
         }
-
-        View toolbarView = $(R.id.toolbar);
-        if (toolbarView != null) {
-            setupToolbar(toolbarView);
-        }
     }
 
     protected void setupToolbar(View toolbarView) {
