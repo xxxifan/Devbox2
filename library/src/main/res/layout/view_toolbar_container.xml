@@ -4,7 +4,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <include layout="@layout/view_toolbar_dark"/>
+    <ViewStub
+        android:id="@+id/toolbar_stub"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height" />
 
     <View
         android:layout_width="match_parent"

@@ -11,7 +11,7 @@ public class MainActivity extends DrawerActivity {
 
     @Override
     protected int getLayoutId() {
-        return 0;
+        return R.layout.activity_main;
     }
 
     @Override

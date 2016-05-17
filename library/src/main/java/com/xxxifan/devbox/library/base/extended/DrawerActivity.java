@@ -21,22 +21,23 @@ public abstract class DrawerActivity extends ToolbarActivity {
     private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
-    protected void setActivityView(int layoutResID) {
-        super.setContentView(R.layout._internal_activity_drawer_base);
+    protected void onConfigActivity() {
+        super.onConfigActivity();
+        setRootLayoutId(R.layout._internal_activity_drawer_base);
+    }
 
-        View containerView = $(ActivityBuilder.BASE_CONTAINER_ID);
+    @Override
+    protected void setActivityView(int layoutResID) {
+        super.setContentView(layoutResID);
+        attachContentView($(ActivityBuilder.BASE_DRAWER_ID), layoutResID);
+        setViews();
+    }
+
+    @Override
+    protected void setViews() {
         View drawerLayout = $(ActivityBuilder.BASE_DRAWER_ID);
-        if (containerView == null) {
-            throw new IllegalStateException("Cannot find base_container");
-        }
         if (drawerLayout == null) {
             throw new IllegalStateException("Cannot find drawer_layout");
-        }
-
-
-        // setup content view
-        if (layoutResID > 0) {
-            attachContentView(containerView, layoutResID);
         }
 
         // setup drawer view
@@ -46,11 +47,7 @@ public abstract class DrawerActivity extends ToolbarActivity {
             params.gravity = Gravity.LEFT;
             ((DrawerLayout) drawerLayout).addView(drawerView, params);
         }
-
-        View toolbarView = $(R.id.toolbar);
-        if (toolbarView != null) {
-            setupToolbar(toolbarView);
-        }
+        super.setViews();
     }
 
     @Override
