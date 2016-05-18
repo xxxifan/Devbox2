@@ -1,8 +1,9 @@
-package com.xxxifan.devbox;
+package com.xxxifan.devbox.ui.main;
 
 import android.os.Bundle;
 import android.view.View;
 
+import com.xxxifan.devbox.R;
 import com.xxxifan.devbox.library.base.Devbox;
 import com.xxxifan.devbox.library.base.extended.ImageTranslucentActivity;
 
