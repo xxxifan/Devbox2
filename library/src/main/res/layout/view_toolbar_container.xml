@@ -10,6 +10,7 @@
         android:layout_height="@dimen/toolbar_height" />
 
     <View
+        android:id="@+id/toolbar_shadow"
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:background="@drawable/toolbar_shadow" />

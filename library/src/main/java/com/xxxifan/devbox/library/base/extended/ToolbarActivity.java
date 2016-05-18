@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewStub;
 
 import com.xxxifan.devbox.library.R;
-import com.xxxifan.devbox.library.base.ActivityBuilder;
 import com.xxxifan.devbox.library.base.BaseActivity;
 
 
@@ -27,12 +26,12 @@ public abstract class ToolbarActivity extends BaseActivity {
     @Override
     protected void setActivityView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
-        attachContentView($(ActivityBuilder.BASE_CONTAINER_ID), layoutResID);
+        attachContentView($(BASE_CONTAINER_ID), layoutResID);
         setViews();
     }
 
     protected void setViews() {
-        ViewStub toolbarStub = $(ActivityBuilder.BASE_TOOLBAR_STUB_ID);
+        ViewStub toolbarStub = $(BASE_TOOLBAR_STUB_ID);
         if (toolbarStub != null) {
             toolbarStub.setLayoutResource(mUseLightToolbar ? R.layout.view_toolbar_light : R.layout.view_toolbar_dark);
             toolbarStub.inflate();

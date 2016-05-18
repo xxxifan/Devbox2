@@ -39,6 +39,11 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
+    public static final int BASE_CONTAINER_ID =  R.id.base_container;
+    public static final int BASE_TOOLBAR_STUB_ID = R.id.toolbar_stub;
+    public static final int BASE_TOOLBAR_SHADOW_ID = R.id.toolbar_shadow;
+    public static final int BASE_DRAWER_ID = R.id.drawer_layout;
+
     private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
     private List<UiController> mUiControllers;

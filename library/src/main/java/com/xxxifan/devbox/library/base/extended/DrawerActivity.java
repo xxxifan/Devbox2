@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.xxxifan.devbox.library.R;
-import com.xxxifan.devbox.library.base.ActivityBuilder;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
@@ -29,13 +28,13 @@ public abstract class DrawerActivity extends ToolbarActivity {
     @Override
     protected void setActivityView(int layoutResID) {
         super.setContentView(layoutResID);
-        attachContentView($(ActivityBuilder.BASE_DRAWER_ID), layoutResID);
+        attachContentView($(BASE_DRAWER_ID), layoutResID);
         setViews();
     }
 
     @Override
     protected void setViews() {
-        View drawerLayout = $(ActivityBuilder.BASE_DRAWER_ID);
+        View drawerLayout = $(BASE_DRAWER_ID);
         if (drawerLayout == null) {
             throw new IllegalStateException("Cannot find drawer_layout");
         }

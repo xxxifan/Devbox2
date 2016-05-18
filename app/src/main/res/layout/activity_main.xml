@@ -7,6 +7,12 @@
     android:orientation="vertical"
     tools:context="com.xxxifan.devbox.MainActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_banner" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
