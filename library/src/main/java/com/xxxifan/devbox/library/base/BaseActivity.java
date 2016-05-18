@@ -138,16 +138,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (layoutResID == 0) {
             throw new IllegalStateException("Invalid layout id");
         }
-        View view = getLayoutInflater().inflate(layoutResID, null, false);
-//        if (containerView instanceof FrameLayout) {
+        View contentView = getLayoutInflater().inflate(layoutResID, null, false);
+        if (containerView instanceof FrameLayout) {
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
             params.topMargin = getResources().getDimensionPixelSize(R.dimen.toolbar_height);
-            ((ViewGroup) containerView).addView(view, 0, params);
-//        } else {
-//            ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(MATCH_PARENT, MATCH_PARENT);
-//            params.topMargin = getResources().getDimensionPixelSize(R.dimen.toolbar_height);
-//            ((ViewGroup) containerView).addView(view, 0, params);
-//        }
+            ((ViewGroup) containerView).addView(contentView, 0, params);
+        } else {
+            ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(MATCH_PARENT, MATCH_PARENT);
+            params.topMargin = getResources().getDimensionPixelSize(R.dimen.toolbar_height);
+            ((ViewGroup) containerView).addView(contentView, 0, params);
+        }
     }
 
     @SuppressWarnings("unchecked")

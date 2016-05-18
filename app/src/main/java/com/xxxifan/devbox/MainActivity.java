@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.xxxifan.devbox.library.base.Devbox;
-import com.xxxifan.devbox.library.base.extended.TranslucentDrawerActivity;
+import com.xxxifan.devbox.library.base.extended.ToolbarActivity;
 
-public class MainActivity extends TranslucentDrawerActivity {
+public class MainActivity extends ToolbarActivity {
 
     public static final String TAG = "MainActivity";
 
@@ -31,7 +31,6 @@ public class MainActivity extends TranslucentDrawerActivity {
         return TAG;
     }
 
-    @Override
     protected View getDrawerView() {
         return View.inflate(getContext(), R.layout.activity_main, null);
     }

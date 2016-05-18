@@ -4,13 +4,21 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.LayoutRes;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 
+import com.xxxifan.devbox.library.R;
+import com.xxxifan.devbox.library.base.ActivityBuilder;
 import com.xxxifan.devbox.library.util.ViewUtils;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 
 /**
+ * Translucent status bar version of ToolbarActivity
+ * add additional status bar height to toolbar and content.
  * Created by xifan on 4/5/16.
  */
 public abstract class TranslucentActivity extends ToolbarActivity {
@@ -19,8 +27,24 @@ public abstract class TranslucentActivity extends ToolbarActivity {
 
     @Override
     protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
-        super.attachContentView(containerView, layoutResID);
-        setTransparentStatusBar();
+        if (containerView == null) {
+            throw new IllegalStateException("Cannot find container view");
+        }
+        if (layoutResID == 0) {
+            throw new IllegalStateException("Invalid layout id");
+        }
+        View contentView = getLayoutInflater().inflate(layoutResID, null, false);
+        if (containerView instanceof FrameLayout) {
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
+            params.topMargin = getResources().getDimensionPixelSize(R.dimen.toolbar_height) + ViewUtils.getSystemBarHeight();
+            ((ViewGroup) containerView).addView(contentView, 0, params);
+        } else {
+            ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(MATCH_PARENT, MATCH_PARENT);
+            params.topMargin = getResources().getDimensionPixelSize(R.dimen.toolbar_height) + ViewUtils.getSystemBarHeight();
+            ((ViewGroup) containerView).addView(contentView, 0, params);
+        }
+
+        setTransparentStatusBar(containerView);
     }
 
     @Override
@@ -35,7 +59,7 @@ public abstract class TranslucentActivity extends ToolbarActivity {
     protected void transparentStatusBar() {
         mFullTransparent = true;
         if (isConfigured()) {
-            setTransparentStatusBar();
+            setTransparentStatusBar($(ActivityBuilder.BASE_CONTAINER_ID));
         }
     }
 
@@ -47,9 +71,10 @@ public abstract class TranslucentActivity extends ToolbarActivity {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
-    private void setTransparentStatusBar() {
+    private void setTransparentStatusBar(View containerView) {
         if (isKitkat()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            ((ViewGroup.MarginLayoutParams) containerView.getLayoutParams()).topMargin += ViewUtils.getSystemBarHeight();
         }
 
         if (mFullTransparent) {
