@@ -7,7 +7,7 @@ import android.view.View;
  * Created by xifan on 15-7-22.
  * UiController, support a set of default life circle control. Use {@link BaseActivity#registerUiControllers(UiController...)} to control.
  */
-public abstract class UiController {
+public abstract class UiController implements BasePresenter {
     private View mView;
 
     public UiController(View view) {
@@ -18,20 +18,22 @@ public abstract class UiController {
         initView(view);
     }
 
-    public View getView() {
-        return mView;
-    }
-
+    @Override
     public void onResume() {
     }
 
+    @Override
     public void onPause() {
     }
 
+    @Override
     public void onDestroy() {
         mView = null;
     }
 
+    public View getView() {
+        return mView;
+    }
 
     protected Context getContext() {
         return mView == null ? null : mView.getContext();

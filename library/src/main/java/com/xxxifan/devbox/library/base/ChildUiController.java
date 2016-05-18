@@ -7,7 +7,7 @@ import android.view.View;
  * Created by xifan on 15-12-28.
  * Fragment version of UiController.
  */
-public abstract class ChildUiController {
+public abstract class ChildUiController implements BasePresenter {
     private View mView;
     private BaseFragment mFragment;
 
@@ -23,10 +23,6 @@ public abstract class ChildUiController {
         initView(view);
     }
 
-    public View getView() {
-        return mView;
-    }
-
     public void onResume() {
     }
 
@@ -36,6 +32,10 @@ public abstract class ChildUiController {
     public void onDestroy() {
         mView = null;
         mFragment = null;
+    }
+
+    public View getView() {
+        return mView;
     }
 
     protected Context getContext() {
