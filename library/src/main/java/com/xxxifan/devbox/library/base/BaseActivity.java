@@ -251,10 +251,20 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     //##########  Abstract methods  ###########
+
+    /**
+     * @return ContentView ID
+     */
     protected abstract int getLayoutId();
 
+    /**
+     * Do things like init views here.
+     */
     protected abstract void onSetupActivity(Bundle savedInstanceState);
 
+    /**
+     * @return a solid name for current class, usually is TAG name.
+     */
     public abstract String getSimpleName();
 
     /**
