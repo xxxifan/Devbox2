@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -39,6 +39,7 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.0'
     compile 'com.trello:rxlifecycle:0.6.1'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
+    compile "com.github.VictorAlbertos:RxActivityResult:0.3.3"
     /*
      * Dagger
      */
@@ -49,7 +50,6 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.liulishuo.filedownloader:library:0.3.1'
-    compile 'com.vanniktech:onactivityresult:0.4.0'
 
     provided 'com.android.support:multidex:1.0.1'
 
@@ -62,8 +62,7 @@ dependencies {
      */
     /*apply plugin: 'com.neenbedankt.android-apt'
     apt 'com.google.dagger:dagger-compiler:2.2'
-    apt 'com.jakewharton:butterknife-compiler:8.0.1'
-    apt 'com.vanniktech:onactivityresult-compiler:0.4.0'*/
+    apt 'com.jakewharton:butterknife-compiler:8.0.1'*/
 
     /*
      * Optional
