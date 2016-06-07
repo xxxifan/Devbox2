@@ -55,7 +55,7 @@ public abstract class DrawerActivity extends ToolbarActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
-            mDrawerLayout = $(R.id.drawer_layout);
+            mDrawerLayout = $(R.id._internal_drawer_layout);
             mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, ((Toolbar) toolbarView), 0, 0);
             mDrawerLayout.addDrawerListener(mDrawerToggle);
             mDrawerLayout.post(new Runnable() {

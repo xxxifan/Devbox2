@@ -5,13 +5,13 @@
     android:orientation="vertical">
 
     <ViewStub
-        android:id="@+id/toolbar_stub"
+        android:id="@+id/_internal_toolbar_stub"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height" />
 
     <View
-        android:id="@+id/toolbar_shadow"
+        android:id="@+id/_internal_toolbar_shadow"
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:background="@drawable/toolbar_shadow" />
+        android:background="@drawable/_internal_toolbar_shadow" />
 </LinearLayout>

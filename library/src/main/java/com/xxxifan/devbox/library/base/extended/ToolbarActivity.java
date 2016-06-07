@@ -33,9 +33,9 @@ public abstract class ToolbarActivity extends BaseActivity {
     protected void setViews() {
         ViewStub toolbarStub = $(BASE_TOOLBAR_STUB_ID);
         if (toolbarStub != null) {
-            toolbarStub.setLayoutResource(mUseLightToolbar ? R.layout.view_toolbar_light : R.layout.view_toolbar_dark);
+            toolbarStub.setLayoutResource(mUseLightToolbar ? R.layout._internal_view_toolbar_light : R.layout._internal_view_toolbar_dark);
             toolbarStub.inflate();
-            View toolbarView = $(R.id.toolbar);
+            View toolbarView = $(R.id._internal_toolbar);
             if (toolbarView != null) {
                 setupToolbar(toolbarView);
             } else {
