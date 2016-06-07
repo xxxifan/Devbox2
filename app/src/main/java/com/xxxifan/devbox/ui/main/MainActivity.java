@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.xxxifan.devbox.R;
-import com.xxxifan.devbox.library.base.Devbox;
-import com.xxxifan.devbox.library.base.extended.ImageTranslucentActivity;
+import com.xxxifan.devbox.library.Devbox;
+import com.xxxifan.devbox.library.base.extended.TranslucentDrawerActivity;
 
-public class MainActivity extends ImageTranslucentActivity {
+public class MainActivity extends TranslucentDrawerActivity {
 
     public static final String TAG = "MainActivity";
 

@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.xxxifan.devbox.library.base.Devbox;
-
-
 /**
  * Created by xifan on 3/31/16.
  */

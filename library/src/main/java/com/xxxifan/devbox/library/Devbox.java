@@ -1,4 +1,4 @@
-package com.xxxifan.devbox.library.base;
+package com.xxxifan.devbox.library;
 
 import android.content.Context;
 

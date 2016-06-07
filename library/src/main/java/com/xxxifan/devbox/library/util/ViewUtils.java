@@ -24,7 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.xxxifan.devbox.library.base.Devbox;
+import com.xxxifan.devbox.library.Devbox;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
