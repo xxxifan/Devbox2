@@ -4,5 +4,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/view_toolbar_container" />
+    <include layout="@layout/_internal_view_toolbar_container" />
 </FrameLayout>
