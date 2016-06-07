@@ -67,14 +67,6 @@ public final class Logger {
         printer.e(throwable, message, args);
     }
 
-    public static void i(String message, Object... args) {
-        printer.i(message, args);
-    }
-
-    public static void v(String message, Object... args) {
-        printer.v(message, args);
-    }
-
     public static void w(String message, Object... args) {
         printer.w(message, args);
     }

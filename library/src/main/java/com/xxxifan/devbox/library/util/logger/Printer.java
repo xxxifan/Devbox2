@@ -18,10 +18,6 @@ public interface Printer {
 
     void w(String message, Object... args);
 
-    void i(String message, Object... args);
-
-    void v(String message, Object... args);
-
     void wtf(String message, Object... args);
 
     void json(String json);

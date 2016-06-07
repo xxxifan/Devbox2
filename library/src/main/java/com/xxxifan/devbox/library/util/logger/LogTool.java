@@ -7,9 +7,5 @@ public interface LogTool {
 
     void w(String tag, String message);
 
-    void i(String tag, String message);
-
-    void v(String tag, String message);
-
     void wtf(String tag, String message);
 }

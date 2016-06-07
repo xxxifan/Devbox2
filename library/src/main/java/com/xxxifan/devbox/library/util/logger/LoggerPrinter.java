@@ -138,16 +138,6 @@ final class LoggerPrinter implements Printer {
     }
 
     @Override
-    public void i(String message, Object... args) {
-        log(INFO, message, args);
-    }
-
-    @Override
-    public void v(String message, Object... args) {
-        log(VERBOSE, message, args);
-    }
-
-    @Override
     public void wtf(String message, Object... args) {
         log(ASSERT, message, args);
     }
@@ -329,12 +319,12 @@ final class LoggerPrinter implements Printer {
             case ERROR:
                 settings.getLogTool().e(finalTag, chunk);
                 break;
-            case INFO:
-                settings.getLogTool().i(finalTag, chunk);
-                break;
-            case VERBOSE:
-                settings.getLogTool().v(finalTag, chunk);
-                break;
+//            case INFO:
+//                settings.getLogTool().i(finalTag, chunk);
+//                break;
+//            case VERBOSE:
+//                settings.getLogTool().v(finalTag, chunk);
+//                break;
             case WARN:
                 settings.getLogTool().w(finalTag, chunk);
                 break;

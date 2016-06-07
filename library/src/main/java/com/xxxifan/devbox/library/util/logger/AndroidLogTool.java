@@ -19,16 +19,6 @@ public class AndroidLogTool implements LogTool {
     }
 
     @Override
-    public void i(String tag, String message) {
-        Log.i(tag, message);
-    }
-
-    @Override
-    public void v(String tag, String message) {
-        Log.v(tag, message);
-    }
-
-    @Override
     public void wtf(String tag, String message) {
         Log.wtf(tag, message);
     }
