@@ -39,7 +39,7 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    public static final int BASE_CONTAINER_ID =  R.id._internal_base_container;
+    public static final int BASE_CONTAINER_ID = R.id._internal_base_container;
     public static final int BASE_TOOLBAR_STUB_ID = R.id._internal_toolbar_stub;
     public static final int BASE_TOOLBAR_SHADOW_ID = R.id._internal_toolbar_shadow;
     public static final int BASE_DRAWER_ID = R.id._internal_drawer_layout;
@@ -135,7 +135,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mBackKeyListener == null || !mBackKeyListener.onPressed()) {
+        if (mBackKeyListener == null || getSupportFragmentManager().getBackStackEntryCount() > 0
+                || !mBackKeyListener.onPressed()) {
             super.onBackPressed();
         }
     }
