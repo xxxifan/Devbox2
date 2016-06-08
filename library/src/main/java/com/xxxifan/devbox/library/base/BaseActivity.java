@@ -43,6 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static final int BASE_TOOLBAR_STUB_ID = R.id._internal_toolbar_stub;
     public static final int BASE_TOOLBAR_SHADOW_ID = R.id._internal_toolbar_shadow;
     public static final int BASE_DRAWER_ID = R.id._internal_drawer_layout;
+    public static final int FRAGMENT_CONTAINER = R.id.fragment_container;
 
     private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
