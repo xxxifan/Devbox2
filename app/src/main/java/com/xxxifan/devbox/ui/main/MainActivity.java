@@ -7,6 +7,7 @@ import com.xxxifan.devbox.R;
 import com.xxxifan.devbox.library.Devbox;
 import com.xxxifan.devbox.library.base.extended.ImageTranslucentActivity;
 import com.xxxifan.devbox.library.util.Fragments;
+import com.xxxifan.devbox.library.util.ViewUtils;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -33,6 +34,18 @@ public class MainActivity extends ImageTranslucentActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(FRAGMENT_CONTAINER, new TestFragment1(), TestFragment1.TAG)
                 .commitAllowingStateLoss();
+        setBackKeyListener(new BackKeyListener() {
+            private int count = 0;
+            @Override
+            public boolean onPressed() {
+                if (count < 1) {
+                    count++;
+                    ViewUtils.showToast("toast");
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -43,13 +56,12 @@ public class MainActivity extends ImageTranslucentActivity {
 
     @OnClick(R.id.main_btn_1)
     public void onFirstClick(View view) {
-        Fragments.checkout(this, new TestFragment1()).into(FRAGMENT_CONTAINER);
+        Fragments.checkout(this, new TestFragment1()).addToBackStack(true).into(FRAGMENT_CONTAINER);
     }
 
     @OnClick(R.id.main_btn_2)
     public void onSecondClick(View view) {
-        Fragments.checkout(this, new TestFragment2()).fade().into(FRAGMENT_CONTAINER);
-
+        Fragments.checkout(this, new TestFragment2()).addToBackStack(true).into(FRAGMENT_CONTAINER);
     }
 
     @OnClick(R.id.main_btn_3)
