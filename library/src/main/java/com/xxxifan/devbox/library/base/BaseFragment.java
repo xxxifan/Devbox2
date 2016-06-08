@@ -89,6 +89,14 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            onVisible();
+        }
+    }
+
+    @Override
     public void onPause() {
         lifecycleSubject.onNext(FragmentEvent.PAUSE);
         super.onPause();
@@ -138,7 +146,18 @@ public abstract class BaseFragment extends Fragment {
     }
 
     //########## Protected construct methods ##########
+
+    /**
+     * called when onCreate and fragment has Arguments
+     */
     protected void onBundleReceived(Bundle data) {
+
+    }
+
+    /**
+     * manual control method for sometimes lifecycle not working for fragment.
+     */
+    protected void onVisible() {
 
     }
 
