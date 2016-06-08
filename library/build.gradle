@@ -18,9 +18,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    // you may need to add following to your main project
+    // multiDexEnabled true
+    // ndk {
+    //     abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+    // }
     android {
         lintOptions {
             abortOnError false
+        }
+        packagingOptions {
+            exclude 'LICENSE.txt'
         }
     }
 }
