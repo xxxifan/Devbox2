@@ -1,6 +1,7 @@
 package com.xxxifan.devbox.library.util;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.AnimRes;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -77,11 +78,20 @@ public class Fragments {
                     break;
                 }
             }
-
         }
 
         public Operator addSharedElement(View sharedElement, String name) {
             transaction.addSharedElement(sharedElement, name);
+            return this;
+        }
+
+        public Operator setCustomAnimator(@AnimRes int enter, @AnimRes int exit) {
+            transaction.setCustomAnimations(enter, exit);
+            return this;
+        }
+
+        public Operator setCustomAnimator(@AnimRes int enter, @AnimRes int exit, @AnimRes int popEnter, @AnimRes int popExit) {
+            transaction.setCustomAnimations(enter, exit, popEnter, popExit);
             return this;
         }
 
@@ -152,6 +162,7 @@ public class Fragments {
             transaction.show(fragment);
 
             if (addToBackStack) {
+                // FIXME: 6/8/16 fragment already added
                 transaction.addToBackStack(tag);
             }
 
