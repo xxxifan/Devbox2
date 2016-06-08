@@ -9,6 +9,8 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -18,18 +20,19 @@ android {
     }
 }
 
-def leakcanary_ver = "1.4-beta2"
-def support_ver = "23.4.0"
+def leakcanary = "1.4-beta2"
+def support_lib = "23.4.0"
+def okhttp = "3.3.1"
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile "com.android.support:appcompat-v7:${support_ver}"
+
+    compile "com.android.support:appcompat-v7:${support_lib}"
 
     /*
      * Network/Loaders
      */
-    compile 'com.squareup.okhttp3:okhttp:3.3.1'
+    compile "com.squareup.okhttp3:okhttp:${okhttp}"
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
@@ -60,26 +63,33 @@ dependencies {
     /*
      * Leakcanary
      */
-    debugCompile "com.squareup.leakcanary:leakcanary-android:${leakcanary_ver}"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary_ver}"
-    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary_ver}"
+    debugCompile "com.squareup.leakcanary:leakcanary-android:${leakcanary}"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary}"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary}"
+
+    /*
+     * Test
+     */
+    testCompile 'junit:junit:4.12'
+    testCompile "com.squareup.okhttp3:mockwebserver:${okhttp}"
+
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile "com.android.support:support-annotations:${support_lib}"
 
     provided 'com.android.support:multidex:1.0.1'
     
+    /*
+     * Optional
+     */
+    compile 'jp.wasabeef:glide-transformations:2.0.1'
+    compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.3.0'
+
     /*
      * apt needed
      *
      * apply plugin: 'com.neenbedankt.android-apt'
      * apt 'com.google.dagger:dagger-compiler:2.2'
      * apt 'com.jakewharton:butterknife-compiler:8.0.1'
-     *
-     */
-
-    /*
-     * Optional
-     *
-     * compile 'jp.wasabeef:glide-transformations:2.0.1'
-     * compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.3.0'
-     *
      */
 }
