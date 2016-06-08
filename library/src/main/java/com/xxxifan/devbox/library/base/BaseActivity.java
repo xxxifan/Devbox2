@@ -47,6 +47,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
+    private BackKeyListener mBackKeyListener;
+
     private List<UiController> mUiControllers;
     private boolean mConfigured;
     private int mRootLayoutId;
@@ -115,6 +117,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         lifecycleSubject.onNext(ActivityEvent.DESTROY);
         super.onDestroy();
         unregisterUiControllers();
+        if (mBackKeyListener != null) {
+            mBackKeyListener = null;
+        }
     }
 
     private void unregisterUiControllers() {
@@ -125,6 +130,13 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
             mUiControllers.clear();
             mUiControllers = null;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mBackKeyListener == null || !mBackKeyListener.onPressed()) {
+            super.onBackPressed();
         }
     }
 
@@ -251,6 +263,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         return IOUtils.computation();
     }
 
+    public void setBackKeyListener(BackKeyListener listener) {
+        mBackKeyListener = listener;
+    }
+
     //##########  Abstract methods  ###########
 
     /**
@@ -273,6 +289,10 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     @Target(ElementType.METHOD)
     public @interface BeforeConfigActivity {
+    }
+
+    public interface BackKeyListener {
+        boolean onPressed();
     }
 
 }
