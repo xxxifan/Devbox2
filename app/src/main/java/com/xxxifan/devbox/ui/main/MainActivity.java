@@ -21,6 +21,7 @@ public class MainActivity extends ImageTranslucentActivity {
         super.onConfigActivity();
         Devbox.init(getApplicationContext());
         transparentStatusBar();
+        ViewUtils.setStatusBarDarkMode(this, true);
     }
 
     @Override

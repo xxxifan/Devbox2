@@ -46,10 +46,10 @@ public class Fragments {
         private FragmentManager fragmentManager;
         private FragmentTransaction transaction;
 
-        private boolean detachLast;
+        private boolean removeLast;
         private boolean addToBackStack;
-        private boolean noHide;
         private boolean fade;
+        private boolean replaceLast = true;
 
         private Operator(FragmentActivity activity, Fragment fragment) {
             this(activity, fragment, StringUtils.isEmpty(fragment.getTag()) ? (fragment instanceof BaseFragment ? ((BaseFragment) fragment).getSimpleName() : fragment.getClass().getName()) : fragment.getTag());
@@ -95,8 +95,11 @@ public class Fragments {
             return this;
         }
 
-        public Operator detachLast(boolean detach) {
-            this.detachLast = detach;
+        /**
+         * remove last fragment while checkout.
+         */
+        public Operator removeLast(boolean remove) {
+            this.removeLast = remove;
             return this;
         }
 
@@ -105,13 +108,20 @@ public class Fragments {
             return this;
         }
 
+        /**
+         * display fade transition
+         */
         public Operator fade() {
             this.fade = true;
             return this;
         }
 
-        public Operator noHide() {
-            this.noHide = true;
+        /**
+         * replace last fragment, default is true.
+         * if you want last to remove, see {@link #removeLast(boolean)}
+         */
+        public Operator replaceLast(boolean replace) {
+            this.replaceLast = replace;
             return this;
         }
 
@@ -122,7 +132,7 @@ public class Fragments {
             }
 
             // hide other fragment if need
-            if (!noHide) {
+            if (replaceLast) {
                 List<Fragment> fragments = fragmentManager.getFragments();
                 if (fragments != null) {
                     for (Fragment oldFragment : fragments) {
@@ -132,27 +142,27 @@ public class Fragments {
 
                         if (StringUtils.equals(oldFragment.getTag(), tag)) {
                             Logger.d("same tag fragment found!");
-                            oldFragment.setUserVisibleHint(false);
-                            transaction.remove(oldFragment).detach(oldFragment);
+                            // use old fragment
+                            fragment = oldFragment;
                         } else if (oldFragment.isVisible()) {
                             oldFragment.setUserVisibleHint(false);
-                            transaction.hide(oldFragment);
+                            transaction.detach(oldFragment);
                             // TODO: 6/8/16 get correct last fragment
-                            if (oldFragment == sLastFragment && detachLast) {
-                                transaction.detach(oldFragment);
+                            if (oldFragment == sLastFragment && removeLast) {
+                                transaction.remove(oldFragment);
                             }
                         }
                     }
                 }
-
                 sLastFragment = fragment;
             }
+
+            // FIXME: 6/8/16 not truely work
+            boolean canAddBackStack = transaction.isAddToBackStackAllowed() && transaction.isEmpty();
 
             if (fade) {
                 // noinspection WrongConstant
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            } else {
-                // TODO: 6/8/16 custom animation
             }
 
             if (!fragment.isAdded()) {
@@ -162,8 +172,12 @@ public class Fragments {
             transaction.show(fragment);
 
             if (addToBackStack) {
-                // FIXME: 6/8/16 fragment already added
-                transaction.addToBackStack(tag);
+                if (canAddBackStack) {
+                    transaction.addToBackStack(tag);
+                } else {
+                    Logger.t(TAG)
+                            .w("addToBackStack called, but this is not permitted");
+                }
             }
 
             transaction.commitAllowingStateLoss();

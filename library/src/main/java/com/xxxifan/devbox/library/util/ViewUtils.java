@@ -153,45 +153,48 @@ public class ViewUtils {
      * set status bar icon to light theme, which is called dark mode.
      * should be called in onCreate()
      */
-    public static void setStatusBarDarkMode(boolean darkmode, Activity activity) {
+    public static void setStatusBarDarkMode(Activity activity, boolean darkmode) {
         if (activity == null || activity.getWindow() == null) {
             return;
         }
 
         Window window = activity.getWindow();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        boolean changed = false;
+        // try miui
+        try {
+            Class<?> layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
+            Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
+            int darkModeFlag = field.getInt(layoutParams);
+            Method extraFlagField = window.getClass().getMethod("setExtraFlags", int.class, int.class);
+            extraFlagField.invoke(window, darkmode ? darkModeFlag : 0, darkModeFlag);
+            changed = true;
+        } catch (Exception ignored) {
+        }
+
+        // try flyme
+        try {
+            WindowManager.LayoutParams lp = window.getAttributes();
+            Field darkFlag = WindowManager.LayoutParams.class.getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
+            Field meizuFlags = WindowManager.LayoutParams.class.getDeclaredField("meizuFlags");
+            darkFlag.setAccessible(true);
+            meizuFlags.setAccessible(true);
+            int bit = darkFlag.getInt(null);
+            int value = meizuFlags.getInt(lp);
+            if (darkmode) {
+                value |= bit;
+            } else {
+                value &= ~bit;
+            }
+            meizuFlags.setInt(lp, value);
+            window.setAttributes(lp);
+            changed = true;
+        } catch (Exception ignored) {
+        }
+
+        if (!changed && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int visibility = darkmode ? window.getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                     : window.getDecorView().getSystemUiVisibility() & ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
             window.getDecorView().setSystemUiVisibility(visibility);
-        } else {
-            // try miui
-            try {
-                Class<?> layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
-                Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
-                int darkModeFlag = field.getInt(layoutParams);
-                Method extraFlagField = window.getClass().getMethod("setExtraFlags", int.class, int.class);
-                extraFlagField.invoke(window, darkmode ? darkModeFlag : 0, darkModeFlag);
-            } catch (Exception ignored) {
-            }
-
-            // try flyme
-            try {
-                WindowManager.LayoutParams lp = window.getAttributes();
-                Field darkFlag = WindowManager.LayoutParams.class.getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
-                Field meizuFlags = WindowManager.LayoutParams.class.getDeclaredField("meizuFlags");
-                darkFlag.setAccessible(true);
-                meizuFlags.setAccessible(true);
-                int bit = darkFlag.getInt(null);
-                int value = meizuFlags.getInt(lp);
-                if (darkmode) {
-                    value |= bit;
-                } else {
-                    value &= ~bit;
-                }
-                meizuFlags.setInt(lp, value);
-                window.setAttributes(lp);
-            } catch (Exception ignored) {
-            }
         }
     }
 
