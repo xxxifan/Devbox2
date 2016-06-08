@@ -11,7 +11,7 @@ import java.util.Map;
  * But more pretty, simple and powerful
  */
 public final class Logger {
-    private static final String DEFAULT_TAG = "PRETTYLOGGER";
+    public static final String DEFAULT_TAG = "Devbox";
 
     private static Printer printer = new LoggerPrinter();
 

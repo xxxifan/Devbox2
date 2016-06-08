@@ -76,6 +76,10 @@ final class LoggerPrinter implements Printer {
      */
     private Settings settings;
 
+    LoggerPrinter() {
+        init(Logger.DEFAULT_TAG);
+    }
+
     /**
      * It is used to change the tag
      *
