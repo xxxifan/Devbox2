@@ -1,22 +1,22 @@
-## Devbox2
+## Devbox2 ![travis](https://travis-ci.org/xxxifan/Devbox2.svg?branch=master)
 Yet another personal Android development tool Set.
 It's a new generation of [DevBox](https://github.com/xxxifan/DevBox)
 
 ## Usage
-1. add apt needed dependencies to your main project.
-2. init Devbox
+1. add this project as your module (maybe publish this to jitpack? but this won't allow you select what dependencies you need)
+2. add apt needed dependencies to your main project.
+3. init Devbox
 
 ```java
 Devbox.init(applicationContext);
 ```
-3.there's no step 3.
 
 ```warning: using this library may add up your method count at least 15000+.```
 
 ## Classes
 
 ### BaseActivity
-I used a special way to load views, but it would be simpler to implement a Activity, and there's more functional activities for extends.
+It used a special way to load views, but it would be simpler to implement a Activity, and there's more functional activities for extends.
 A Simple Activity looks like this:
 
 ```java
@@ -108,6 +108,8 @@ Also, you can get SharedPreference instance by specify preference name
 // AppPref.getPrefs();
 AppPref.getPrefs(prefName);
 ```
+
+More to come.
 
 ## Dependencies
 
