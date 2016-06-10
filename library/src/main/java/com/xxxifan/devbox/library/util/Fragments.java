@@ -25,16 +25,20 @@ public class Fragments {
     }
     // TODO: 6/8/16 new method to prepare a list for no-create checkout
 
-    public static Operator checkout(FragmentActivity activity, Fragment fragment) {
-        return new Operator(activity, fragment);
+    public static SingleOperator checkout(FragmentActivity activity, Fragment fragment) {
+        return new SingleOperator(activity, fragment);
     }
 
-    public static Operator checkout(FragmentActivity activity, Fragment fragment, String tag) {
-        return new Operator(activity, fragment, tag);
+    public static SingleOperator checkout(FragmentActivity activity, Fragment fragment, String tag) {
+        return new SingleOperator(activity, fragment, tag);
     }
 
-    public static Operator checkout(FragmentActivity activity, String tag) {
-        return new Operator(activity, tag);
+    public static SingleOperator checkout(FragmentActivity activity, String tag) {
+        return new SingleOperator(activity, tag);
+    }
+
+    public static MultiOperator add() {
+        return new MultiOperator();
     }
 
     /**
@@ -55,7 +59,7 @@ public class Fragments {
         return lastDisplayFragment;
     }
 
-    public static class Operator {
+    public static class SingleOperator {
         private WeakReference<FragmentActivity> activityRef;
         private Fragment fragment;
         private String tag;
@@ -67,12 +71,12 @@ public class Fragments {
         private boolean removeLast;
         private boolean replaceLast = true;
 
-        private Operator(FragmentActivity activity, Fragment fragment) {
+        private SingleOperator(FragmentActivity activity, Fragment fragment) {
             this(activity, fragment, StringUtils.isEmpty(fragment.getTag()) ? (fragment instanceof BaseFragment ? ((BaseFragment) fragment).getSimpleName() : fragment.getClass().getName()) : fragment.getTag());
         }
 
         @SuppressLint("CommitTransaction")
-        private Operator(FragmentActivity activity, Fragment fragment, String tag) {
+        private SingleOperator(FragmentActivity activity, Fragment fragment, String tag) {
             this.activityRef = new WeakReference<>(activity);
             this.fragment = fragment;
             this.tag = tag;
@@ -81,7 +85,7 @@ public class Fragments {
         }
 
         @SuppressLint("CommitTransaction")
-        private Operator(FragmentActivity activity, String tag) {
+        private SingleOperator(FragmentActivity activity, String tag) {
             this.activityRef = new WeakReference<>(activity);
             this.tag = tag;
             this.fragmentManager = activity.getSupportFragmentManager();
@@ -96,17 +100,17 @@ public class Fragments {
             }
         }
 
-        public Operator addSharedElement(View sharedElement, String name) {
+        public SingleOperator addSharedElement(View sharedElement, String name) {
             transaction.addSharedElement(sharedElement, name);
             return this;
         }
 
-        public Operator setCustomAnimator(@AnimRes int enter, @AnimRes int exit) {
+        public SingleOperator setCustomAnimator(@AnimRes int enter, @AnimRes int exit) {
             transaction.setCustomAnimations(enter, exit);
             return this;
         }
 
-        public Operator setCustomAnimator(@AnimRes int enter, @AnimRes int exit, @AnimRes int popEnter, @AnimRes int popExit) {
+        public SingleOperator setCustomAnimator(@AnimRes int enter, @AnimRes int exit, @AnimRes int popEnter, @AnimRes int popExit) {
             transaction.setCustomAnimations(enter, exit, popEnter, popExit);
             return this;
         }
@@ -114,12 +118,12 @@ public class Fragments {
         /**
          * remove last fragment while checkout.
          */
-        public Operator removeLast(boolean remove) {
+        public SingleOperator removeLast(boolean remove) {
             this.removeLast = remove;
             return this;
         }
 
-        public Operator addToBackStack(boolean add) {
+        public SingleOperator addToBackStack(boolean add) {
             this.addToBackStack = add;
             return this;
         }
@@ -127,7 +131,7 @@ public class Fragments {
         /**
          * display fade transition
          */
-        public Operator fade() {
+        public SingleOperator fade() {
             this.fade = true;
             return this;
         }
@@ -136,7 +140,7 @@ public class Fragments {
          * replace last fragment, default is true.
          * if you want last to remove, see {@link #removeLast(boolean)}
          */
-        public Operator replaceLast(boolean replace) {
+        public SingleOperator replaceLast(boolean replace) {
             this.replaceLast = replace;
             return this;
         }
@@ -208,5 +212,9 @@ public class Fragments {
             fragmentManager = null;
             activityRef.clear();
         }
+    }
+
+    public static class MultiOperator {
+
     }
 }
