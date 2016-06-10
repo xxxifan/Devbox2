@@ -21,8 +21,6 @@ import java.util.List;
 public class Fragments {
     public static final String TAG = "Fragments";
 
-    private static Fragment sLastFragment;
-
     private Fragments() {
     }
     // TODO: 6/8/16 new method to prepare a list for no-create checkout
@@ -39,6 +37,24 @@ public class Fragments {
         return new Operator(activity, tag);
     }
 
+    /**
+     * get last visible fragment
+     */
+    public static Fragment getLastFragment(FragmentActivity activity) {
+        Fragment lastDisplayFragment = null;
+        if (activity != null) {
+            List<Fragment> fragments = activity.getSupportFragmentManager().getFragments();
+            if (fragments != null) {
+                for (Fragment fragment : fragments) {
+                    if (fragment != null && fragment.isVisible()) {
+                        lastDisplayFragment = fragment;
+                    }
+                }
+            }
+        }
+        return lastDisplayFragment;
+    }
+
     public static class Operator {
         private WeakReference<FragmentActivity> activityRef;
         private Fragment fragment;
@@ -46,9 +62,9 @@ public class Fragments {
         private FragmentManager fragmentManager;
         private FragmentTransaction transaction;
 
-        private boolean removeLast;
         private boolean addToBackStack;
         private boolean fade;
+        private boolean removeLast;
         private boolean replaceLast = true;
 
         private Operator(FragmentActivity activity, Fragment fragment) {
@@ -131,10 +147,11 @@ public class Fragments {
                 return;
             }
 
-            // hide other fragment if need
-            if (replaceLast) {
+            // hide or remove last fragment
+            if (replaceLast || removeLast) {
                 List<Fragment> fragments = fragmentManager.getFragments();
                 if (fragments != null) {
+                    Fragment lastFragment = null;
                     for (Fragment oldFragment : fragments) {
                         if (oldFragment == null) {
                             continue;
@@ -147,15 +164,16 @@ public class Fragments {
                         } else if (oldFragment.isVisible()) {
                             oldFragment.setUserVisibleHint(false);
                             transaction.hide(oldFragment);
-                            // TODO: 6/8/16 get correct last fragment
-                            if (oldFragment == sLastFragment && removeLast) {
+                            if (lastFragment == null) {
+                                lastFragment = getLastFragment(activityRef.get());
+                            }
+                            if (StringUtils.equals(lastFragment.getTag(), oldFragment.getTag())  && removeLast) {
                                 Logger.d("last fragment has been totally removed");
                                 transaction.remove(oldFragment);
                             }
                         }
                     }
                 }
-                sLastFragment = fragment;
             }
 
             boolean canAddBackStack = transaction.isAddToBackStackAllowed() && !transaction.isEmpty();

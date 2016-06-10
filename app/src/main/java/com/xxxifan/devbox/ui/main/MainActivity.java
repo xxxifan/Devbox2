@@ -84,6 +84,12 @@ public class MainActivity extends ImageTranslucentActivity {
                 .into(FRAGMENT_CONTAINER);
     }
 
+    @OnClick(R.id.btn_4)
+    public void onCrashClick(View view) {
+//       startActivity(new Intent(getContext(),CrashActivity.class));
+        ViewUtils.showToast(Fragments.getLastFragment(this).toString());
+    }
+
     @Override
     public String getSimpleName() {
         return TAG;

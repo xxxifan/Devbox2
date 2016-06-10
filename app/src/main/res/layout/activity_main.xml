@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
+        android:id="@+id/image"
         android:src="@drawable/bg_banner" />
 
     <FrameLayout
@@ -42,6 +43,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Button3" />
+        <Button
+            android:id="@+id/btn_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="But"/>
     </LinearLayout>
 
 </LinearLayout>
