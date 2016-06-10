@@ -86,28 +86,28 @@ Here present you Fragments. This is a helper class that help you quickly and nic
 All operation is chained, you can follow this example to take a quick look:
 
 ```
-        // checkout with FRAGMENT_CONTAINER(which is defined in BaseActivity, is R.id.fragment_container
-        // it will use BaseFragment.getSimpleName() as tag, or SimpleClassName if fallback.
-        Fragments.checkout(this, new TestFragment())
-                .into(FRAGMENT_CONTAINER);
+// checkout with FRAGMENT_CONTAINER(which is defined in BaseActivity, is R.id.fragment_container
+// it will use BaseFragment.getSimpleName() as tag, or SimpleClassName if fallback.
+Fragments.checkout(this, new TestFragment())
+        .into(FRAGMENT_CONTAINER);
 
-        // checkout with specified tag
-        Fragments.checkout(this, new TestFragment(), "test")
-                .into(FRAGMENT_CONTAINER);
+// checkout with specified tag
+Fragments.checkout(this, new TestFragment(), "test")
+        .into(FRAGMENT_CONTAINER);
 
-        // more options
-        Fragments.checkout(this, new TestFragment(), "test")
-                .addToBackStack(true) // it will use tag name as state name
-                .replaceLast(true) // replace last fragment, default is true.
-                .removeLast(true) // remove last fragment while checkout.
-                .addSharedElement(view, name) // not tested
-                .setCustomAnimator(enter, exit) // not tested
-                .fade()
-                .into(FRAGMENT_CONTAINER);
+// more options
+Fragments.checkout(this, new TestFragment(), "test")
+        .addToBackStack(true) // it will use tag name as state name
+        .replaceLast(true) // replace last fragment, default is true.
+        .removeLast(true) // remove last fragment while checkout.
+        .addSharedElement(view, name) // not tested
+        .setCustomAnimator(enter, exit) // not tested
+        .fade()
+        .into(FRAGMENT_CONTAINER);
 
-        // add multi fragments
-        Fragments.add(this, new Fragment1(), new Fragment2(), new Fragment3())
-                .into(R.id.container1, R.id.container2, R.id.container3);
+// add multi fragments
+Fragments.add(this, new Fragment1(), new Fragment2(), new Fragment3())
+        .into(R.id.container1, R.id.container2, R.id.container3);
 
 ```
 
@@ -136,7 +136,8 @@ public class MainActivity extends ToolbarActivity {
     protected void onSetupActivity(Bundle savedInstanceState) {
         registerUiControllers(new BottomBarControler(view));
     }
-    ......
+
+    // ......
 }
 ```
 
