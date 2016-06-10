@@ -161,7 +161,10 @@ Also, you can get SharedPreference instance by specify preference name
 AppPref.getPrefs(prefName);
 ```
 
-More to come.
+## TODO
+- [] Network part (Including image load, file download)
+- [] multidex
+- [] more to come
 
 ## Dependencies
 
