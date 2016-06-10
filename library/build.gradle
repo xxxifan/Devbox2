@@ -30,6 +30,8 @@ android {
         }
         packagingOptions {
             exclude 'LICENSE.txt'
+            exclude 'META-INF/maven/com.google.dagger/dagger/pom.xml'
+            exclude 'META-INF/maven/com.google.dagger/dagger/pom.properties'
         }
     }
 }
