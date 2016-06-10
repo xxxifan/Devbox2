@@ -70,9 +70,10 @@ public class MainActivity extends TranslucentDrawerActivity {
 ```
 
 Other functions:
-    - lifecycle control with RxLifeCycle
-    - Eventbus, back key listener, rx schedulers control.
-    - more comes with extends.
+
+- lifecycle control with RxLifeCycle
+- Eventbus, back key listener, rx schedulers control.
+- more comes with extends.
 
 And other Activities in packages ```com.xxxifan.devbox.library.base.extended```, find what you need or just extend from BaseActivity
 
