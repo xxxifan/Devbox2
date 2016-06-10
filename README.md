@@ -113,12 +113,12 @@ More to come.
 
 ## Dependencies
 
-    compile "com.android.support:appcompat-v7:${support_ver}"
-    
+    compile "com.android.support:appcompat-v7:${support_lib}"
+
     /*
      * Network/Loaders
      */
-    compile 'com.squareup.okhttp3:okhttp:3.3.1'
+    compile "com.squareup.okhttp3:okhttp:${okhttp}"
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
@@ -132,12 +132,12 @@ More to come.
     compile 'com.trello:rxlifecycle:0.6.1'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
     compile "com.github.VictorAlbertos:RxActivityResult:0.3.3"
- 
+
     /*
      * Dagger
      */
     compile 'com.google.dagger:dagger:2.2'
- 
+
     /*
      * Tools
      */
@@ -149,11 +149,28 @@ More to come.
     /*
      * Leakcanary
      */
-    debugCompile "com.squareup.leakcanary:leakcanary-android:${leakcanary_ver}"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary_ver}"
-    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary_ver}"
-    
+    debugCompile "com.squareup.leakcanary:leakcanary-android:${leakcanary}"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary}"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary}"
+
+    /*
+     * Test
+     */
+    testCompile 'junit:junit:4.12'
+    testCompile "com.squareup.okhttp3:mockwebserver:${okhttp}"
+    testCompile 'org.mockito:mockito-core:1.10.19'
+
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile "com.android.support:support-annotations:${support_lib}"
+
     provided 'com.android.support:multidex:1.0.1'
+
+    /*
+     * Optional
+     */
+    compile 'jp.wasabeef:glide-transformations:2.0.1'
+    compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.3.0'
 
     /*
      * apt needed
@@ -161,15 +178,6 @@ More to come.
      * apply plugin: 'com.neenbedankt.android-apt'
      * apt 'com.google.dagger:dagger-compiler:2.2'
      * apt 'com.jakewharton:butterknife-compiler:8.0.1'
-     *
-     */
-
-    /*
-     * Optional
-     *
-     * compile 'jp.wasabeef:glide-transformations:2.0.1'
-     * compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.3.0'
-     *
      */
 
 ## License
