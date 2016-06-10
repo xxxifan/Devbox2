@@ -146,9 +146,10 @@ public class Fragments {
                             fragment = oldFragment;
                         } else if (oldFragment.isVisible()) {
                             oldFragment.setUserVisibleHint(false);
-                            transaction.detach(oldFragment);
+                            transaction.hide(oldFragment);
                             // TODO: 6/8/16 get correct last fragment
                             if (oldFragment == sLastFragment && removeLast) {
+                                Logger.d("last fragment has been totally removed");
                                 transaction.remove(oldFragment);
                             }
                         }
@@ -157,8 +158,7 @@ public class Fragments {
                 sLastFragment = fragment;
             }
 
-            // FIXME: 6/8/16 not truely work
-            boolean canAddBackStack = transaction.isAddToBackStackAllowed() && transaction.isEmpty();
+            boolean canAddBackStack = transaction.isAddToBackStackAllowed() && !transaction.isEmpty();
 
             if (fade) {
                 // noinspection WrongConstant

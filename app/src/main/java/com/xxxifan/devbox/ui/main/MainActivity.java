@@ -9,8 +9,12 @@ import com.xxxifan.devbox.library.base.extended.ImageTranslucentActivity;
 import com.xxxifan.devbox.library.util.Fragments;
 import com.xxxifan.devbox.library.util.ViewUtils;
 
+import java.util.concurrent.TimeUnit;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.functions.Action1;
 
 public class MainActivity extends ImageTranslucentActivity {
 
@@ -32,9 +36,8 @@ public class MainActivity extends ImageTranslucentActivity {
     @Override
     protected void onSetupActivity(Bundle savedInstanceState) {
         ButterKnife.bind(this);
-        getSupportFragmentManager().beginTransaction()
-                .add(FRAGMENT_CONTAINER, new TestFragment1(), TestFragment1.TAG)
-                .commitAllowingStateLoss();
+        Fragments.checkout(this, new TestFragment1())
+                .into(FRAGMENT_CONTAINER);
         setBackKeyListener(new BackKeyListener() {
             private int count = 0;
             @Override
@@ -42,6 +45,13 @@ public class MainActivity extends ImageTranslucentActivity {
                 if (count < 1) {
                     count++;
                     ViewUtils.showToast("toast");
+                    Observable.interval(3, TimeUnit.SECONDS)
+                    .subscribe(new Action1<Long>() {
+                        @Override
+                        public void call(Long aLong) {
+                            count = 0;
+                        }
+                    });
                     return true;
                 }
                 return false;
@@ -57,17 +67,22 @@ public class MainActivity extends ImageTranslucentActivity {
 
     @OnClick(R.id.main_btn_1)
     public void onFirstClick(View view) {
-        Fragments.checkout(this, new TestFragment1()).addToBackStack(true).into(FRAGMENT_CONTAINER);
+        Fragments.checkout(this, new TestFragment1())
+                .addToBackStack(true)
+                .into(FRAGMENT_CONTAINER);
     }
 
     @OnClick(R.id.main_btn_2)
     public void onSecondClick(View view) {
-        Fragments.checkout(this, new TestFragment2()).addToBackStack(true).into(FRAGMENT_CONTAINER);
+        Fragments.checkout(this, new TestFragment2())
+                .addToBackStack(true)
+                .into(FRAGMENT_CONTAINER);
     }
 
     @OnClick(R.id.main_btn_3)
     public void onThirdClick(View view) {
-        Fragments.checkout(this, new TestFragment1(), "TestFragment1-2").into(FRAGMENT_CONTAINER);
+        Fragments.checkout(this, new TestFragment1(), "TestFragment1-2")
+                .into(FRAGMENT_CONTAINER);
     }
 
     @Override
