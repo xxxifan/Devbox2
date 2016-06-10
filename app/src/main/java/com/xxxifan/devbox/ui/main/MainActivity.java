@@ -37,6 +37,8 @@ public class MainActivity extends ImageTranslucentActivity {
     @Override
     protected void onSetupActivity(Bundle savedInstanceState) {
         ButterKnife.bind(this);
+        Fragments.add(this, new TestFragment1(), new TestFragment2())
+                .into(R.id.container1, R.id.container2);
         setBackKeyListener(new BackKeyListener() {
             private int count = 0;
 
@@ -87,7 +89,7 @@ public class MainActivity extends ImageTranslucentActivity {
 
     @OnClick(R.id.btn_4)
     public void onCrashClick(View view) {
-       startActivity(new Intent(getContext(),CrashActivity.class));
+        startActivity(new Intent(getContext(), CrashActivity.class));
 //        ViewUtils.showToast(Fragments.getLastFragment(this).toString());
     }
 

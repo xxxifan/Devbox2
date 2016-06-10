@@ -8,11 +8,25 @@
     tools:context=".ui.main.MainActivity">
 
     <ImageView
+        android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        android:id="@+id/image"
         android:src="@drawable/bg_banner" />
+
+    <FrameLayout
+        android:id="@+id/container1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/container2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -43,11 +57,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Button3" />
+
         <Button
             android:id="@+id/btn_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="But"/>
+            android:text="But" />
     </LinearLayout>
 
 </LinearLayout>
