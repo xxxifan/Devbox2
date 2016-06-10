@@ -49,7 +49,7 @@ public class Fragments {
     public static Fragment getLastFragment(FragmentActivity activity) {
         Fragment lastDisplayFragment = null;
         if (activity != null) {
-            List<Fragment> fragments = activity.getSupportFragmentManager().getFragments();
+            List<Fragment> fragments = getFragmentLit(activity);
             if (fragments != null) {
                 for (Fragment fragment : fragments) {
                     if (fragment != null && fragment.isVisible()) {
@@ -101,7 +101,7 @@ public class Fragments {
             this.transaction = activity.getSupportFragmentManager().beginTransaction();
 
             // retrieve correct fragment
-            List<Fragment> fragments = activity.getSupportFragmentManager().getFragments();
+            List<Fragment> fragments = getFragmentLit(activity);
             for (Fragment tagFragment : fragments) {
                 if (StringUtils.equals(tagFragment.getTag(), tag)) {
                     this.fragment = tagFragment;
@@ -122,14 +122,6 @@ public class Fragments {
 
         public SingleOperator setCustomAnimator(@AnimRes int enter, @AnimRes int exit, @AnimRes int popEnter, @AnimRes int popExit) {
             transaction.setCustomAnimations(enter, exit, popEnter, popExit);
-            return this;
-        }
-
-        /**
-         * remove last fragment while checkout.
-         */
-        public SingleOperator removeLast(boolean remove) {
-            this.removeLast = remove;
             return this;
         }
 
@@ -155,6 +147,14 @@ public class Fragments {
             return this;
         }
 
+        /**
+         * remove last fragment while checkout.
+         */
+        public SingleOperator removeLast(boolean remove) {
+            this.removeLast = remove;
+            return this;
+        }
+
         public void into(@IdRes int containerId) {
             if (fragment == null) {
                 Logger.t(TAG).e("fragment is null, will not do anything");
@@ -164,7 +164,7 @@ public class Fragments {
 
             // hide or remove last fragment
             if (replaceLast || removeLast) {
-                List<Fragment> fragments = activityRef.get().getSupportFragmentManager().getFragments();
+                List<Fragment> fragments = getFragmentLit(activityRef.get());
                 if (fragments != null) {
                     Fragment lastFragment = null;
                     for (Fragment oldFragment : fragments) {
