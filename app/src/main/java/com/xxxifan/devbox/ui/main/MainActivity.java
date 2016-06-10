@@ -36,22 +36,21 @@ public class MainActivity extends ImageTranslucentActivity {
     @Override
     protected void onSetupActivity(Bundle savedInstanceState) {
         ButterKnife.bind(this);
-        Fragments.checkout(this, new TestFragment1())
-                .into(FRAGMENT_CONTAINER);
         setBackKeyListener(new BackKeyListener() {
             private int count = 0;
+
             @Override
             public boolean onPressed() {
                 if (count < 1) {
                     count++;
                     ViewUtils.showToast("toast");
                     Observable.interval(3, TimeUnit.SECONDS)
-                    .subscribe(new Action1<Long>() {
-                        @Override
-                        public void call(Long aLong) {
-                            count = 0;
-                        }
-                    });
+                            .subscribe(new Action1<Long>() {
+                                @Override
+                                public void call(Long aLong) {
+                                    count = 0;
+                                }
+                            });
                     return true;
                 }
                 return false;
