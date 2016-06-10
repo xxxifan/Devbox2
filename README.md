@@ -162,9 +162,9 @@ AppPref.getPrefs(prefName);
 ```
 
 ## TODO
-- [] Network part (Including image load, file download)
-- [] multidex
-- [] more to come
+- [ ] Network part (Including image load, file download)
+- [ ] multidex
+- [ ] more to come
 
 ## Dependencies
 
