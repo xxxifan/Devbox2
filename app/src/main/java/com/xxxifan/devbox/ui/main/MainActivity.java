@@ -1,5 +1,6 @@
 package com.xxxifan.devbox.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -86,8 +87,8 @@ public class MainActivity extends ImageTranslucentActivity {
 
     @OnClick(R.id.btn_4)
     public void onCrashClick(View view) {
-//       startActivity(new Intent(getContext(),CrashActivity.class));
-        ViewUtils.showToast(Fragments.getLastFragment(this).toString());
+       startActivity(new Intent(getContext(),CrashActivity.class));
+//        ViewUtils.showToast(Fragments.getLastFragment(this).toString());
     }
 
     @Override

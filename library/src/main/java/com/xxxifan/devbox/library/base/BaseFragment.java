@@ -8,6 +8,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.trello.rxlifecycle.FragmentEvent;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.xxxifan.devbox.library.event.BaseEvent;
+import com.xxxifan.devbox.library.util.Fragments;
 import com.xxxifan.devbox.library.util.IOUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -53,6 +55,7 @@ public abstract class BaseFragment extends Fragment {
         if (data != null) {
             onBundleReceived(data);
         }
+        restoreFragmentState(savedInstanceState);
     }
 
     @Nullable
@@ -142,6 +145,24 @@ public abstract class BaseFragment extends Fragment {
             }
             mUiControllers.clear();
             mUiControllers = null;
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(Fragments.KEY_RESTORE, isVisible());
+    }
+
+    private void restoreFragmentState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            if (savedInstanceState.getBoolean(Fragments.KEY_RESTORE, false)) {
+                transaction.show(this);
+            } else {
+                transaction.hide(this);
+            }
+            transaction.commitAllowingStateLoss();
         }
     }
 
