@@ -8,7 +8,18 @@ It's a new generation of [DevBox](https://github.com/xxxifan/DevBox)
 3. init Devbox
 
 ```java
-Devbox.init(applicationContext);
+public class App extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        // init devbox
+        Devbox.init(this);
+
+        // do other init
+    }
+}
 ```
 
 ```warning: using this library may add up your method count at least 15000+.```
@@ -58,7 +69,46 @@ public class MainActivity extends TranslucentDrawerActivity {
 
 ```
 
+Other functions:
+    - lifecycle control with RxLifeCycle
+    - Eventbus, back key listener, rx schedulers control.
+    - more comes with extends.
+
 And other Activities in packages ```com.xxxifan.devbox.library.base.extended```, find what you need or just extend from BaseActivity
+
+### BaseFragment
+almost same functions with BaseActivity, it will be come more extends with fragment.
+it also handled fragment visible state while restoreSavedInstance.
+
+### Fragments
+Here present you Fragments. This is a helper class that help you quickly and nicely deal with fragment transaction.
+All operation is chained, you can follow this example to take a quick look:
+
+```
+        // checkout with FRAGMENT_CONTAINER(which is defined in BaseActivity, is R.id.fragment_container
+        // it will use BaseFragment.getSimpleName() as tag, or SimpleClassName if fallback.
+        Fragments.checkout(this, new TestFragment())
+                .into(FRAGMENT_CONTAINER);
+
+        // checkout with specified tag
+        Fragments.checkout(this, new TestFragment(), "test")
+                .into(FRAGMENT_CONTAINER);
+
+        // more options
+        Fragments.checkout(this, new TestFragment(), "test")
+                .addToBackStack(true) // it will use tag name as state name
+                .replaceLast(true) // replace last fragment, default is true.
+                .removeLast(true) // remove last fragment while checkout.
+                .addSharedElement(view, name) // not tested
+                .setCustomAnimator(enter, exit) // not tested
+                .fade()
+                .into(FRAGMENT_CONTAINER);
+
+        // add multi fragments
+        Fragments.add(this, new Fragment1(), new Fragment2(), new Fragment3())
+                .into(R.id.container1, R.id.container2, R.id.container3);
+
+```
 
 ### MVP Model
 I have wrote two interface for mvp model, all you need to do is create a contract and have two interface inside extends from BasePresenter and BaseView.
@@ -94,7 +144,7 @@ that's all you need to do, the rest have already handled by BaseActivity.
 ### AppPref
 A wrapper for SharedPreference, you can simply use putXxx/getXxx to save variables, and also get chained editor by edit() just like what SharedPreference do.
 
-```java
+```
 AppPref.putString(key, value);
 AppPref.edit()
         .putString(key, value)
@@ -104,7 +154,7 @@ AppPref.edit()
 
 Also, you can get SharedPreference instance by specify preference name
 
-```java
+```
 // AppPref.getPrefs();
 AppPref.getPrefs(prefName);
 ```
