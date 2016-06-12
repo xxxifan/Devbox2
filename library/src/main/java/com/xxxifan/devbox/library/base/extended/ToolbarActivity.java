@@ -3,6 +3,7 @@ package com.xxxifan.devbox.library.base.extended;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.WindowDecorActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewStub;
 
@@ -66,5 +67,14 @@ public abstract class ToolbarActivity extends BaseActivity {
     protected void useLightToolbar() {
         checkConfigured();
         mUseLightToolbar = true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
