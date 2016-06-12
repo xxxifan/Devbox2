@@ -116,7 +116,7 @@ public class Http {
         });
     }
 
-    private static OkHttpClient getClient() {
+    public static OkHttpClient getClient() {
         if (sClient == null) {
             synchronized (Http.class) {
                 Cache cache = new Cache(IOUtils.getCacheDir(), 500 * 1024 * 1024); // 500MB
