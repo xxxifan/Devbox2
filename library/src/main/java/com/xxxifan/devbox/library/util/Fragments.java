@@ -24,18 +24,31 @@ public class Fragments {
     private Fragments() {
     }
 
+    /**
+     * checkout with FRAGMENT_CONTAINER(which is defined in BaseActivity, is R.id.fragment_container
+     * it will use BaseFragment.getSimpleName() as tag, or SimpleClassName if fallback.
+     */
     public static SingleOperator checkout(FragmentActivity activity, Fragment fragment) {
         return new SingleOperator(activity, fragment);
     }
 
+    /**
+     * checkout with specified tag
+     */
     public static SingleOperator checkout(FragmentActivity activity, Fragment fragment, String tag) {
         return new SingleOperator(activity, fragment, tag);
     }
 
+    /**
+     * checkout previously fragment by tag
+     */
     public static SingleOperator checkout(FragmentActivity activity, String tag) {
         return new SingleOperator(activity, tag);
     }
 
+    /**
+     * add multi fragments
+     */
     public static MultiOperator add(FragmentActivity activity, Fragment... fragments) {
         if (fragments == null) {
             throw new IllegalArgumentException("Can't accept null fragments");
