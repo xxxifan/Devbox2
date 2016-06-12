@@ -97,7 +97,7 @@ public class MainActivity extends ImageTranslucentActivity {
                 .get()
                 .url("https://api.github.com/users/xxxifan")
                 .build();
-        Http.get(request, new HttpCallback<User>() {
+        Http.send(request, new HttpCallback<User>() {
             @Override
             public void onSuccess(User result) {
                 System.out.println(result.toString());
