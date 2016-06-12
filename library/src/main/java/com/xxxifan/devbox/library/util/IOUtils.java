@@ -1,5 +1,8 @@
 package com.xxxifan.devbox.library.util;
 
+import com.xxxifan.devbox.library.Devbox;
+
+import java.io.File;
 import java.io.IOException;
 
 import okio.BufferedSource;
@@ -12,6 +15,14 @@ import rx.schedulers.Schedulers;
  * Created by xifan on 3/30/16.
  */
 public class IOUtils {
+
+    public static File getCacheDir() {
+        File dir = Devbox.getAppDelegate().getExternalCacheDir();
+        if (dir == null) {
+            dir = Devbox.getAppDelegate().getCacheDir();
+        }
+        return dir;
+    }
 
     public static void runCmd(String[] cmd, CommandCallback callback) {
         Process p;

@@ -2,6 +2,10 @@ package com.xxxifan.devbox.library;
 
 import android.content.Context;
 
+import com.xxxifan.devbox.library.util.http.Http;
+
+import okhttp3.OkHttpClient;
+
 /**
  * Created by xifan on 3/30/16.
  */
@@ -19,5 +23,9 @@ public class Devbox {
                     "correct config");
         }
         return sContext;
+    }
+
+    public static void setHttpClient(OkHttpClient client) {
+        Http.initClient(client);
     }
 }
