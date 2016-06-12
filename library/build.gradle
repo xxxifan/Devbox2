@@ -74,6 +74,7 @@ dependencies {
     compile 'com.afollestad.material-dialogs:core:0.8.5.9'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.github.tianzhijiexian:CommonAdapter:1.1.9'
 
     provided 'com.android.support:multidex:1.0.1'
 
