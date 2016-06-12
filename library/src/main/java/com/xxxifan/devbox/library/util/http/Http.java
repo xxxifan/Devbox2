@@ -20,6 +20,9 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 /**
  * A Simple Http helper class
@@ -43,15 +46,22 @@ public class Http {
                         }
 
                         String result = response.body().string();
-                        if (callback.getGenericType() == String.class) {
-                            callback.onSuccess((T) result);
-                        } else if (callback.getGenericType() == JSONObject.class) {
-                            callback.onSuccess((T) sGson.fromJson(result, JSONObject.class));
-                        } else if (callback.getGenericType() == JSONArray.class) {
-                            callback.onSuccess((T) sGson.fromJson(result, JSONArray.class));
-                        } else {
-                            callback.onSuccess((T) sGson.fromJson(result, callback.getGenericType()));
-                        }
+                        Observable.just(result)
+                                .subscribeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Action1<String>() {
+                                    @Override
+                                    public void call(String observableResult) {
+                                        if (callback.getGenericType() == String.class) {
+                                            callback.onSuccess((T) observableResult);
+                                        } else if (callback.getGenericType() == JSONObject.class) {
+                                            callback.onSuccess((T) sGson.fromJson(observableResult, JSONObject.class));
+                                        } else if (callback.getGenericType() == JSONArray.class) {
+                                            callback.onSuccess((T) sGson.fromJson(observableResult, JSONArray.class));
+                                        } else {
+                                            callback.onSuccess((T) sGson.fromJson(observableResult, callback.getGenericType()));
+                                        }
+                                    }
+                                });
                     }
 
                     @Override
