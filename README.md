@@ -162,7 +162,7 @@ AppPref.getPrefs(prefName);
 ```
 
 ## TODO
-- [ ] Network part (Including image load, file download)
+- [x] Network part (Including image load, file download)
 - [ ] More entends for fragments (like recyclerView support)
 - [ ] Multidex
 - [ ] More to come
