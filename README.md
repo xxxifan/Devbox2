@@ -175,10 +175,13 @@ AppPref.getPrefs(prefName);
      * Network/Loaders
      */
     compile "com.squareup.okhttp3:okhttp:${okhttp}"
-    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile "com.squareup.okhttp3:logging-interceptor:${okhttp}"
+    compile "com.squareup.retrofit2:retrofit:${retrofit}"
+    compile "com.squareup.retrofit2:adapter-rxjava:${retrofit}"
+    compile "com.squareup.retrofit2:converter-gson:${retrofit}"
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
-    compile 'com.liulishuo.filedownloader:library:0.3.1'
+    compile 'com.liulishuo.filedownloader:library:0.3.2'
 
     /*
      * Rx
@@ -201,24 +204,7 @@ AppPref.getPrefs(prefName);
     compile 'com.afollestad.material-dialogs:core:0.8.5.9'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.google.code.gson:gson:2.6.2'
-
-    /*
-     * Leakcanary
-     */
-    debugCompile "com.squareup.leakcanary:leakcanary-android:${leakcanary}"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary}"
-    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary}"
-
-    /*
-     * Test
-     */
-    testCompile 'junit:junit:4.12'
-    testCompile "com.squareup.okhttp3:mockwebserver:${okhttp}"
-    testCompile 'org.mockito:mockito-core:1.10.19'
-
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile "com.android.support:support-annotations:${support_lib}"
+    compile 'com.github.tianzhijiexian:CommonAdapter:1.1.9'
 
     provided 'com.android.support:multidex:1.0.1'
 
