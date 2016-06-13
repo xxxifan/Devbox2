@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 /**
  * Created by xifan on 6/8/16.
  */
-public class StringUtils {
+public class Strings {
     public static final String EMPTY = "";
 
     private final static Pattern PHONE_PATTERN = Pattern.compile("^(1(3|4|5|7|8))\\d{9}$");

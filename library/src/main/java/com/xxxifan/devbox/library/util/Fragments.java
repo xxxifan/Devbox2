@@ -68,7 +68,7 @@ public class Fragments {
     }
 
     private static String getTag(Fragment fragment) {
-        return StringUtils.isEmpty(fragment.getTag())
+        return Strings.isEmpty(fragment.getTag())
                 ? (fragment instanceof BaseFragment ? ((BaseFragment) fragment).getSimpleName() : fragment.getClass().getName())
                 : fragment.getTag();
     }
@@ -105,7 +105,7 @@ public class Fragments {
             // retrieve correct fragment
             List<Fragment> fragments = getFragmentLit(activity);
             for (Fragment tagFragment : fragments) {
-                if (StringUtils.equals(tagFragment.getTag(), tag)) {
+                if (Strings.equals(tagFragment.getTag(), tag)) {
                     this.fragment = tagFragment;
                     break;
                 }
@@ -168,7 +168,7 @@ public class Fragments {
             if (replaceLast || removeLast) {
                 Fragment lastFragment = getCurrentFragment(activityRef.get(), containerId);
                 if (lastFragment != null) {
-                    if (StringUtils.equals(lastFragment.getTag(), tag)) {
+                    if (Strings.equals(lastFragment.getTag(), tag)) {
                         Logger.d("same tag fragment found!");
                         fragment = lastFragment;
                     } else if (lastFragment.isVisible()) {
