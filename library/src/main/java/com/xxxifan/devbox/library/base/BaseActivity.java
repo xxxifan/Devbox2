@@ -122,6 +122,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mBackKeyListener == null || getSupportFragmentManager().getBackStackEntryCount() > 0
+                || !mBackKeyListener.onPressed()) {
+            super.onBackPressed();
+        }
+    }
+
     private void unregisterUiControllers() {
         // unregister ui controllers
         if (mUiControllers != null && mUiControllers.size() > 0) {
@@ -130,14 +138,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
             mUiControllers.clear();
             mUiControllers = null;
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mBackKeyListener == null || getSupportFragmentManager().getBackStackEntryCount() > 0
-                || !mBackKeyListener.onPressed()) {
-            super.onBackPressed();
         }
     }
 
@@ -181,7 +181,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     //##########  Protected helper methods ##########
-    protected Context getContext() {
+    public Context getContext() {
         return this;
     }
 

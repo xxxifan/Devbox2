@@ -7,7 +7,7 @@ import android.view.View;
  * Created by xifan on 15-12-28.
  * Fragment version of UiController.
  */
-public abstract class ChildUiController implements BasePresenter {
+public abstract class ChildUiController {
     private View mView;
     private BaseFragment mFragment;
 
@@ -23,11 +23,9 @@ public abstract class ChildUiController implements BasePresenter {
         initView(view);
     }
 
-    public void onResume() {
-    }
+    public void onResume() {}
 
-    public void onPause() {
-    }
+    public void onPause() {}
 
     public void onDestroy() {
         mView = null;
