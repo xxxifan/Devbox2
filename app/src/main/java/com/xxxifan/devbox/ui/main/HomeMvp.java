@@ -8,9 +8,9 @@ import com.xxxifan.devbox.library.base.BaseView;
  * Date: 5/18/16 3:25 PM
  */
 public interface HomeMvp {
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseView {
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends BasePresenter<View> {
     }
 }
