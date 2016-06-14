@@ -5,6 +5,7 @@ import com.liulishuo.filedownloader.FileDownloadListener;
 import com.liulishuo.filedownloader.FileDownloader;
 import com.xxxifan.devbox.library.Devbox;
 import com.xxxifan.devbox.library.util.IOUtils;
+import com.xxxifan.devbox.library.util.Tests;
 import com.xxxifan.devbox.library.util.logger.Logger;
 
 import org.json.JSONArray;
@@ -20,6 +21,7 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import retrofit2.Retrofit;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -29,11 +31,16 @@ import rx.functions.Action1;
  * Created by xifan on 6/12/16.
  */
 public class Http {
-    public static OkHttpClient sClient;
+    private static OkHttpClient sClient;
+    private static Retrofit sRetrofit;
     private static Gson sGson;
 
     public static void initClient(OkHttpClient client) {
         sClient = client;
+    }
+
+    public static void initRetrofit(Retrofit retrofit) {
+        sRetrofit = retrofit;
     }
 
     public static <T> void send(Request request, final HttpCallback<T> callback) {
@@ -116,6 +123,11 @@ public class Http {
         });
     }
 
+    public static <T> T createRetroService(Class<T> clazz) {
+        Tests.checkNull(sRetrofit);
+        return sRetrofit.create(clazz);
+    }
+
     public static OkHttpClient getClient() {
         if (sClient == null) {
             synchronized (Http.class) {
@@ -130,4 +142,5 @@ public class Http {
         }
         return sClient;
     }
+
 }

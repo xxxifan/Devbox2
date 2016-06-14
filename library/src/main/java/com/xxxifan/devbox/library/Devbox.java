@@ -1,6 +1,7 @@
 package com.xxxifan.devbox.library;
 
 import android.content.Context;
+import android.os.Build;
 
 import com.xxxifan.devbox.library.util.http.Http;
 
@@ -27,5 +28,9 @@ public class Devbox {
 
     public static void setHttpClient(OkHttpClient client) {
         Http.initClient(client);
+    }
+
+    public static boolean isMarshmallow() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 }

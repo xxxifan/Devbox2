@@ -25,10 +25,14 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.xxxifan.devbox.library.Devbox;
+import com.xxxifan.devbox.library.R;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
+import rx.Observable;
+import rx.functions.Action0;
 
 /**
  * Created by xifan on 4/6/16.
@@ -231,10 +235,32 @@ public class ViewUtils {
         }
     }
 
+    /**
+     * Simple dialog builder with default buttons.
+     */
+    public static MaterialDialog.Builder getSimpleDialogBuilder(Context context, String text) {
+        return new MaterialDialog.Builder(context)
+                .content(text)
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel);
+    }
+
     public static MaterialDialog.Builder getSimpleDialogBuilder(Context context) {
         return new MaterialDialog.Builder(context)
                 .positiveText(android.R.string.ok)
                 .negativeText(android.R.string.cancel);
+    }
+
+    public static MaterialDialog getLoadingDialog(Context context) {
+        return getLoadingDialog(context, context.getString(R.string.msg_loading));
+    }
+
+    public static MaterialDialog getLoadingDialog(Context context, String loadingText) {
+        return new MaterialDialog.Builder(context)
+                .progress(true, 0)
+                .content(loadingText)
+                .cancelable(false)
+                .build();
     }
 
     public static void showToast(@StringRes int resId, int duration) {
@@ -260,6 +286,37 @@ public class ViewUtils {
     public static Drawable getCompatDrawable(@DrawableRes int res) {
         return ContextCompat.getDrawable(Devbox.getAppDelegate(), res);
     }
+
+    /**
+     * transformer for Observables needs a loading dialog.
+     */
+    public static <T> Observable.Transformer<T, T> loadingObservable(final Context context) {
+        return new Observable.Transformer<T, T>() {
+            private MaterialDialog dialog;
+
+            @Override
+            public Observable<T> call(Observable<T> observable) {
+                return observable
+                        .doOnSubscribe(new Action0() {
+                            @Override
+                            public void call() {
+                                dialog = getLoadingDialog(context);
+                                dialog.show();
+                            }
+                        })
+                        .doOnTerminate(new Action0() {
+                            @Override
+                            public void call() {
+                                if (dialog != null && dialog.isShowing()) {
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+            }
+        };
+    }
+
+    // ############ Private #############
 
     private static int readInternalDimen(String key, Resources res, int fallback) {
         int resourceId = res.getIdentifier(key, "dimen", "android");
