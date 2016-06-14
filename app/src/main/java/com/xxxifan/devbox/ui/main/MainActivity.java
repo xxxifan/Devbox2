@@ -8,14 +8,11 @@ import com.xxxifan.devbox.library.Devbox;
 import com.xxxifan.devbox.library.base.extended.ImageTranslucentActivity;
 import com.xxxifan.devbox.library.util.Fragments;
 import com.xxxifan.devbox.library.util.ViewUtils;
-import com.xxxifan.devbox.library.util.http.Http;
-import com.xxxifan.devbox.library.util.http.HttpCallback;
 
 import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.Request;
 import rx.Observable;
 import rx.functions.Action1;
 
@@ -88,27 +85,27 @@ public class MainActivity extends ImageTranslucentActivity {
         Fragments.checkout(this, new TestFragment1(), "TestFragment1-2")
                 .into(FRAGMENT_CONTAINER);
     }
-
-    @OnClick(R.id.btn_4)
-    public void onCrashClick(View view) {
-//        startActivity(new Intent(getContext(), CrashActivity.class));
-//        ViewUtils.showToast(Fragments.getLastFragment(this).toString());
-        Request request = new Request.Builder()
-                .get()
-                .url("https://api.github.com/users/xxxifan")
-                .build();
-        Http.send(request, new HttpCallback<User>() {
-            @Override
-            public void onSuccess(User result) {
-                System.out.println(result.toString());
-            }
-
-            @Override
-            public void onFailed(Throwable throwable) {
-                throwable.printStackTrace();
-            }
-        });
-    }
+//
+//    @OnClick(R.id.btn_4)
+//    public void onCrashClick(View view) {
+////        startActivity(new Intent(getContext(), CrashActivity.class));
+////        ViewUtils.showToast(Fragments.getLastFragment(this).toString());
+//        Request request = new Request.Builder()
+//                .get()
+//                .url("https://api.github.com/users/xxxifan")
+//                .build();
+//        Http.send(request, new HttpCallback<User>() {
+//            @Override
+//            public void onSuccess(User result) {
+//                System.out.println(result.toString());
+//            }
+//
+//            @Override
+//            public void onFailed(Throwable throwable) {
+//                throwable.printStackTrace();
+//            }
+//        });
+//    }
 
     @Override
     public String getSimpleName() {

@@ -44,25 +44,19 @@
             android:id="@+id/main_btn_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button1" />
+            android:text="fragment1" />
 
         <Button
             android:id="@+id/main_btn_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button2" />
+            android:text="fragment2" />
 
         <Button
             android:id="@+id/main_btn_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button3" />
-
-        <Button
-            android:id="@+id/btn_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="But" />
+            android:text="recyclerview" />
     </LinearLayout>
 
 </LinearLayout>
