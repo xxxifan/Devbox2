@@ -1,6 +1,8 @@
 package com.xxxifan.devbox.library;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 
 import com.xxxifan.devbox.library.util.http.Http;
@@ -32,5 +34,31 @@ public class Devbox {
 
     public static boolean isMarshmallow() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    }
+
+    /**
+     * Get app package info.
+     */
+    public static PackageInfo getPackageInfo() throws PackageManager.NameNotFoundException {
+        PackageManager manager = Devbox.getAppDelegate().getPackageManager();
+        return manager.getPackageInfo(Devbox.getAppDelegate().getPackageName(), 0);
+    }
+
+    public static long getVersionCode() {
+        try {
+            return getPackageInfo().versionCode;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static String getVersionName() {
+        try {
+            return getPackageInfo().versionName;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }
