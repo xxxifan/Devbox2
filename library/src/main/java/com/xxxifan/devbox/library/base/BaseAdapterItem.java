@@ -21,6 +21,9 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
         bindViews();
     }
 
+    @Override public void setViews() {
+    }
+
     public View getView() {
         return root;
     }
