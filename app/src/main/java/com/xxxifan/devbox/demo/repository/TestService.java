@@ -1,4 +1,4 @@
-package com.xxxifan.devbox.repository;
+package com.xxxifan.devbox.demo.repository;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

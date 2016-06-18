@@ -6,7 +6,7 @@ android {
     buildToolsVersion buildTools as String
 
     defaultConfig {
-        applicationId "com.xxxifan.devbox"
+        applicationId "com.xxxifan.devbox.demo"
         minSdkVersion minSdk as int
         targetSdkVersion sdk as int
         versionCode 1

@@ -1,9 +1,9 @@
-package com.xxxifan.devbox.ui.main;
+package com.xxxifan.devbox.demo.ui.view.main;
 
 import android.os.Bundle;
 import android.view.View;
 
-import com.xxxifan.devbox.R;
+import com.xxxifan.devbox.demo.R;
 import com.xxxifan.devbox.library.Devbox;
 import com.xxxifan.devbox.library.base.extended.ImageTranslucentActivity;
 import com.xxxifan.devbox.library.util.Fragments;
@@ -82,8 +82,7 @@ public class MainActivity extends ImageTranslucentActivity {
 
     @OnClick(R.id.main_btn_3)
     public void onThirdClick(View view) {
-        Fragments.checkout(this, new TestFragment1(), "TestFragment1-2")
-                .into(FRAGMENT_CONTAINER);
+       RecyclerActivity.start(getContext());
     }
 //
 //    @OnClick(R.id.btn_4)

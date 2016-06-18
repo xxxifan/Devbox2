@@ -1,4 +1,4 @@
-package com.xxxifan.devbox.ui.main;
+package com.xxxifan.devbox.demo.ui.view.main;
 
 import com.xxxifan.devbox.library.base.BasePresenter;
 import com.xxxifan.devbox.library.base.BaseView;

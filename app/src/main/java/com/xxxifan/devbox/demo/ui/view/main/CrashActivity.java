@@ -1,8 +1,8 @@
-package com.xxxifan.devbox.ui.main;
+package com.xxxifan.devbox.demo.ui.view.main;
 
 import android.os.Bundle;
 
-import com.xxxifan.devbox.R;
+import com.xxxifan.devbox.demo.R;
 import com.xxxifan.devbox.library.base.BaseActivity;
 
 /**

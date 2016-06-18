@@ -1,4 +1,4 @@
-package com.xxxifan.devbox.ui.main;
+package com.xxxifan.devbox.demo.ui.view.main;
 
 /**
  * Created by xifan on 6/12/16.
