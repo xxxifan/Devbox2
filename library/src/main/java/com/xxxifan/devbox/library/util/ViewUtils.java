@@ -68,11 +68,11 @@ public class ViewUtils {
 
                     // check cm settings
                     boolean forceCm = Settings.Secure.getInt(Devbox.getAppDelegate().getContentResolver(),
-                            CONFIG_FORCE_NAVBAR, 0) == 1;
+                                                             CONFIG_FORCE_NAVBAR, 0) == 1;
 
                     // fallback, use common method.
                     sHasTranslucentNavBar = forceCm || readInternalBoolean(CONFIG_SHOW_NAVBAR,
-                            Devbox.getAppDelegate().getResources(), !ViewConfiguration.get(Devbox.getAppDelegate())
+                                                                           Devbox.getAppDelegate().getResources(), !ViewConfiguration.get(Devbox.getAppDelegate())
                                     .hasPermanentMenuKey());
                 }
             });
@@ -196,8 +196,12 @@ public class ViewUtils {
         }
 
         if (!changed && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int visibility = darkmode ? window.getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                    : window.getDecorView().getSystemUiVisibility() & ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            int visibility = window.getDecorView().getSystemUiVisibility();
+            if (darkmode) {
+                visibility |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            } else {
+                visibility &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            }
             window.getDecorView().setSystemUiVisibility(visibility);
         }
     }
@@ -298,13 +302,15 @@ public class ViewUtils {
             public Observable<T> call(Observable<T> observable) {
                 return observable
                         .doOnSubscribe(new Action0() {
-                            @Override public void call() {
+                            @Override
+                            public void call() {
                                 dialog = getLoadingDialog(context);
                                 dialog.show();
                             }
                         })
                         .doOnTerminate(new Action0() {
-                            @Override public void call() {
+                            @Override
+                            public void call() {
                                 if (dialog != null && dialog.isShowing()) {
                                     dialog.dismiss();
                                     dialog = null;
