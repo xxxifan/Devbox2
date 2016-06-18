@@ -4,9 +4,9 @@ import com.xxxifan.devbox.demo.data.model.Repo;
 
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import rx.Observable;
 
 /**
  * Created by xifan on 6/18/16.
@@ -22,5 +22,5 @@ public interface GithubService {
     String DIRECTION_DESC = "desc";
 
     @GET("users/xxxifan/repos")
-    Observable<List<Repo>> getUserRepos(@Query("type") String type, @Query("sort") String sort, @Query("direction") String direction);
+    Call<List<Repo>> getUserRepos(@Query("type") String type, @Query("sort") String sort, @Query("direction") String direction);
 }

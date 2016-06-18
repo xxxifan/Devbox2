@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.view.main.CrashActivity"/>
+        <activity android:name=".ui.view.main.RecyclerActivity"/>
     </application>
 
 </manifest>

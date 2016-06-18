@@ -85,7 +85,7 @@ public class Repo extends GithubModel {
      * login : xxxifan
      * id : 1215833
      * avatar_url : https://avatars.githubusercontent.com/u/1215833?v=3
-     * gravatar_id : 
+     * gravatar_id :
      * url : https://api.github.com/users/xxxifan
      * html_url : https://github.com/xxxifan
      * followers_url : https://api.github.com/users/xxxifan/followers

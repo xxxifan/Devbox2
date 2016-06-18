@@ -2,6 +2,7 @@ package com.xxxifan.devbox.library.base.extended;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,6 @@ import com.xxxifan.devbox.library.R;
 import com.xxxifan.devbox.library.base.BaseFragment;
 
 import butterknife.ButterKnife;
-import kale.adapter.CommonRcvAdapter;
 
 /**
  * Created by xifan on 6/14/16.
@@ -19,7 +19,8 @@ import kale.adapter.CommonRcvAdapter;
 public abstract class RecyclerFragment extends BaseFragment {
 
     private RecyclerView mRecyclerView;
-    private CommonRcvAdapter<?> mAdapter;
+//    private CommonRcvAdapter mAdapter;
+        private RecyclerView.Adapter mAdapter;
 
     @Override protected int getLayoutId() {
         return R.layout._internal_fragment_recycler;
@@ -30,6 +31,7 @@ public abstract class RecyclerFragment extends BaseFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         if (view != null) {
             mRecyclerView = ButterKnife.findById(view, R.id.base_recycler_view);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             mAdapter = setAdapter();
             mRecyclerView.setAdapter(mAdapter);
         }
@@ -46,5 +48,9 @@ public abstract class RecyclerFragment extends BaseFragment {
         return mRecyclerView;
     }
 
-    protected abstract CommonRcvAdapter<?> setAdapter();
+    protected RecyclerView.Adapter getAdapter() {
+        return mAdapter;
+    }
+
+    protected abstract RecyclerView.Adapter setAdapter();
 }
