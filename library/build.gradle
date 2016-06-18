@@ -21,9 +21,11 @@ android {
 
     // you may need to add following to your main project
     // multiDexEnabled true
-    // ndk {
-    //     abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
-    // }
+
+//    defaultConfig.ndk {
+//        abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+//    }
+
     android {
         lintOptions {
             abortOnError false
@@ -36,7 +38,7 @@ android {
     }
 }
 
-def support_lib = "23.4.0"
+def support_lib = "24.0.0"
 def okhttp = "3.3.1"
 def retrofit = "2.0.2"
 
@@ -64,7 +66,7 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.0'
     compile 'com.trello:rxlifecycle:0.6.1'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
-    compile "com.github.VictorAlbertos:RxActivityResult:0.3.3"
+    compile "com.github.VictorAlbertos:RxActivityResult:0.3.4"
 
     /*
      * Dagger
