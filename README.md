@@ -79,7 +79,15 @@ And other Activities in packages ```com.xxxifan.devbox.library.base.extended```,
 
 ### BaseFragment
 almost same functions with BaseActivity, it will be come more extends with fragment.
-it also handled fragment visible state while restoreSavedInstance.
+it also handled fragment visible state while restoreSavedInstance, so you just need to init fragments when savedInstance is null
+```
+    protected void onSetupActivity(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            Fragments.checkout(this, new TestFragment1())
+                    .into(FRAGMENT_CONTAINER);
+        }
+    }
+```
 
 ### Fragments
 Here present you Fragments. This is a helper class that help you quickly and nicely deal with fragment transaction.
@@ -163,6 +171,7 @@ AppPref.getPrefs(prefName);
 
 ## TODO
 - [x] Network part (Including image load, file download)
+- [ ] Fragment loader
 - [ ] More entends for fragments (like recyclerView support)
 - [ ] Multidex
 - [ ] More to come
