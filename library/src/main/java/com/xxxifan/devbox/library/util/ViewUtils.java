@@ -302,15 +302,13 @@ public class ViewUtils {
             public Observable<T> call(Observable<T> observable) {
                 return observable
                         .doOnSubscribe(new Action0() {
-                            @Override
-                            public void call() {
+                            @Override public void call() {
                                 dialog = getLoadingDialog(context);
                                 dialog.show();
                             }
                         })
                         .doOnTerminate(new Action0() {
-                            @Override
-                            public void call() {
+                            @Override public void call() {
                                 if (dialog != null && dialog.isShowing()) {
                                     dialog.dismiss();
                                     dialog = null;

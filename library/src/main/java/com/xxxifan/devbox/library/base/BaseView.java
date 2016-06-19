@@ -9,4 +9,6 @@ public interface BaseView {
     Context getContext();
 
     String getSimpleName();
+
+    void showMessage(String msg);
 }

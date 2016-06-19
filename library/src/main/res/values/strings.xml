@@ -1,4 +1,3 @@
 <resources>
-    <string name="app_name">DevBox</string>
     <string name="msg_loading">请稍候&#8230;</string>
 </resources>

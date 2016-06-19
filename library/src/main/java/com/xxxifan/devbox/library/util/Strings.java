@@ -6,14 +6,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 /**
  * Created by xifan on 6/8/16.
@@ -113,75 +107,5 @@ public class Strings {
 
     public static String decodeBase64ToString(String decodeStr) {
         return new String(decodeBase64(decodeStr), Charset.forName("utf-8"));
-    }
-
-    /**
-     * AES加密
-     *
-     * @param content    待加密的内容
-     * @param encryptKey 加密密钥
-     * @return 加密后的byte[]
-     */
-    public static byte[] encryptAES(String content, String encryptKey) {
-        try {
-            KeyGenerator kgen = KeyGenerator.getInstance("AES");
-            kgen.init(128, new SecureRandom(encryptKey.getBytes()));
-
-            Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(getSecretKey(encryptKey).getEncoded(), "AES"));
-
-            return cipher.doFinal(content.getBytes("utf-8"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return EMPTY.getBytes();
-    }
-
-    /**
-     * AES解密
-     *
-     * @param encryptBytes 待解密的byte[]
-     * @param decryptKey   解密密钥
-     * @return 解密后的String
-     */
-    public static String decryptAES(byte[] encryptBytes, String decryptKey) {
-        try {
-            KeyGenerator kgen = KeyGenerator.getInstance("AES");
-            kgen.init(128, new SecureRandom(decryptKey.getBytes()));
-
-            Cipher cipher = Cipher.getInstance("AES");
-
-            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(getSecretKey(decryptKey).getEncoded(), "AES"));
-            byte[] decryptBytes = cipher.doFinal(encryptBytes);
-
-            return new String(decryptBytes, "utf-8");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return EMPTY;
-    }
-
-    /**
-     * 将base 64 code AES解密
-     *
-     * @param encryptStr 待解密
-     * @param decryptKey 解密密钥
-     * @return 解密后的string
-     * @throws Exception
-     */
-    public static String decryptAES(String encryptStr, String decryptKey) {
-        return encryptStr.isEmpty() ? EMPTY : decryptAES(encryptStr.getBytes(), decryptKey);
-    }
-
-    private static SecretKey getSecretKey(String strKey) {
-        try {
-            KeyGenerator _generator = KeyGenerator.getInstance("AES");
-            SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG", "Crypto");
-            secureRandom.setSeed(strKey.getBytes());
-            _generator.init(128, secureRandom);
-            return _generator.generateKey();
-        } catch (Exception ignored) {
-        }
-        return null;
     }
 }
