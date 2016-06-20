@@ -67,6 +67,9 @@ public class Strings {
      * Check is phone number
      */
     public static boolean isPhoneNum(String phone) {
+        if (isEmpty(phone)) {
+            return false;
+        }
         Matcher m = PHONE_PATTERN.matcher(phone);
         return m.matches();
     }

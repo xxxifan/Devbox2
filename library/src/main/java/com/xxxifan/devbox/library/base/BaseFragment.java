@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +23,6 @@ import com.xxxifan.devbox.library.util.IOUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 
@@ -36,8 +32,6 @@ import rx.subjects.BehaviorSubject;
 public abstract class BaseFragment extends Fragment {
 
     private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
-
-    private List<ChildUiController> mUiControllers;
 
     @Override
     public void onAttach(android.app.Activity activity) {
@@ -82,13 +76,6 @@ public abstract class BaseFragment extends Fragment {
     public void onResume() {
         super.onResume();
         lifecycleSubject.onNext(FragmentEvent.RESUME);
-
-        // handle controller event
-        if (mUiControllers != null && mUiControllers.size() > 0) {
-            for (int i = 0; i < mUiControllers.size(); i++) {
-                mUiControllers.get(i).onResume();
-            }
-        }
     }
 
     @Override
@@ -103,13 +90,6 @@ public abstract class BaseFragment extends Fragment {
     public void onPause() {
         lifecycleSubject.onNext(FragmentEvent.PAUSE);
         super.onPause();
-
-        // handle controller event
-        if (mUiControllers != null && mUiControllers.size() > 0) {
-            for (int i = 0; i < mUiControllers.size(); i++) {
-                mUiControllers.get(i).onPause();
-            }
-        }
     }
 
     @Override
@@ -122,7 +102,6 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         lifecycleSubject.onNext(FragmentEvent.DESTROY_VIEW);
         super.onDestroyView();
-        unregisterUiControllers();
     }
 
     @Override
@@ -135,17 +114,6 @@ public abstract class BaseFragment extends Fragment {
     public void onDetach() {
         lifecycleSubject.onNext(FragmentEvent.DETACH);
         super.onDetach();
-    }
-
-    private void unregisterUiControllers() {
-        // unregister ui controllers
-        if (mUiControllers != null && mUiControllers.size() > 0) {
-            for (int i = 0; i < mUiControllers.size(); i++) {
-                mUiControllers.get(i).onDestroy();
-            }
-            mUiControllers.clear();
-            mUiControllers = null;
-        }
     }
 
     @Override
@@ -203,23 +171,6 @@ public abstract class BaseFragment extends Fragment {
         EventBus eventBus = EventBus.getDefault();
         if (eventBus.isRegistered(object)) {
             eventBus.unregister(object);
-        }
-    }
-
-    /**
-     * register controllers, so that BaseFragment can do some lifecycle work automatically
-     */
-    protected void registerUiController(ChildUiController... controllers) {
-        if (controllers == null) {
-            Log.e(getSimpleName(), "controllers cannot be empty");
-            return;
-        }
-
-        if (mUiControllers == null) {
-            mUiControllers = new ArrayList<>();
-        }
-        for (int i = 0, s = controllers.length; i < s; i++) {
-            mUiControllers.add(controllers[i]);
         }
     }
 

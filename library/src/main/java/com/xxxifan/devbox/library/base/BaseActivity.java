@@ -10,7 +10,6 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -28,8 +27,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
-import java.util.ArrayList;
-import java.util.List;
 
 import rx.Observable;
 import rx.functions.Action1;
@@ -53,7 +50,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     private BackKeyListener mBackKeyListener;
 
     private Observable<MaterialDialog> mDialogObservable;
-    private List<UiController> mUiControllers;
     private boolean mConfigured;
     private int mRootLayoutId;
 
@@ -88,26 +84,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         lifecycleSubject.onNext(ActivityEvent.RESUME);
-
-        // handle controller event
-        if (mUiControllers != null && mUiControllers.size() > 0) {
-            for (int i = 0; i < mUiControllers.size(); i++) {
-                mUiControllers.get(i).onResume();
-            }
-        }
     }
 
     @Override
     protected void onPause() {
         lifecycleSubject.onNext(ActivityEvent.PAUSE);
         super.onPause();
-
-        // handle controller event
-        if (mUiControllers != null && mUiControllers.size() > 0) {
-            for (int i = 0; i < mUiControllers.size(); i++) {
-                mUiControllers.get(i).onPause();
-            }
-        }
     }
 
     @Override
@@ -120,7 +102,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         lifecycleSubject.onNext(ActivityEvent.DESTROY);
         super.onDestroy();
-        unregisterUiControllers();
         if (mBackKeyListener != null) {
             mBackKeyListener = null;
         }
@@ -139,17 +120,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (mBackKeyListener == null || getSupportFragmentManager().getBackStackEntryCount() > 0
                 || !mBackKeyListener.onPressed()) {
             super.onBackPressed();
-        }
-    }
-
-    private void unregisterUiControllers() {
-        // unregister ui controllers
-        if (mUiControllers != null && mUiControllers.size() > 0) {
-            for (int i = 0; i < mUiControllers.size(); i++) {
-                mUiControllers.get(i).onDestroy();
-            }
-            mUiControllers.clear();
-            mUiControllers = null;
         }
     }
 
@@ -227,23 +197,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         EventBus eventBus = EventBus.getDefault();
         if (eventBus.isRegistered(object)) {
             eventBus.unregister(object);
-        }
-    }
-
-    /**
-     * register controllers, so that BaseActivity can do some lifecycle work automatically
-     */
-    protected void registerUiControllers(UiController... controllers) {
-        if (controllers == null) {
-            Log.e(getSimpleName(), "controllers cannot be empty");
-            return;
-        }
-
-        if (mUiControllers == null) {
-            mUiControllers = new ArrayList<>();
-        }
-        for (int i = 0, s = controllers.length; i < s; i++) {
-            mUiControllers.add(controllers[i]);
         }
     }
 

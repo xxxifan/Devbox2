@@ -2,6 +2,7 @@ package com.xxxifan.devbox.library.util;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.AnimRes;
+import android.support.annotation.CheckResult;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -28,6 +29,7 @@ public class Fragments {
      * checkout with FRAGMENT_CONTAINER(which is defined in BaseActivity, is R.id.fragment_container
      * it will use BaseFragment.getSimpleName() as tag, or SimpleClassName if fallback.
      */
+    @CheckResult
     public static SingleOperator checkout(FragmentActivity activity, Fragment fragment) {
         return new SingleOperator(activity, fragment);
     }
@@ -35,6 +37,7 @@ public class Fragments {
     /**
      * checkout with specified tag
      */
+    @CheckResult
     public static SingleOperator checkout(FragmentActivity activity, Fragment fragment, String tag) {
         return new SingleOperator(activity, fragment, tag);
     }
@@ -42,6 +45,7 @@ public class Fragments {
     /**
      * checkout previously fragment by tag
      */
+    @CheckResult
     public static SingleOperator checkout(FragmentActivity activity, String tag) {
         return new SingleOperator(activity, tag);
     }
@@ -49,6 +53,7 @@ public class Fragments {
     /**
      * add multi fragments
      */
+    @CheckResult
     public static MultiOperator add(FragmentActivity activity, Fragment... fragments) {
         if (fragments == null) {
             throw new IllegalArgumentException("Can't accept null fragments");
@@ -63,7 +68,11 @@ public class Fragments {
         return activity.getSupportFragmentManager().findFragmentById(containerId);
     }
 
-    public static List<Fragment> getFragmentLit(FragmentActivity activity) {
+    public static Fragment getFragment(FragmentActivity activity, String tag) {
+        return activity.getSupportFragmentManager().findFragmentByTag(tag);
+    }
+
+    public static List<Fragment> getFragmentList(FragmentActivity activity) {
         return activity.getSupportFragmentManager().getFragments();
     }
 
@@ -82,7 +91,7 @@ public class Fragments {
         private boolean addToBackStack;
         private boolean fade;
         private boolean removeLast;
-        private boolean replaceLast = true;
+        private boolean hideLast = true;
 
         private SingleOperator(FragmentActivity activity, Fragment fragment) {
             this(activity, fragment, getTag(fragment));
@@ -103,7 +112,7 @@ public class Fragments {
             this.transaction = activity.getSupportFragmentManager().beginTransaction();
 
             // retrieve correct fragment
-            List<Fragment> fragments = getFragmentLit(activity);
+            List<Fragment> fragments = getFragmentList(activity);
             for (Fragment tagFragment : fragments) {
                 if (Strings.equals(tagFragment.getTag(), tag)) {
                     this.fragment = tagFragment;
@@ -141,11 +150,11 @@ public class Fragments {
         }
 
         /**
-         * replace last fragment, default is true.
+         * hideLast last fragment, default is true.
          * if you want last to remove, see {@link #removeLast(boolean)}
          */
-        public SingleOperator replaceLast(boolean replace) {
-            this.replaceLast = replace;
+        public SingleOperator hideLast(boolean hideLast) {
+            this.hideLast = hideLast;
             return this;
         }
 
@@ -165,7 +174,7 @@ public class Fragments {
             }
 
             // hide or remove last fragment
-            if (replaceLast || removeLast) {
+            if (hideLast || removeLast) {
                 Fragment lastFragment = getCurrentFragment(activityRef.get(), containerId);
                 if (lastFragment != null) {
                     if (Strings.equals(lastFragment.getTag(), tag)) {

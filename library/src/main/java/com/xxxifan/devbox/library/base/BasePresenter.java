@@ -5,6 +5,5 @@ package com.xxxifan.devbox.library.base;
  */
 public interface BasePresenter<T> {
     void setView(T view);
-
     void onDestroy();
 }
