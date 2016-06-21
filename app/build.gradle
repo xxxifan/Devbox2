@@ -2,14 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'devbox'
-            keyPassword 'CHAOji123'
-            storeFile file('/home/xifan/StudioProjects/keys/devbox.jks')
-            storePassword 'CHAOji123'
-        }
-    }
     compileSdkVersion sdk as int
     buildToolsVersion buildTools as String
     defaultConfig {
@@ -18,15 +10,6 @@ android {
         targetSdkVersion sdk as int
         versionCode 1
         versionName "1.0"
-    }
-    buildTypes {
-        release {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            debuggable true
-            signingConfig signingConfigs.config
-        }
     }
     android {
         lintOptions {
