@@ -237,6 +237,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         mBackKeyListener = listener;
     }
 
+    /**
+     * Override {@link BaseView#showMessage(String)}
+     */
+    public void showMessage(String msg) {
+        ViewUtils.showToast(msg);
+    }
+
     //##########  Abstract methods  ###########
 
     /**

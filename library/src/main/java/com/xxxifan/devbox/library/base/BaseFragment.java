@@ -20,6 +20,7 @@ import com.trello.rxlifecycle.RxLifecycle;
 import com.xxxifan.devbox.library.event.BaseEvent;
 import com.xxxifan.devbox.library.util.Fragments;
 import com.xxxifan.devbox.library.util.IOUtils;
+import com.xxxifan.devbox.library.util.ViewUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -200,6 +201,13 @@ public abstract class BaseFragment extends Fragment {
 
     protected <T> Observable.Transformer<T, T> computation() {
         return IOUtils.computation();
+    }
+
+    /**
+     * Override {@link BaseView#showMessage(String)}
+     */
+    public void showMessage(String msg) {
+        ViewUtils.showToast(msg);
     }
 
     //##########  Abstract methods  ###########
