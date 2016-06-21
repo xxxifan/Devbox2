@@ -134,20 +134,9 @@ public interface MvpContract {
 }
 ```
 
-And there's a special class named UiController which contains view reference and lifecycle controlled by BaseActivity, for leaner view control.
-If you want to use it, you need to register it at where it begins.
+~~And there's a special class named UiController which contains view reference and lifecycle controlled by BaseActivity, for leaner view control.If you want to use it, you need to register it at where it begins.~~
 
-```java
-public class MainActivity extends ToolbarActivity {
-
-    @Override
-    protected void onSetupActivity(Bundle savedInstanceState) {
-        registerUiControllers(new BottomBarControler(view));
-    }
-
-    // ......
-}
-```
+```UiController now is deprecated from this library```
 
 that's all you need to do, the rest have already handled by BaseActivity.
 
@@ -195,11 +184,11 @@ AppPref.getPrefs(prefName);
     /*
      * Rx
      */
-    compile 'io.reactivex:rxjava:1.1.5'
-    compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.trello:rxlifecycle:0.6.1'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
-    compile "com.github.VictorAlbertos:RxActivityResult:0.3.3"
+    compile "com.github.VictorAlbertos:RxActivityResult:0.3.4"
 
     /*
      * Dagger
@@ -209,10 +198,10 @@ AppPref.getPrefs(prefName);
     /*
      * Tools
      */
-    compile 'com.jakewharton:butterknife:8.0.1'
+    compile 'com.jakewharton:butterknife:8.1.0'
     compile 'com.afollestad.material-dialogs:core:0.8.5.9'
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.google.code.gson:gson:2.7'
     compile 'com.github.tianzhijiexian:CommonAdapter:1.1.9'
 
     provided 'com.android.support:multidex:1.0.1'
@@ -228,7 +217,7 @@ AppPref.getPrefs(prefName);
      *
      * apply plugin: 'com.neenbedankt.android-apt'
      * apt 'com.google.dagger:dagger-compiler:2.2'
-     * apt 'com.jakewharton:butterknife-compiler:8.0.1'
+     * apt 'com.jakewharton:butterknife-compiler:8.1.0'
      */
 
 ## License
