@@ -1,4 +1,4 @@
-## Devbox2 ![travis](https://travis-ci.org/xxxifan/Devbox2.svg?branch=master)
+## Devbox2 [![travis](https://travis-ci.org/xxxifan/Devbox2.svg?branch=master)](https://travis-ci.org/xxxifan/Devbox2)
 Yet another Android development toolbox.
 It's a new generation of [DevBox](https://github.com/xxxifan/DevBox)
 
