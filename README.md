@@ -1,5 +1,5 @@
 ## Devbox2 ![travis](https://travis-ci.org/xxxifan/Devbox2.svg?branch=master)
-Yet another personal Android development tool Set.
+Yet another Android development toolbox.
 It's a new generation of [DevBox](https://github.com/xxxifan/DevBox)
 
 ## Usage
