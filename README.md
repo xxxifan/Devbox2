@@ -158,6 +158,32 @@ Also, you can get SharedPreference instance by specify preference name
 AppPref.getPrefs(prefName);
 ```
 
+### Once
+A simple helper for check a block is called once in current state. It uses SharedPreference for key storage.
+```
+// check a key has been used.
+boolean isFirstBoot = Once.check("isFirstBoot");
+if (isFirstBoot) {
+    init();
+}
+```
+
+if you like non-blocking style, then consider using callback style
+```
+Once.check("isFirstBoot", new OnceCallback() {
+    @Override public void onOnce() {
+        init();
+    }
+});
+
+```
+
+you can also reset key state by using reset()
+```
+Once.reset("isFirstBoot");
+```
+
+
 ## TODO
 - [x] Network part (Including image load, file download)
 - [ ] Fragment loader
