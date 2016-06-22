@@ -134,11 +134,10 @@ public interface MvpContract {
 }
 ```
 
-~~And there's a special class named UiController which contains view reference and lifecycle controlled by BaseActivity, for leaner view control.If you want to use it, you need to register it at where it begins.~~
+~~And there's a special class named UiController which contains view reference and lifecycle controlled by BaseActivity, for leaner view control.If you want to use it, you need to register it at where it begins.that's all you need to do, the rest have already handled by BaseActivity.~~
 
 ```UiController now is deprecated from this library```
 
-that's all you need to do, the rest have already handled by BaseActivity.
 
 ### AppPref
 A wrapper for SharedPreference, you can simply use putXxx/getXxx to save variables, and also get chained editor by edit() just like what SharedPreference do.
