@@ -32,7 +32,7 @@ public abstract class RecyclerFragment extends BaseFragment {
         if (view != null) {
             mRecyclerView = ButterKnife.findById(view, R.id.base_recycler_view);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            mAdapter = setAdapter();
+            mAdapter = setupAdapter();
             mRecyclerView.setAdapter(mAdapter);
         }
         return view;
@@ -52,5 +52,5 @@ public abstract class RecyclerFragment extends BaseFragment {
         return mAdapter;
     }
 
-    protected abstract RecyclerView.Adapter setAdapter();
+    protected abstract RecyclerView.Adapter setupAdapter();
 }
