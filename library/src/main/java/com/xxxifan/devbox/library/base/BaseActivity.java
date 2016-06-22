@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
@@ -29,7 +28,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 
 import rx.Observable;
-import rx.functions.Action1;
 import rx.subjects.BehaviorSubject;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
@@ -49,7 +47,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private BackKeyListener mBackKeyListener;
 
-    private Observable<MaterialDialog> mDialogObservable;
     private boolean mConfigured;
     private int mRootLayoutId;
 
@@ -104,14 +101,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         if (mBackKeyListener != null) {
             mBackKeyListener = null;
-        }
-        if (mDialogObservable != null) {
-            mDialogObservable.subscribe(new Action1<MaterialDialog>() {
-                @Override public void call(MaterialDialog dialog) {
-                    ViewUtils.dismissDialog(dialog);
-                    mDialogObservable = null;
-                }
-            });
         }
     }
 
@@ -198,11 +187,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (eventBus.isRegistered(object)) {
             eventBus.unregister(object);
         }
-    }
-
-    protected void registerDialogObservable(final MaterialDialog dialog) {
-        BehaviorSubject<MaterialDialog> dialogBehaviorSubject = BehaviorSubject.create(dialog);
-        mDialogObservable = Observable.just(dialog);
     }
 
     protected void postEvent(BaseEvent event, Class target) {
