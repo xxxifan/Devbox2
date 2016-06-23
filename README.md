@@ -81,12 +81,12 @@ And other Activities in packages ```com.xxxifan.devbox.library.base.extended```,
 almost same functions with BaseActivity, it will be come more extends with fragment.
 it also handled fragment visible state while restoreSavedInstance, so you just need to init fragments when savedInstance is null
 ```
-    protected void onSetupActivity(Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            Fragments.checkout(this, new TestFragment1())
-                    .into(FRAGMENT_CONTAINER);
-        }
+protected void onSetupActivity(Bundle savedInstanceState) {
+    if (savedInstanceState == null) {
+        Fragments.checkout(this, new TestFragment1())
+                .into(FRAGMENT_CONTAINER);
     }
+}
 ```
 
 ### Fragments
@@ -120,6 +120,7 @@ Fragments.add(this, new Fragment1(), new Fragment2(), new Fragment3())
 
 ### DataLoader
 DataLoader help you to control data load requests. See demo [ReposFragment](https://github.com/xxxifan/Devbox2/blob/master/app/src/main/java/com/xxxifan/devbox/demo/ui/view/main/ReposFragment.java)
+
 Available methods below:
 ```
 // init to use dataLoader, it will return its instance.
