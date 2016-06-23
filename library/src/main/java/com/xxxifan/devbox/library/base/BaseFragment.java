@@ -20,6 +20,7 @@ import com.trello.rxlifecycle.RxLifecycle;
 import com.xxxifan.devbox.library.event.BaseEvent;
 import com.xxxifan.devbox.library.util.Fragments;
 import com.xxxifan.devbox.library.util.IOUtils;
+import com.xxxifan.devbox.library.util.Tests;
 import com.xxxifan.devbox.library.util.ViewUtils;
 import com.xxxifan.devbox.library.util.logger.Logger;
 
@@ -36,6 +37,7 @@ public abstract class BaseFragment extends Fragment {
     private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
 
     private DataLoader mDataLoader;
+    private boolean mRegisterEventBus;
 
     @Override
     public void onAttach(android.app.Activity activity) {
@@ -80,6 +82,16 @@ public abstract class BaseFragment extends Fragment {
     public void onResume() {
         super.onResume();
         lifecycleSubject.onNext(FragmentEvent.RESUME);
+
+        // register eventBus
+        if (mRegisterEventBus) {
+            EventBus eventBus = EventBus.getDefault();
+            if (!eventBus.isRegistered(this)) {
+                eventBus.register(this);
+            }
+        }
+
+        // handle data loader
         if (mDataLoader != null) {
             Logger.d("mDataLoader startLoad called on resume");
             mDataLoader.startLoad();
@@ -102,6 +114,13 @@ public abstract class BaseFragment extends Fragment {
     public void onPause() {
         lifecycleSubject.onNext(FragmentEvent.PAUSE);
         super.onPause();
+
+        if (mRegisterEventBus) {
+            EventBus eventBus = EventBus.getDefault();
+            if (eventBus.isRegistered(this)) {
+                eventBus.unregister(this);
+            }
+        }
     }
 
     @Override
@@ -174,18 +193,12 @@ public abstract class BaseFragment extends Fragment {
         return ContextCompat.getDrawable(getContext(), resId);
     }
 
-    protected void registerEventBus(Object object) {
-        EventBus eventBus = EventBus.getDefault();
-        if (!eventBus.isRegistered(object)) {
-            eventBus.register(object);
-        }
-    }
-
-    protected void unregisterEventBus(Object object) {
-        EventBus eventBus = EventBus.getDefault();
-        if (eventBus.isRegistered(object)) {
-            eventBus.unregister(object);
-        }
+    /**
+     * register EventBus on resume/pause by default, must be called before onResume/onPause
+     */
+    protected void registerEventBus() {
+        Tests.checkBoolean(!isResumed());
+        mRegisterEventBus = true;
     }
 
     protected DataLoader registerDataLoader(boolean useNetwork, DataLoader.LoadCallback callback) {

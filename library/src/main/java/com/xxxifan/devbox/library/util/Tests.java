@@ -11,10 +11,10 @@ public class Tests {
         return reference;
     }
 
-    public static <T> T checkNull(T reference, String msg) {
-        if (reference == null) {
-            throw new NullPointerException(msg);
+    public static boolean checkBoolean(boolean aBoolean) {
+        if (!aBoolean) {
+            throw new IllegalArgumentException();
         }
-        return reference;
+        return aBoolean;
     }
 }

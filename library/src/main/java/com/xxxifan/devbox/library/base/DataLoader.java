@@ -1,6 +1,15 @@
 package com.xxxifan.devbox.library.base;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
+import com.xxxifan.devbox.library.Devbox;
+import com.xxxifan.devbox.library.R;
+import com.xxxifan.devbox.library.event.NetworkEvent;
 import com.xxxifan.devbox.library.util.logger.Logger;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -33,6 +42,14 @@ public class DataLoader {
         return dataLoadManager;
     }
 
+    private static boolean hasNetwork() {
+        ConnectivityManager mConnectivityManager = (ConnectivityManager) Devbox
+                .getAppDelegate()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+        return mNetworkInfo != null && mNetworkInfo.isAvailable();
+    }
+
     private void setCallback(LoadCallback callback) {
         if (this.callback != null && callback != null) {
             Logger.e("You have set a callback already, did you really want to set it again?");
@@ -47,13 +64,20 @@ public class DataLoader {
         } else {
             isLoading.set(true);
         }
-
         if (callback == null) {
             Logger.d("load callback is null");
             isLoading.set(false); // reset state
             return;
         }
+        if (useNetwork && !hasNetwork()) {
+            NetworkEvent event = new NetworkEvent(
+                    Devbox.getAppDelegate().getString(R.string.msg_network_unavailable));
+            EventBus.getDefault().post(event);
+            isLoading.set(false); // reset state
+            return;
+        }
 
+        // ready to start
         if (callback instanceof ListLoadCallback) {
             Logger.d("onRefreshStart");
             ((ListLoadCallback) callback).onRefreshStart();
@@ -79,9 +103,15 @@ public class DataLoader {
         } else {
             isLoading.set(true);
         }
-
         if (callback == null) {
             Logger.d("load callback is null");
+            isLoading.set(false); // reset state
+            return;
+        }
+        if (useNetwork && !hasNetwork()) {
+            NetworkEvent event = new NetworkEvent(
+                    Devbox.getAppDelegate().getString(R.string.msg_network_unavailable));
+            EventBus.getDefault().post(event);
             isLoading.set(false); // reset state
             return;
         }
