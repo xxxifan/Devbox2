@@ -212,6 +212,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @param useNetwork if is network data loader, it will not request if no network there.
      */
+    @BeforeConfigActivity
     protected DataLoader registerDataLoader(boolean useNetwork, DataLoader.LoadCallback callback) {
         mDataLoader = DataLoader.init(useNetwork, callback);
         return mDataLoader;
