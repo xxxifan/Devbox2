@@ -27,9 +27,7 @@ public class DataLoader {
 
     private LoadCallback callback;
 
-    /* indicate whether data is loaded */
     private boolean isDataLoaded;
-    /* indicate whether data is end */
     private boolean isDataEnd;
     private boolean isLazyLoadEnabled;
     private boolean useNetwork;
@@ -136,6 +134,7 @@ public class DataLoader {
         return isDataLoaded;
     }
 
+    // mark data requested, then it won't call startLoad() again in onResume().
     public void setDataLoaded(boolean loaded) {
         isDataLoaded = loaded;
     }
@@ -191,12 +190,12 @@ public class DataLoader {
     }
 
     public void onSavedState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(PAGE_STATE, mPage);
         savedInstanceState.putBoolean(LOADING_STATE, isLoading());
         savedInstanceState.putBoolean(DATA_LOAD_STATE, isDataLoaded);
         savedInstanceState.putBoolean(DATA_END_STATE, isDataEnd);
         savedInstanceState.putBoolean(LAZY_LOAD_STATE, isLazyLoadEnabled);
         savedInstanceState.putBoolean(NETWORK_STATE, useNetwork);
-        savedInstanceState.putInt(PAGE_STATE, mPage);
     }
 
     public void onRestoreState(Bundle savedInstanceState) {

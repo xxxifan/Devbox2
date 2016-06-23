@@ -116,8 +116,68 @@ Fragments.checkout(this, new TestFragment(), "test")
 // add multi fragments
 Fragments.add(this, new Fragment1(), new Fragment2(), new Fragment3())
         .into(R.id.container1, R.id.container2, R.id.container3);
-
 ```
+
+### DataLoader
+DataLoader help you to control data load requests. See demo [ReposFragment](https://github.com/xxxifan/Devbox2/blob/master/app/src/main/java/com/xxxifan/devbox/demo/ui/view/main/ReposFragment.java)
+Available methods below:
+```
+// init to use dataLoader, it will return its instance.
+DataLoader.init(callback, useNetwork);
+
+// only work with BaseFragment
+dataLoader.enableLazyLoad();
+// mark data requested, then it won't call startLoad() again in onResume().
+dataLoader.setDataLoaded(isLoaded);
+// get dataLoaded flag
+dataLoader.isDataLoaded();
+
+// get a internal controlled page number 
+dataLoader.getPage();
+// reset page when refresh.
+dataLoader.resetPage();
+// mark data is on the bottom, no more refresh should be requested.
+dataLoader.setDataEnd(isEnd);
+// get isDataEnd flag
+dataLoader.isDataEnd();
+
+// page loaded, will set page++, isLoading to false, isDataLoaded to true
+dataLoader.notifyPageLoaded();
+
+// this flag automatically set by startLoad()/startRefresh(), and will be set to false when notifyPageLoaded() called.
+dataLoader.isLoading();
+```
+and some other methods is used by host activity/fragment, see BaseActivity/BaseFragment for more detail. 
+
+Usage:
+First, make your Activity/Fragment implements LoadCallback, if it's a list loader, use ListLoadCallback for refresh ability, it will make your class to override 
+```
+@Override public boolean onLoadStart() {}
+```
+with ListLoadCallback it also override
+```
+@Override public void onRefreshStart() {}
+```
+and then, register dataLoader to enable it.
+```Note the functions below is available only in BaseFragment/BaseActivity and its children, you can implement it if not using it```
+```
+registerDataLoader(useNetwork, callback);
+```
+and get instance by
+```
+getDataLoader();
+```
+
+and then, onLoadStart() will be called automatically in onResume(). In additional if you enabled lazyLoad in fragment, it will be called in onVisible() instead of onResume(), the best practice is using fragments with ViewPager, it will call setUserVisibleHint, which is onVisible() comes from.
+
+Base already handle savedInstance for dataLoader.
+
+In [RecyclerFragment](https://github.com/xxxifan/Devbox2/blob/master/library/src/main/java/com/xxxifan/devbox/library/base/extended/RecyclerFragment.java) it supply some methods to connect wit DataLoader
+```
+enableScrollToLoad(lastItemNum);
+notifyDataLoaded();
+```
+if scrollToLoad enabled, it will add a listener to RecyclerView and trigger dataLoader.startLoad() when scroll to bottom;
 
 ### MVP Model
 I have wrote two interface for mvp model, all you need to do is create a contract and have two interface inside extends from BasePresenter and BaseView.
@@ -185,7 +245,7 @@ Once.reset("isFirstBoot");
 
 ## TODO
 - [x] Network part (Including image load, file download)
-- [ ] Fragment loader
+- [x] DataLoader
 - [ ] More extends for fragments (like recyclerView support)
 - [ ] Multidex
 - [ ] More to come
