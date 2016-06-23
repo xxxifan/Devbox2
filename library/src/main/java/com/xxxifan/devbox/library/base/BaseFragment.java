@@ -70,6 +70,10 @@ public abstract class BaseFragment extends Fragment {
         lifecycleSubject.onNext(FragmentEvent.CREATE_VIEW);
 
         onSetupFragment(view, savedInstanceState);
+
+        if (getDataLoader() != null) {
+            getDataLoader().onRestoreState(savedInstanceState);
+        }
     }
 
     @Override
@@ -155,6 +159,9 @@ public abstract class BaseFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(Fragments.KEY_RESTORE, isVisible());
+        if (getDataLoader() != null) {
+            getDataLoader().onSavedState(outState);
+        }
     }
 
     private void restoreFragmentState(Bundle savedInstanceState) {
@@ -203,6 +210,7 @@ public abstract class BaseFragment extends Fragment {
 
     /**
      * use a data loader to control data load state
+     *
      * @param useNetwork if is network data loader, it will not request if no network there.
      */
     protected DataLoader registerDataLoader(boolean useNetwork, DataLoader.LoadCallback callback) {

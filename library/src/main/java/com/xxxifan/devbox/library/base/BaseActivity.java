@@ -3,6 +3,7 @@ package com.xxxifan.devbox.library.base;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -62,6 +63,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         setActivityView(getLayoutId());
         onSetupActivity(savedInstanceState);
+
+        if (getDataLoader() != null) {
+            getDataLoader().onRestoreState(savedInstanceState);
+        }
     }
 
     @Override
@@ -125,6 +130,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         if (mBackKeyListener != null) {
             mBackKeyListener = null;
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        if (getDataLoader() != null) {
+            getDataLoader().onSavedState(outState);
         }
     }
 

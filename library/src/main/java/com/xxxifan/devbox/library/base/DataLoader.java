@@ -3,6 +3,7 @@ package com.xxxifan.devbox.library.base;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 
 import com.xxxifan.devbox.library.Devbox;
 import com.xxxifan.devbox.library.R;
@@ -17,6 +18,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Created by xifan on 6/22/16.
  */
 public class DataLoader {
+    private static final String PAGE_STATE = "page";
+    private static final String LOADING_STATE = "isLoading";
+    private static final String DATA_LOAD_STATE = "dataLoaded";
+    private static final String DATA_END_STATE = "dataEnd";
+    private static final String LAZY_LOAD_STATE = "lazyLoad";
+    private static final String NETWORK_STATE = "useNetwork";
 
     private LoadCallback callback;
 
@@ -165,7 +172,7 @@ public class DataLoader {
 
     public void notifyPageLoaded() {
         if (callback != null && callback instanceof ListLoadCallback) {
-            mPage += 1;
+            mPage++;
         }
         isLoading.set(false);
         setDataLoaded(true);
@@ -175,17 +182,30 @@ public class DataLoader {
         return mPage;
     }
 
-    public void disableDataLoad() {
-        setDataLoaded(true);
-        setDataEnd(true);
-    }
-
     public void resetPage() {
         mPage = 1;
     }
 
     public void destroy() {
         callback = null;
+    }
+
+    public void onSavedState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean(LOADING_STATE, isLoading());
+        savedInstanceState.putBoolean(DATA_LOAD_STATE, isDataLoaded);
+        savedInstanceState.putBoolean(DATA_END_STATE, isDataEnd);
+        savedInstanceState.putBoolean(LAZY_LOAD_STATE, isLazyLoadEnabled);
+        savedInstanceState.putBoolean(NETWORK_STATE, useNetwork);
+        savedInstanceState.putInt(PAGE_STATE, mPage);
+    }
+
+    public void onRestoreState(Bundle savedInstanceState) {
+        mPage = savedInstanceState.getInt(PAGE_STATE);
+        isLoading.set(savedInstanceState.getBoolean(LOADING_STATE));
+        savedInstanceState.putBoolean(DATA_LOAD_STATE, isDataLoaded);
+        savedInstanceState.putBoolean(DATA_END_STATE, isDataEnd);
+        savedInstanceState.putBoolean(LAZY_LOAD_STATE, isLazyLoadEnabled);
+        savedInstanceState.putBoolean(NETWORK_STATE, useNetwork);
     }
 
     public interface LoadCallback {
