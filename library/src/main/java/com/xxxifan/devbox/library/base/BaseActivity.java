@@ -21,6 +21,7 @@ import com.xxxifan.devbox.library.R;
 import com.xxxifan.devbox.library.event.BaseEvent;
 import com.xxxifan.devbox.library.util.IOUtils;
 import com.xxxifan.devbox.library.util.ViewUtils;
+import com.xxxifan.devbox.library.util.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -46,9 +47,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
     private BackKeyListener mBackKeyListener;
+    private DataLoader mDataLoader;
 
     private boolean mConfigured;
     private int mRootLayoutId;
+    private boolean mRegisterEventBus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,12 +84,33 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         lifecycleSubject.onNext(ActivityEvent.RESUME);
+
+        // register eventBus
+        if (mRegisterEventBus) {
+            EventBus eventBus = EventBus.getDefault();
+            if (!eventBus.isRegistered(this)) {
+                eventBus.register(this);
+            }
+        }
+
+        // handle data loader
+        if (mDataLoader != null) {
+            Logger.d("mDataLoader startLoad called on resume");
+            mDataLoader.startLoad();
+        }
     }
 
     @Override
     protected void onPause() {
         lifecycleSubject.onNext(ActivityEvent.PAUSE);
         super.onPause();
+
+        if (mRegisterEventBus) {
+            EventBus eventBus = EventBus.getDefault();
+            if (eventBus.isRegistered(this)) {
+                eventBus.unregister(this);
+            }
+        }
     }
 
     @Override
@@ -175,18 +199,26 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void registerEventBus(Object object) {
-        EventBus eventBus = EventBus.getDefault();
-        if (!eventBus.isRegistered(object)) {
-            eventBus.register(object);
-        }
+    /**
+     * register EventBus on resume/pause by default, must be called onConfigActivity
+     */
+    @BeforeConfigActivity
+    protected void registerEventBus() {
+        mRegisterEventBus = true;
     }
 
-    protected void unregisterEventBus(Object object) {
-        EventBus eventBus = EventBus.getDefault();
-        if (eventBus.isRegistered(object)) {
-            eventBus.unregister(object);
-        }
+    /**
+     * use a data loader to control data load state
+     *
+     * @param useNetwork if is network data loader, it will not request if no network there.
+     */
+    protected DataLoader registerDataLoader(boolean useNetwork, DataLoader.LoadCallback callback) {
+        mDataLoader = DataLoader.init(useNetwork, callback);
+        return mDataLoader;
+    }
+
+    protected DataLoader getDataLoader() {
+        return mDataLoader;
     }
 
     protected void postEvent(BaseEvent event, Class target) {

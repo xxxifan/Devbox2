@@ -201,6 +201,10 @@ public abstract class BaseFragment extends Fragment {
         mRegisterEventBus = true;
     }
 
+    /**
+     * use a data loader to control data load state
+     * @param useNetwork if is network data loader, it will not request if no network there.
+     */
     protected DataLoader registerDataLoader(boolean useNetwork, DataLoader.LoadCallback callback) {
         mDataLoader = DataLoader.init(useNetwork, callback);
         return mDataLoader;
