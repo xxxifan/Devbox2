@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.xxxifan.devbox.demo.R;
-import com.xxxifan.devbox.library.base.extended.ImageTranslucentActivity;
+import com.xxxifan.devbox.library.base.extended.TranslucentActivity;
 import com.xxxifan.devbox.library.util.Fragments;
 import com.xxxifan.devbox.library.util.ViewUtils;
 
@@ -15,7 +15,7 @@ import butterknife.OnClick;
 import rx.Observable;
 import rx.functions.Action1;
 
-public class MainActivity extends ImageTranslucentActivity {
+public class MainActivity extends TranslucentActivity {
 
     public static final String TAG = "MainActivity";
 
@@ -23,7 +23,6 @@ public class MainActivity extends ImageTranslucentActivity {
     protected void onConfigActivity() {
         super.onConfigActivity();
         transparentStatusBar();
-        ViewUtils.setStatusBarDarkMode(this, true);
     }
 
     @Override
@@ -56,12 +55,6 @@ public class MainActivity extends ImageTranslucentActivity {
                 return false;
             }
         });
-    }
-
-    @Override
-    protected void setupToolbar(View toolbarView) {
-        super.setupToolbar(toolbarView);
-        transparentToolbar();
     }
 
     @OnClick(R.id.main_btn_1)

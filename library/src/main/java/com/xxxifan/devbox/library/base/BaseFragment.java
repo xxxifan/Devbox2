@@ -21,6 +21,7 @@ import com.xxxifan.devbox.library.event.BaseEvent;
 import com.xxxifan.devbox.library.util.Fragments;
 import com.xxxifan.devbox.library.util.IOUtils;
 import com.xxxifan.devbox.library.util.ViewUtils;
+import com.xxxifan.devbox.library.util.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -33,6 +34,8 @@ import rx.subjects.BehaviorSubject;
 public abstract class BaseFragment extends Fragment {
 
     private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
+
+    private DataLoader mDataLoader;
 
     @Override
     public void onAttach(android.app.Activity activity) {
@@ -56,15 +59,15 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(getLayoutId(), container, false);
-        onSetupFragment(view, savedInstanceState);
-        return view;
+        return inflater.inflate(getLayoutId(), container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         lifecycleSubject.onNext(FragmentEvent.CREATE_VIEW);
+
+        onSetupFragment(view, savedInstanceState);
     }
 
     @Override
@@ -77,6 +80,10 @@ public abstract class BaseFragment extends Fragment {
     public void onResume() {
         super.onResume();
         lifecycleSubject.onNext(FragmentEvent.RESUME);
+        if (mDataLoader != null) {
+            Logger.d("mDataLoader startLoad called on resume");
+            mDataLoader.startLoad();
+        }
     }
 
     @Override
@@ -84,6 +91,10 @@ public abstract class BaseFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             onVisible();
+            if (mDataLoader != null) {
+                Logger.d("mDataLoader startLazyLoad called on onVisible");
+                mDataLoader.startLazyLoad();
+            }
         }
     }
 
@@ -115,6 +126,10 @@ public abstract class BaseFragment extends Fragment {
     public void onDetach() {
         lifecycleSubject.onNext(FragmentEvent.DETACH);
         super.onDetach();
+        if (mDataLoader != null) {
+            mDataLoader.destroy();
+            mDataLoader = null;
+        }
     }
 
     @Override
@@ -147,9 +162,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * manual control method for sometimes lifecycle not working for fragment.
      */
-    protected void onVisible() {
-
-    }
+    protected void onVisible() {}
 
     //##########  Protected helper methods ##########
     @ColorInt
@@ -173,6 +186,15 @@ public abstract class BaseFragment extends Fragment {
         if (eventBus.isRegistered(object)) {
             eventBus.unregister(object);
         }
+    }
+
+    protected DataLoader registerDataLoader(boolean useNetwork, DataLoader.LoadCallback callback) {
+        mDataLoader = DataLoader.init(useNetwork, callback);
+        return mDataLoader;
+    }
+
+    protected DataLoader getDataLoader() {
+        return mDataLoader;
     }
 
     protected void postEvent(BaseEvent event, Class target) {

@@ -12,9 +12,11 @@ import com.xxxifan.devbox.demo.R;
 import com.xxxifan.devbox.demo.data.model.Repo;
 import com.xxxifan.devbox.demo.repository.GithubService;
 import com.xxxifan.devbox.library.base.BaseAdapterItem;
+import com.xxxifan.devbox.library.base.DataLoader;
 import com.xxxifan.devbox.library.base.extended.RecyclerFragment;
 import com.xxxifan.devbox.library.util.ViewUtils;
 import com.xxxifan.devbox.library.util.http.Http;
+import com.xxxifan.devbox.library.util.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,13 +32,14 @@ import retrofit2.Response;
 /**
  * Created by xifan on 6/17/16.
  */
-public class ReposFragment extends RecyclerFragment {
+public class ReposFragment extends RecyclerFragment implements DataLoader.ListLoadCallback {
 
-    private List<Repo> mRepoList;
+    private List<Repo> mRepoList = new ArrayList<>();
 
     @Override
     protected void onSetupFragment(View view, Bundle savedInstanceState) {
-        mRepoList = new ArrayList<>();
+        registerDataLoader(true, this);
+        enableScrollToLoad(2);
     }
 
     @Override
@@ -80,9 +83,7 @@ public class ReposFragment extends RecyclerFragment {
         };
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    @Override public boolean onLoadStart() {
         final MaterialDialog dialog = ViewUtils.getLoadingDialog(getContext());
         dialog.show();
         Http.createRetroService(GithubService.class)
@@ -92,7 +93,8 @@ public class ReposFragment extends RecyclerFragment {
                     public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
                         mRepoList.clear();
                         mRepoList.addAll(response.body());
-                        getAdapter().notifyDataSetChanged();
+                        notifyDataLoaded();
+                        getDataLoader().setDataEnd(true); // mark data load end
                         ViewUtils.dismissDialog(dialog);
                     }
 
@@ -102,10 +104,15 @@ public class ReposFragment extends RecyclerFragment {
                         ViewUtils.dismissDialog(dialog);
                     }
                 });
+        return false;
     }
 
     @Override
     public String getSimpleName() {
         return "ReposFragment";
+    }
+
+    @Override public void onRefreshStart() {
+        Logger.d("onRefreshStart called");
     }
 }
