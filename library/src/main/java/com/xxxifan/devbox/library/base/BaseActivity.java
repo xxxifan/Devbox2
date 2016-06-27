@@ -64,7 +64,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setActivityView(getLayoutId());
         onSetupActivity(savedInstanceState);
 
-        if (getDataLoader() != null) {
+        if (getDataLoader() != null && savedInstanceState != null) {
             getDataLoader().onRestoreState(savedInstanceState);
         }
     }

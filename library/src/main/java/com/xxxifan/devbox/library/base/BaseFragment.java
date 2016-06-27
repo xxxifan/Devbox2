@@ -71,7 +71,7 @@ public abstract class BaseFragment extends Fragment {
 
         onSetupFragment(view, savedInstanceState);
 
-        if (getDataLoader() != null) {
+        if (getDataLoader() != null && savedInstanceState != null) {
             getDataLoader().onRestoreState(savedInstanceState);
         }
     }
