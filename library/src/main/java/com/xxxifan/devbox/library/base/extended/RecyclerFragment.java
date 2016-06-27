@@ -12,6 +12,7 @@ import com.xxxifan.devbox.library.R;
 import com.xxxifan.devbox.library.base.BaseFragment;
 
 import butterknife.ButterKnife;
+import kale.adapter.RcvAdapterWrapper;
 
 /**
  * Created by xifan on 6/14/16.
@@ -19,8 +20,7 @@ import butterknife.ButterKnife;
 public abstract class RecyclerFragment extends BaseFragment {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private RcvAdapterWrapper mRecyclerWrapper;
 
     @Override protected int getLayoutId() {
         return R.layout._internal_fragment_recycler;
@@ -31,10 +31,11 @@ public abstract class RecyclerFragment extends BaseFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         if (view != null) {
             mRecyclerView = ButterKnife.findById(view, R.id.base_recycler_view);
-            mLayoutManager = new LinearLayoutManager(getContext());
-            mRecyclerView.setLayoutManager(mLayoutManager);
-            mAdapter = setupAdapter();
-            mRecyclerView.setAdapter(mAdapter);
+
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+            mRecyclerWrapper = new RcvAdapterWrapper(setupAdapter(), layoutManager);
+            mRecyclerView.setLayoutManager(mRecyclerWrapper.getLayoutManager());
+            mRecyclerView.setAdapter(mRecyclerWrapper);
         }
         return view;
     }
@@ -52,7 +53,7 @@ public abstract class RecyclerFragment extends BaseFragment {
         if (mRecyclerView != null) {
             mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    LinearLayoutManager layoutManager = (LinearLayoutManager) mLayoutManager;
+                    LinearLayoutManager layoutManager = (LinearLayoutManager) mRecyclerWrapper.getLayoutManager();
                     final int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
                     final int totalItemCount = layoutManager.getItemCount();
 
@@ -65,7 +66,9 @@ public abstract class RecyclerFragment extends BaseFragment {
     }
 
     protected void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
-        mLayoutManager = layoutManager;
+        if (mRecyclerWrapper != null) {
+            mRecyclerWrapper.setLayoutManager(layoutManager);
+        }
         if (mRecyclerView != null) {
             mRecyclerView.setLayoutManager(layoutManager);
         }
@@ -76,12 +79,19 @@ public abstract class RecyclerFragment extends BaseFragment {
     }
 
     protected RecyclerView.Adapter getAdapter() {
-        return mAdapter;
+        return mRecyclerWrapper.getWrappedAdapter();
+    }
+
+    /**
+     * @return get RecyclerWrapper
+     */
+    protected RecyclerView.Adapter getAdapterWrapper() {
+        return mRecyclerWrapper;
     }
 
     protected void notifyDataLoaded() {
-        if (getAdapter() != null) {
-            getAdapter().notifyDataSetChanged();
+        if (getAdapterWrapper() != null) {
+            getAdapterWrapper().notifyDataSetChanged();
         }
         if (getDataLoader() != null) {
             getDataLoader().notifyPageLoaded();
