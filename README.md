@@ -243,6 +243,12 @@ you can also reset key state by using reset()
 Once.reset("isFirstBoot");
 ```
 
+## Required Permissions
+You may need basic network permissions
+```
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+```
 
 ## TODO
 - [x] Network part (Including image load, file download)
