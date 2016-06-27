@@ -116,18 +116,19 @@ public class DataLoader {
             isLoading.set(false); // reset state
             return;
         }
-        if (useNetwork && !hasNetwork()) {
-            NetworkEvent event = new NetworkEvent(
-                    Devbox.getAppDelegate().getString(R.string.msg_network_unavailable));
-            EventBus.getDefault().post(event);
-            isLoading.set(false); // reset state
-            return;
-        }
 
         boolean lazyLoad = isLazyLoadEnabled() && lazyMode;
         boolean normalLoad = !isLazyLoadEnabled() && !lazyMode;
 
         if (!isDataLoaded() && !isDataEnd() && (lazyLoad || normalLoad)) {
+            if (useNetwork && !hasNetwork()) {
+                NetworkEvent event = new NetworkEvent(
+                        Devbox.getAppDelegate().getString(R.string.msg_network_unavailable));
+                EventBus.getDefault().post(event);
+                isLoading.set(false); // reset state
+                return;
+            }
+
             Logger.d("onLoadStart");
             boolean isDataLoaded = callback.onLoadStart();
             setDataLoaded(isDataLoaded);
