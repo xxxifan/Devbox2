@@ -21,6 +21,7 @@ public abstract class RecyclerFragment extends BaseFragment {
 
     private RecyclerView mRecyclerView;
     private RcvAdapterWrapper mRecyclerWrapper;
+    private View mEmptyView;
 
     @Override protected int getLayoutId() {
         return R.layout._internal_fragment_recycler;
@@ -40,7 +41,27 @@ public abstract class RecyclerFragment extends BaseFragment {
         return view;
     }
 
-    protected void setItemDecoration(RecyclerView.ItemDecoration decoration) {
+    public void setFooterView(View view) {
+        if (mRecyclerWrapper != null) {
+            mRecyclerWrapper.setFooterView(view);
+        }
+    }
+
+    public void setHeaderView(View view) {
+        if (mRecyclerWrapper != null) {
+            mRecyclerWrapper.setHeaderView(view);
+        }
+    }
+
+    public void setEmptyView(View view) {
+        mEmptyView = view;
+        mEmptyView.setVisibility(View.GONE);
+        if (getView() != null) {
+            ((ViewGroup) getView()).addView(view);
+        }
+    }
+
+    public void setItemDecoration(RecyclerView.ItemDecoration decoration) {
         if (mRecyclerView != null) {
             mRecyclerView.addItemDecoration(decoration);
         }
@@ -49,7 +70,7 @@ public abstract class RecyclerFragment extends BaseFragment {
     /**
      * @param loadThreshold indicate start load while list have those left
      */
-    protected void enableScrollToLoad(final int loadThreshold) {
+    public void enableScrollToLoad(final int loadThreshold) {
         if (mRecyclerView != null) {
             mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -65,12 +86,31 @@ public abstract class RecyclerFragment extends BaseFragment {
         }
     }
 
-    protected void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
+    public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         if (mRecyclerWrapper != null) {
             mRecyclerWrapper.setLayoutManager(layoutManager);
         }
         if (mRecyclerView != null) {
             mRecyclerView.setLayoutManager(layoutManager);
+        }
+    }
+
+    public void notifyDataLoaded() {
+        if (getAdapterWrapper() != null) {
+            getAdapterWrapper().notifyDataSetChanged();
+        }
+        if (getDataLoader() != null) {
+            getDataLoader().notifyPageLoaded();
+        }
+
+        if (mEmptyView != null) {
+            if (getAdapter().getItemCount() == 0) {
+                getRecyclerView().setVisibility(View.GONE);
+                mEmptyView.setVisibility(View.VISIBLE);
+            } else {
+                getRecyclerView().setVisibility(View.VISIBLE);
+                mEmptyView.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -87,15 +127,6 @@ public abstract class RecyclerFragment extends BaseFragment {
      */
     protected RecyclerView.Adapter getAdapterWrapper() {
         return mRecyclerWrapper;
-    }
-
-    protected void notifyDataLoaded() {
-        if (getAdapterWrapper() != null) {
-            getAdapterWrapper().notifyDataSetChanged();
-        }
-        if (getDataLoader() != null) {
-            getDataLoader().notifyPageLoaded();
-        }
     }
 
     protected abstract RecyclerView.Adapter setupAdapter();

@@ -4,7 +4,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -14,9 +16,12 @@ import com.xxxifan.devbox.demo.repository.GithubService;
 import com.xxxifan.devbox.library.base.BaseAdapterItem;
 import com.xxxifan.devbox.library.base.DataLoader;
 import com.xxxifan.devbox.library.base.extended.RecyclerFragment;
+import com.xxxifan.devbox.library.event.NetworkEvent;
 import com.xxxifan.devbox.library.util.ViewUtils;
 import com.xxxifan.devbox.library.util.http.Http;
 import com.xxxifan.devbox.library.util.logger.Logger;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +41,21 @@ public class ReposFragment extends RecyclerFragment implements DataLoader.ListLo
 
     private List<Repo> mRepoList = new ArrayList<>();
 
+    @Subscribe
+    public void onNetworkEvent(NetworkEvent event) {
+        showMessage(event.message);
+    }
+
     @Override
     protected void onSetupFragment(View view, Bundle savedInstanceState) {
         registerDataLoader(true, this).enableLazyLoad();
+        registerEventBus();
         enableScrollToLoad(2);
+        TextView textView = new TextView(getContext());
+        textView.setGravity(Gravity.CENTER);
+        textView.setText("暂无数据");
+        textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        setEmptyView(textView);
     }
 
     @Override
