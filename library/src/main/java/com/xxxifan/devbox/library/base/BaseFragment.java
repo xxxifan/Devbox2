@@ -74,6 +74,11 @@ public abstract class BaseFragment extends Fragment {
         if (getDataLoader() != null && savedInstanceState != null) {
             getDataLoader().onRestoreState(savedInstanceState);
         }
+        view.post(new Runnable() {
+            @Override public void run() {
+                setUserVisibleHint(true);
+            }
+        });
     }
 
     @Override

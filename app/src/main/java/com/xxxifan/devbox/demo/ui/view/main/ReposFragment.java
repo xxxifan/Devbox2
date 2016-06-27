@@ -38,7 +38,7 @@ public class ReposFragment extends RecyclerFragment implements DataLoader.ListLo
 
     @Override
     protected void onSetupFragment(View view, Bundle savedInstanceState) {
-        registerDataLoader(true, this);
+        registerDataLoader(true, this).enableLazyLoad();
         enableScrollToLoad(2);
     }
 

@@ -101,12 +101,15 @@ public class DataLoader {
         onDataLoad(true);
     }
 
-    private void onDataLoad(boolean isLazyLoadMode) {
-        if (isLoading.get()) {
+    private void onDataLoad(boolean lazyMode) {
+        // reset lazy load, it will only call once
+        isLazyLoadEnabled = false;
+
+        if (!isLoading.get()) {
+            isLoading.set(true);
+        } else {
             Logger.d("load is in progress, dismiss");
             return;
-        } else {
-            isLoading.set(true);
         }
         if (callback == null) {
             Logger.d("load callback is null");
@@ -121,12 +124,16 @@ public class DataLoader {
             return;
         }
 
-        if (!isDataLoaded() && !isDataEnd()) {
-            if (isLazyLoadEnabled() && isLazyLoadMode || !isLazyLoadEnabled() && !isLazyLoadMode) {
-                Logger.d("onLoadStart");
-                boolean isDataLoaded = callback.onLoadStart();
-                setDataLoaded(isDataLoaded);
-            }
+        boolean lazyLoad = isLazyLoadEnabled() && lazyMode;
+        boolean normalLoad = !isLazyLoadEnabled() && !lazyMode;
+
+        if (!isDataLoaded() && !isDataEnd() && (lazyLoad || normalLoad)) {
+            Logger.d("onLoadStart");
+            boolean isDataLoaded = callback.onLoadStart();
+            setDataLoaded(isDataLoaded);
+        } else {
+            isLoading.set(false);
+            Logger.d("load dismiss");
         }
     }
 

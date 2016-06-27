@@ -78,8 +78,8 @@ public class Fragments {
 
     private static String getTag(Fragment fragment) {
         return Strings.isEmpty(fragment.getTag())
-                ? (fragment instanceof BaseFragment ? ((BaseFragment) fragment).getSimpleName() : fragment.getClass().getName())
-                : fragment.getTag();
+                ? (fragment instanceof BaseFragment ? ((BaseFragment) fragment).getSimpleName() : fragment
+                .getClass().getName()) : fragment.getTag();
     }
 
     public static class SingleOperator {
@@ -213,9 +213,6 @@ public class Fragments {
                 }
             }
 
-            // manually call setUserVisibleHint to notify it'll be visible soon.
-            fragment.setUserVisibleHint(true);
-
             finish();
         }
 
@@ -243,12 +240,13 @@ public class Fragments {
                 throw new IllegalArgumentException("The length of ids and fragments is not equal.");
             }
 
-            FragmentTransaction transaction = activityRef.get().getSupportFragmentManager().beginTransaction();
+            FragmentTransaction transaction = activityRef.get()
+                    .getSupportFragmentManager()
+                    .beginTransaction();
             String tag;
             for (int i = 0, s = ids.length; i < s; i++) {
                 tag = getTag(fragments[i]);
                 transaction.replace(ids[i], fragments[i], tag);
-                fragments[i].setUserVisibleHint(true);
             }
             transaction.commitAllowingStateLoss();
 
