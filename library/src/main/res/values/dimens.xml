@@ -15,5 +15,9 @@
     <dimen name="text_large">16sp</dimen>
     <dimen name="text_xlarge">18sp</dimen>
 
+    <dimen name="text_small_dp">12dp</dimen>
+    <dimen name="text_large_dp">16dp</dimen>
+    <dimen name="text_xlarge_dp">18dp</dimen>
+
     <dimen name="grid_item_padding_small">8dp</dimen>
 </resources>
