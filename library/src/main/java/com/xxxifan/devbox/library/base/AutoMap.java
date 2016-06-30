@@ -11,22 +11,22 @@ import java.util.Map;
 /**
  * Created by xifan on 15-7-26.
  */
-public class DataMap extends HashMap<String, Object> {
-    public DataMap() {
+public class AutoMap extends HashMap<String, Object> {
+    public AutoMap() {
         super();
     }
 
     /**
-     * DataMap
+     * AutoMap
      *
      * @param serializable
      */
     @SuppressWarnings("unchecked")
-    public DataMap(Map<String, Object> serializable) {
+    public AutoMap(Map<String, Object> serializable) {
         super(serializable);
     }
 
-    public DataMap(int capacity) {
+    public AutoMap(int capacity) {
         super(capacity);
     }
 
@@ -37,7 +37,7 @@ public class DataMap extends HashMap<String, Object> {
      * @param value
      * @return
      */
-    public DataMap putBoolean(String key, boolean value) {
+    public AutoMap putBoolean(String key, boolean value) {
         put(key, value);
         return this;
     }
@@ -49,7 +49,7 @@ public class DataMap extends HashMap<String, Object> {
      * @param value
      * @return
      */
-    public DataMap putInt(String key, int value) {
+    public AutoMap putInt(String key, int value) {
         put(key, value);
         return this;
     }
@@ -61,7 +61,7 @@ public class DataMap extends HashMap<String, Object> {
      * @param value
      * @return
      */
-    public DataMap putLong(String key, long value) {
+    public AutoMap putLong(String key, long value) {
         put(key, value);
         return this;
     }
@@ -73,19 +73,19 @@ public class DataMap extends HashMap<String, Object> {
      * @param value
      * @return
      */
-    public DataMap putFloat(String key, float value) {
+    public AutoMap putFloat(String key, float value) {
         put(key, value);
         return this;
     }
 
     /**
-     * DataMap
+     * AutoMap
      *
      * @param key
      * @param value
      * @return
      */
-    public DataMap putDouble(String key, double value) {
+    public AutoMap putDouble(String key, double value) {
         put(key, value);
         return this;
     }
@@ -97,7 +97,7 @@ public class DataMap extends HashMap<String, Object> {
      * @param value
      * @return
      */
-    public DataMap putString(String key, String value) {
+    public AutoMap putString(String key, String value) {
         put(key, value);
         return this;
     }
@@ -109,7 +109,7 @@ public class DataMap extends HashMap<String, Object> {
      * @param value
      * @return
      */
-    public DataMap putCharSequence(String key, CharSequence value) {
+    public AutoMap putCharSequence(String key, CharSequence value) {
         put(key, value);
         return this;
     }
@@ -121,12 +121,12 @@ public class DataMap extends HashMap<String, Object> {
      * @param value
      * @return
      */
-    public DataMap putObject(String key, Object value) {
+    public AutoMap putObject(String key, Object value) {
         put(key, value);
         return this;
     }
 
-    public DataMap putObjectList(String key, List value) {
+    public AutoMap putObjectList(String key, List value) {
         put(key, value);
         return this;
     }
@@ -349,9 +349,9 @@ public class DataMap extends HashMap<String, Object> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public List<? extends DataMap> getList(String key) {
+    public List<? extends AutoMap> getList(String key) {
         Object o = get(key);
-        return o == null ? null : (List<? extends DataMap>) o;
+        return o == null ? null : (List<? extends AutoMap>) o;
     }
 
     /**
