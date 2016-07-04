@@ -178,7 +178,7 @@ public class Fragments {
                 Fragment lastFragment = getCurrentFragment(activityRef.get(), containerId);
                 if (lastFragment != null) {
                     if (Strings.equals(lastFragment.getTag(), tag)) {
-                        Logger.d("same tag fragment found!");
+                        Logger.d("same tag fragment found! Reuse!");
                         fragment = lastFragment;
                     } else if (lastFragment.isVisible()) {
                         lastFragment.setUserVisibleHint(false);

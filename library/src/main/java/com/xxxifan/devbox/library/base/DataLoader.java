@@ -64,13 +64,13 @@ public class DataLoader {
 
     public void startRefresh() {
         if (isLoading.get()) {
-            Logger.d("load is in progress, dismiss");
+            Logger.t(toString()).d("load is in progress, dismiss");
             return;
         } else {
             isLoading.set(true);
         }
         if (callback == null) {
-            Logger.d("load callback is null");
+            Logger.t(toString()).d("load callback is null");
             isLoading.set(false); // reset state
             return;
         }
@@ -79,15 +79,14 @@ public class DataLoader {
                     Devbox.getAppDelegate().getString(R.string.msg_network_unavailable));
             EventBus.getDefault().post(event);
             isLoading.set(false); // reset state
+            Logger.t(toString()).d("network not available, dismiss");
             return;
         }
 
         // ready to start
         if (callback instanceof ListLoadCallback) {
-            Logger.d("onRefreshStart");
             ((ListLoadCallback) callback).onRefreshStart();
         } else {
-            Logger.d("callback should be ListLoadCallback, call startLoad() instead now");
             isLoading.set(false); // reset state
             startLoad();
         }
@@ -102,17 +101,14 @@ public class DataLoader {
     }
 
     private void onDataLoad(boolean lazyMode) {
-        // reset lazy load, it will only call once
-        isLazyLoadEnabled = false;
-
         if (!isLoading.get()) {
             isLoading.set(true);
         } else {
-            Logger.d("load is in progress, dismiss");
+            Logger.t(toString()).d("load is in progress, dismiss");
             return;
         }
         if (callback == null) {
-            Logger.d("load callback is null");
+            Logger.t(toString()).d("load callback is null");
             isLoading.set(false); // reset state
             return;
         }
@@ -126,15 +122,16 @@ public class DataLoader {
                         Devbox.getAppDelegate().getString(R.string.msg_network_unavailable));
                 EventBus.getDefault().post(event);
                 isLoading.set(false); // reset state
+                Logger.t(toString()).d("network not available, dismiss");
                 return;
             }
 
-            Logger.d("onLoadStart");
             boolean isDataLoaded = callback.onLoadStart();
             setDataLoaded(isDataLoaded);
+            // reset lazy load, it will only call once
+            isLazyLoadEnabled = false;
         } else {
             isLoading.set(false);
-            Logger.d("load dismiss");
         }
     }
 
@@ -166,7 +163,7 @@ public class DataLoader {
      * better be used with fragments in ViewPager
      */
     public void enableLazyLoad() {
-        isLazyLoadEnabled = true;
+        this.isLazyLoadEnabled = true;
     }
 
     public boolean isLoading() {
@@ -181,8 +178,13 @@ public class DataLoader {
         if (callback != null && callback instanceof ListLoadCallback) {
             mPage++;
         }
-        isLoading.set(false);
         setDataLoaded(true);
+        isLoading.set(false);
+    }
+
+    public void notifyPageLoadFailed() {
+        setDataLoaded(false);
+        isLoading.set(false);
     }
 
     public int getPage() {

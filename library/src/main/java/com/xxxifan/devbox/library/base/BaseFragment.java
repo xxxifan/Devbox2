@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,6 @@ import com.xxxifan.devbox.library.util.Fragments;
 import com.xxxifan.devbox.library.util.IOUtils;
 import com.xxxifan.devbox.library.util.Tests;
 import com.xxxifan.devbox.library.util.ViewUtils;
-import com.xxxifan.devbox.library.util.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -71,14 +71,20 @@ public abstract class BaseFragment extends Fragment {
 
         onSetupFragment(view, savedInstanceState);
 
-        if (getDataLoader() != null && savedInstanceState != null) {
-            getDataLoader().onRestoreState(savedInstanceState);
-        }
-        view.post(new Runnable() {
-            @Override public void run() {
-                setUserVisibleHint(true);
+        if (getDataLoader() != null) {
+            if (savedInstanceState != null) {
+                getDataLoader().onRestoreState(savedInstanceState);
             }
-        });
+
+            view.post(new Runnable() {
+                @Override public void run() {
+                    if (getUserVisibleHint() && getDataLoader().isLazyLoadEnabled()
+                            && getView() != null && getView().getParent() instanceof ViewPager) {
+                        setUserVisibleHint(true);
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -102,7 +108,6 @@ public abstract class BaseFragment extends Fragment {
 
         // handle data loader
         if (mDataLoader != null) {
-            Logger.d("mDataLoader startLoad called on resume");
             mDataLoader.startLoad();
         }
     }
@@ -113,7 +118,6 @@ public abstract class BaseFragment extends Fragment {
         if (isVisibleToUser) {
             onVisible();
             if (mDataLoader != null) {
-                Logger.d("mDataLoader startLazyLoad called on onVisible");
                 mDataLoader.startLazyLoad();
             }
         }
