@@ -11,13 +11,13 @@ import android.view.ViewGroup;
 import com.xxxifan.devbox.library.R;
 import com.xxxifan.devbox.library.base.BaseFragment;
 
-import butterknife.ButterKnife;
 import kale.adapter.RcvAdapterWrapper;
 
 /**
  * Created by xifan on 6/14/16.
  */
 public abstract class RecyclerFragment extends BaseFragment {
+    protected static final int PTR_LAYOUT_ID = R.id.recycler_ptr_layout;
 
     private RecyclerView mRecyclerView;
     private RcvAdapterWrapper mRecyclerWrapper;
@@ -31,7 +31,7 @@ public abstract class RecyclerFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         if (view != null) {
-            mRecyclerView = ButterKnife.findById(view, R.id.base_recycler_view);
+            mRecyclerView = $(view, R.id.base_recycler_view);
 
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             mRecyclerWrapper = new RcvAdapterWrapper(setupAdapter(), layoutManager);
