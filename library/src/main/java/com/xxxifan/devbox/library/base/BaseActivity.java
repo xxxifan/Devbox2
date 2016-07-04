@@ -1,5 +1,6 @@
 package com.xxxifan.devbox.library.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -58,6 +59,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         onConfigActivity();
         mConfigured = true;
+        UICanon.load(this);
         super.onCreate(savedInstanceState);
         lifecycleSubject.onNext(ActivityEvent.CREATE);
 
@@ -127,6 +129,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         lifecycleSubject.onNext(ActivityEvent.DESTROY);
+        UICanon.reset();
         super.onDestroy();
         if (mBackKeyListener != null) {
             mBackKeyListener = null;
@@ -300,6 +303,33 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public interface BackKeyListener {
         boolean onPressed();
+    }
+
+    /**
+     * Stupid thing to post task
+     */
+    protected static class UICanon {
+        static Activity mActivity;
+
+        static void load(Activity activity) {
+            mActivity = activity;
+        }
+
+        static void reset() {
+            mActivity = null;
+        }
+
+        public static void post(Runnable runnable) {
+            if (mActivity != null) {
+                mActivity.getWindow().getDecorView().post(runnable);
+            }
+        }
+
+        public static void postDelayed(Runnable runnable, int delay) {
+            if (mActivity != null) {
+                mActivity.getWindow().getDecorView().postDelayed(runnable, delay);
+            }
+        }
     }
 
 }
