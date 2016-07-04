@@ -209,6 +209,11 @@ public abstract class BaseFragment extends Fragment {
         return ContextCompat.getDrawable(getContext(), resId);
     }
 
+    @SuppressWarnings("unchecked")
+    protected <T extends View> T $(View view, int viewId) {
+        return (T) view.findViewById(viewId);
+    }
+
     /**
      * register EventBus on resume/pause by default, must be called before onResume/onPause
      */
