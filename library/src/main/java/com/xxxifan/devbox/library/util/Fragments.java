@@ -175,17 +175,22 @@ public class Fragments {
 
             // hide or remove last fragment
             if (hideLast || removeLast) {
-                Fragment lastFragment = getCurrentFragment(activityRef.get(), containerId);
-                if (lastFragment != null) {
-                    if (Strings.equals(lastFragment.getTag(), tag)) {
-                        Logger.d("same tag fragment found! Reuse!");
-                        fragment = lastFragment;
-                    } else if (lastFragment.isVisible()) {
-                        lastFragment.setUserVisibleHint(false);
-                        transaction.hide(lastFragment);
-                        if (removeLast) {
-                            Logger.d("last fragment has been totally removed");
-                            transaction.remove(lastFragment);
+                List<Fragment> fragments = getFragmentList(activityRef.get());
+                for (Fragment oldFragment : fragments) {
+                    if (oldFragment == null) {
+                        continue;
+                    }
+
+                    if (oldFragment.getId() == containerId) {
+                        if (Strings.equals(oldFragment.getTag(), tag)) {
+                            fragment = oldFragment;
+                        } else if (oldFragment.isVisible()) {
+                            oldFragment.setUserVisibleHint(false);
+                            transaction.hide(oldFragment);
+                            if (removeLast) {
+                                Logger.d("last fragment has been totally removed");
+                                transaction.remove(oldFragment);
+                            }
                         }
                     }
                 }

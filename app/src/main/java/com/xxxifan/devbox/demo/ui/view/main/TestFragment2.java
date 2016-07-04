@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
  * Created by xifan on 6/8/16.
  */
 public class TestFragment2 extends BaseFragment {
+    public static final String TAG = "TestFragment2";
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_test2;

@@ -59,21 +59,21 @@ public class MainActivity extends TranslucentActivity {
 
     @OnClick(R.id.main_btn_1)
     public void onFirstClick(View view) {
-        Fragments.checkout(this, new TestFragment1())
+        Fragments.checkout(this, new TestFragment1(), TestFragment1.TAG + "Bottom")
                 .addToBackStack(true)
                 .into(FRAGMENT_CONTAINER);
     }
 
     @OnClick(R.id.main_btn_2)
     public void onSecondClick(View view) {
-        Fragments.checkout(this, new TestFragment2())
+        Fragments.checkout(this, new TestFragment2(), TestFragment2.TAG + "Bottom")
                 .addToBackStack(true)
                 .into(FRAGMENT_CONTAINER);
     }
 
     @OnClick(R.id.main_btn_3)
     public void onThirdClick(View view) {
-       RecyclerActivity.start(getContext());
+        RecyclerActivity.start(getContext());
     }
 //
 //    @OnClick(R.id.btn_4)
