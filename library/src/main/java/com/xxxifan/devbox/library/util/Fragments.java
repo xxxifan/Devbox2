@@ -176,20 +176,22 @@ public class Fragments {
             // hide or remove last fragment
             if (hideLast || removeLast) {
                 List<Fragment> fragments = getFragmentList(activityRef.get());
-                for (Fragment oldFragment : fragments) {
-                    if (oldFragment == null) {
-                        continue;
-                    }
+                if (fragments != null) {
+                    for (Fragment oldFragment : fragments) {
+                        if (oldFragment == null) {
+                            continue;
+                        }
 
-                    if (oldFragment.getId() == containerId) {
-                        if (Strings.equals(oldFragment.getTag(), tag)) {
-                            fragment = oldFragment;
-                        } else if (oldFragment.isVisible()) {
-                            oldFragment.setUserVisibleHint(false);
-                            transaction.hide(oldFragment);
-                            if (removeLast) {
-                                Logger.d("last fragment has been totally removed");
-                                transaction.remove(oldFragment);
+                        if (oldFragment.getId() == containerId) {
+                            if (Strings.equals(oldFragment.getTag(), tag)) {
+                                fragment = oldFragment;
+                            } else if (oldFragment.isVisible()) {
+                                oldFragment.setUserVisibleHint(false);
+                                transaction.hide(oldFragment);
+                                if (removeLast) {
+                                    Logger.d("last fragment has been totally removed");
+                                    transaction.remove(oldFragment);
+                                }
                             }
                         }
                     }
