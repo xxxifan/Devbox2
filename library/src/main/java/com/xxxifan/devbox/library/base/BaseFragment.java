@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -166,6 +167,8 @@ public abstract class BaseFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(Fragments.KEY_RESTORE, isVisible());
+        outState.putBoolean(Fragments.KEY_RESTORE_VIEWPAGER,
+                getView() != null && getView().getParent() instanceof ViewPager);
         if (getDataLoader() != null) {
             getDataLoader().onSavedState(outState);
         }
@@ -173,6 +176,9 @@ public abstract class BaseFragment extends Fragment {
 
     private void restoreFragmentState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
+            if (savedInstanceState.getBoolean(Fragments.KEY_RESTORE_VIEWPAGER, false)) {
+                return;
+            }
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             if (savedInstanceState.getBoolean(Fragments.KEY_RESTORE, false)) {
                 transaction.show(this);
@@ -195,7 +201,8 @@ public abstract class BaseFragment extends Fragment {
     /**
      * manual control method for sometimes lifecycle not working for fragment.
      */
-    protected void onVisible() {}
+    protected void onVisible() {
+    }
 
     //##########  Protected helper methods ##########
     @ColorInt

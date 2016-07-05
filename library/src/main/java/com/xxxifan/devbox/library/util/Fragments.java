@@ -21,6 +21,7 @@ import java.util.List;
 public class Fragments {
     public static final String TAG = "Fragments";
     public static final String KEY_RESTORE = "restore";
+    public static final String KEY_RESTORE_VIEWPAGER = "restore_viewpager";
 
     private Fragments() {
     }
