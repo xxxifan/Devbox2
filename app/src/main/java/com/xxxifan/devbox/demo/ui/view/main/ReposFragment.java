@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.orhanobut.logger.Logger;
 import com.xxxifan.devbox.demo.R;
 import com.xxxifan.devbox.demo.data.model.Repo;
 import com.xxxifan.devbox.demo.repository.GithubService;
@@ -19,7 +20,6 @@ import com.xxxifan.devbox.library.base.extended.RecyclerFragment;
 import com.xxxifan.devbox.library.event.NetworkEvent;
 import com.xxxifan.devbox.library.util.ViewUtils;
 import com.xxxifan.devbox.library.util.http.Http;
-import com.xxxifan.devbox.library.util.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 

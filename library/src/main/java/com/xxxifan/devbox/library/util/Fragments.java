@@ -9,8 +9,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
+import com.orhanobut.logger.Logger;
 import com.xxxifan.devbox.library.base.BaseFragment;
-import com.xxxifan.devbox.library.util.logger.Logger;
 
 import java.lang.ref.WeakReference;
 import java.util.List;

@@ -1,6 +1,7 @@
 package com.xxxifan.devbox.demo;
 
 import android.app.Application;
+import android.os.StrictMode;
 
 import com.xxxifan.devbox.library.Devbox;
 import com.xxxifan.devbox.library.util.IOUtils;
@@ -43,5 +44,7 @@ public class App extends Application {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
         Http.initRetrofit(retrofit);
+        StrictMode.setThreadPolicy((new StrictMode.ThreadPolicy.Builder()).detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
+        StrictMode.setVmPolicy((new android.os.StrictMode.VmPolicy.Builder()).detectLeakedSqlLiteObjects().penaltyLog().penaltyDeath().build());
     }
 }

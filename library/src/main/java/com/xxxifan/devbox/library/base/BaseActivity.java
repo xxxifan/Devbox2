@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
@@ -23,7 +24,6 @@ import com.xxxifan.devbox.library.R;
 import com.xxxifan.devbox.library.event.BaseEvent;
 import com.xxxifan.devbox.library.util.IOUtils;
 import com.xxxifan.devbox.library.util.ViewUtils;
-import com.xxxifan.devbox.library.util.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 

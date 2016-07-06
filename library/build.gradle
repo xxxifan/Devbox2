@@ -81,6 +81,7 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.github.tianzhijiexian:CommonAdapter:1.1.9'
+    compile 'com.orhanobut:logger:1.15'
 
     provided 'com.android.support:multidex:1.0.1'
 

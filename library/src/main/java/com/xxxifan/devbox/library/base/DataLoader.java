@@ -5,10 +5,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 
+import com.orhanobut.logger.Logger;
 import com.xxxifan.devbox.library.Devbox;
 import com.xxxifan.devbox.library.R;
 import com.xxxifan.devbox.library.event.NetworkEvent;
-import com.xxxifan.devbox.library.util.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 

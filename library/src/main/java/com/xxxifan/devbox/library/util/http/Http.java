@@ -3,10 +3,10 @@ package com.xxxifan.devbox.library.util.http;
 import com.google.gson.Gson;
 import com.liulishuo.filedownloader.FileDownloadListener;
 import com.liulishuo.filedownloader.FileDownloader;
+import com.orhanobut.logger.Logger;
 import com.xxxifan.devbox.library.Devbox;
 import com.xxxifan.devbox.library.util.IOUtils;
 import com.xxxifan.devbox.library.util.Tests;
-import com.xxxifan.devbox.library.util.logger.Logger;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
