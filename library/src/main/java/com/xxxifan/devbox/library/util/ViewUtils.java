@@ -2,9 +2,13 @@ package com.xxxifan.devbox.library.util;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.provider.Settings;
@@ -66,14 +70,14 @@ public class ViewUtils {
                         return;
                     }
 
+                    Context context = Devbox.getAppDelegate();
                     // check cm settings
-                    boolean forceCm = Settings.Secure.getInt(Devbox.getAppDelegate().getContentResolver(),
-                                                             CONFIG_FORCE_NAVBAR, 0) == 1;
+                    ContentResolver resolver = context.getContentResolver();
+                    boolean forceCm = Settings.Secure.getInt(resolver, CONFIG_FORCE_NAVBAR, 0) == 1;
 
                     // fallback, use common method.
-                    sHasTranslucentNavBar = forceCm || readInternalBoolean(CONFIG_SHOW_NAVBAR,
-                                                                           Devbox.getAppDelegate().getResources(), !ViewConfiguration.get(Devbox.getAppDelegate())
-                                    .hasPermanentMenuKey());
+                    sHasTranslucentNavBar = forceCm || readInternalBoolean(CONFIG_SHOW_NAVBAR, context
+                            .getResources(), !ViewConfiguration.get(context).hasPermanentMenuKey());
                 }
             });
         }
@@ -105,7 +109,8 @@ public class ViewUtils {
 
     public static int getSystemBarHeight() {
         if (sStatusBarHeight == 0) {
-            sStatusBarHeight = readInternalDimen(CONFIG_TOOLBAR_HEIGHT, Devbox.getAppDelegate().getResources(), dp2px(24));
+            sStatusBarHeight = readInternalDimen(CONFIG_TOOLBAR_HEIGHT,
+                                                 Devbox.getAppDelegate().getResources(), dp2px(24));
         }
         return sStatusBarHeight;
     }
@@ -127,7 +132,8 @@ public class ViewUtils {
     public static int getNavBarHeight() {
         if (sNavBarHeight == 0) {
             int deviceScreenHeight = getDeviceScreenHeight();
-            int displayHeight = Devbox.getAppDelegate().getResources().getDisplayMetrics().heightPixels;
+            int displayHeight = Devbox.getAppDelegate()
+                    .getResources().getDisplayMetrics().heightPixels;
             sNavBarHeight = deviceScreenHeight - displayHeight;
             if (sNavBarHeight <= 0) {
                 sNavBarHeight = dp2px(48);
@@ -169,7 +175,8 @@ public class ViewUtils {
             Class<?> layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
             Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
             int darkModeFlag = field.getInt(layoutParams);
-            Method extraFlagField = window.getClass().getMethod("setExtraFlags", int.class, int.class);
+            Method extraFlagField = window.getClass()
+                    .getMethod("setExtraFlags", int.class, int.class);
             extraFlagField.invoke(window, darkmode ? darkModeFlag : 0, darkModeFlag);
             changed = true;
         } catch (Exception ignored) {
@@ -319,6 +326,19 @@ public class ViewUtils {
         };
     }
 
+    public static Bitmap toBitmap(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
+    }
+
     // ############ Private #############
 
     private static int readInternalDimen(String key, Resources res, int fallback) {
@@ -332,7 +352,8 @@ public class ViewUtils {
     }
 
     private static DisplayMetrics getDisplayMetrics() {
-        Display display = ((WindowManager) Devbox.getAppDelegate().getSystemService(Context.WINDOW_SERVICE))
+        Display display = ((WindowManager) Devbox.getAppDelegate()
+                .getSystemService(Context.WINDOW_SERVICE))
                 .getDefaultDisplay();
         DisplayMetrics metrics = new DisplayMetrics();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -340,7 +361,8 @@ public class ViewUtils {
                     .getDefaultDisplay().getRealMetrics(metrics);
         } else {
             try {
-                Method method = display.getClass().getMethod("getRealMetrics", DisplayMetrics.class);
+                Method method = display.getClass()
+                        .getMethod("getRealMetrics", DisplayMetrics.class);
                 method.invoke(display, metrics);
             } catch (Exception e) {
                 e.printStackTrace();

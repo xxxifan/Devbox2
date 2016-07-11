@@ -68,6 +68,7 @@ public abstract class BaseFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         lifecycleSubject.onNext(FragmentEvent.CREATE_VIEW);
+        UICanon.load(view);
 
         onSetupFragment(view, savedInstanceState);
 
@@ -145,6 +146,7 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         lifecycleSubject.onNext(FragmentEvent.DESTROY_VIEW);
         super.onDestroyView();
+        UICanon.reset();
     }
 
     @Override
@@ -176,7 +178,7 @@ public abstract class BaseFragment extends Fragment {
 
     private void restoreFragmentState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            if (savedInstanceState.getBoolean(Fragments.KEY_RESTORE_VIEWPAGER, false)) {
+            if (savedInstanceState.getBoolean(Fragments.KEY_RESTORE_VIEWPAGER, false)){
                 return;
             }
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -201,8 +203,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * manual control method for sometimes lifecycle not working for fragment.
      */
-    protected void onVisible() {
-    }
+    protected void onVisible() {}
 
     //##########  Protected helper methods ##########
     @ColorInt
@@ -282,4 +283,31 @@ public abstract class BaseFragment extends Fragment {
     protected abstract void onSetupFragment(View view, Bundle savedInstanceState);
 
     public abstract String getSimpleName();
+
+    /**
+     * Stupid thing to post task
+     */
+    protected static class UICanon {
+        static View mView;
+
+        static void load(View view) {
+            mView = view;
+        }
+
+        static void reset() {
+            mView = null;
+        }
+
+        public static void post(Runnable runnable) {
+            if (mView != null) {
+                mView.post(runnable);
+            }
+        }
+
+        public static void postDelayed(Runnable runnable, int delay) {
+            if (mView != null) {
+                mView.postDelayed(runnable, delay);
+            }
+        }
+    }
 }
