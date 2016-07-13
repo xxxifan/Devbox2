@@ -12,7 +12,12 @@ import com.xxxifan.devbox.library.event.NetworkEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.lang.ref.WeakReference;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import rx.Observable;
+import rx.functions.Action0;
+import rx.functions.Action1;
 
 /**
  * Created by xifan on 6/22/16.
@@ -232,5 +237,60 @@ public class DataLoader {
          * setRefresh data list due to loadType, should be called in onLoadStart().
          */
         void onRefreshStart();
+    }
+
+    public static class RxNotifier {
+        private WeakReference<DataLoader> mDataLoaderRef;
+
+        private RxNotifier(DataLoader dataLoader) {
+            mDataLoaderRef = new WeakReference<>(dataLoader);
+        }
+
+        public static <T> Observable.Transformer<T, T> instance(DataLoader dataLoader) {
+            final RxNotifier notifier = new RxNotifier(dataLoader);
+            return new Observable.Transformer<T, T>() {
+                @Override
+                public Observable<T> call(Observable<T> observable) {
+                    return observable
+                            .doOnNext(new Action1<T>() {
+                                @Override public void call(T t) {
+                                    if (notifier.getDataLoader() != null) {
+                                        notifier.getDataLoader().notifyPageLoaded();
+                                    }
+                                }
+                            })
+                            .doOnError(new Action1<Throwable>() {
+                                @Override public void call(Throwable throwable) {
+                                    if (notifier.getDataLoader() != null) {
+                                        notifier.getDataLoader().notifyPageLoadFailed();
+
+                                        // clear ref
+                                        notifier.getDataLoaderRef().clear();
+                                    }
+                                }
+                            })
+                            .doOnCompleted(new Action0() {
+                                @Override public void call() {
+                                    if (notifier.getDataLoader() != null) {
+                                        notifier.getDataLoaderRef().clear();
+                                    }
+                                }
+                            });
+                }
+            };
+        }
+
+        private DataLoader getDataLoader() {
+            if (mDataLoaderRef != null) {
+                return mDataLoaderRef.get();
+            } else {
+                return null;
+            }
+        }
+
+        private WeakReference<DataLoader> getDataLoaderRef() {
+            return mDataLoaderRef;
+        }
+
     }
 }
