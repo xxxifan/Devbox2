@@ -255,6 +255,8 @@ You may need basic network permissions
 - [x] DataLoader
 - [ ] More extends for fragments (like recyclerView support)
 - [ ] Multidex
+- [ ] IOUtils based on okio
+- [ ] NotificationUtils
 - [ ] More to come
 
 ## Dependencies
