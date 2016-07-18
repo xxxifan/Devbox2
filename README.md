@@ -1,4 +1,4 @@
-## Devbox2 [![travis](https://travis-ci.org/xxxifan/Devbox2.svg?branch=master)](https://travis-ci.org/xxxifan/Devbox2)
+## Devbox2 [![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=578cb3974a7be5010070ef32&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/578cb3974a7be5010070ef32/build/latest)
 Yet another Android development toolbox.
 It's a new generation of [DevBox](https://github.com/xxxifan/DevBox)
 
