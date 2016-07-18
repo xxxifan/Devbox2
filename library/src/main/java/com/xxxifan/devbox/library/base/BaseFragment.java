@@ -27,6 +27,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ import android.view.ViewGroup;
 import com.trello.rxlifecycle.FragmentEvent;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
+import com.xxxifan.devbox.library.R;
 import com.xxxifan.devbox.library.event.BaseEvent;
 import com.xxxifan.devbox.library.util.Fragments;
 import com.xxxifan.devbox.library.util.IOUtils;
@@ -186,7 +188,7 @@ public abstract class BaseFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putBoolean(Fragments.KEY_RESTORE, isVisible());
         outState.putBoolean(Fragments.KEY_RESTORE_VIEWPAGER,
-                getView() != null && getView().getParent() instanceof ViewPager);
+                            getView() != null && getView().getParent() instanceof ViewPager);
         if (getDataLoader() != null) {
             getDataLoader().onSavedState(outState);
         }
@@ -194,7 +196,7 @@ public abstract class BaseFragment extends Fragment {
 
     private void restoreFragmentState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            if (savedInstanceState.getBoolean(Fragments.KEY_RESTORE_VIEWPAGER, false)){
+            if (savedInstanceState.getBoolean(Fragments.KEY_RESTORE_VIEWPAGER, false)) {
                 return;
             }
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -231,6 +233,24 @@ public abstract class BaseFragment extends Fragment {
         return ContextCompat.getDrawable(getContext(), resId);
     }
 
+    /**
+     * attach a toolbar in fragment
+     *
+     * @param rootView  root view that toolbar attach to
+     * @param darkTheme dark theme used in colorful toolbar with white title, light theme in light background with dark title.
+     * @return true if success
+     */
+    protected boolean attachToolbar(View rootView, String title, @ColorInt int toolbarColor, boolean darkTheme) {
+        if (isAdded() && getView() != null) {
+            View toolbarView = View.inflate(getContext(), darkTheme ? R.layout._internal_view_toolbar_dark : R.layout._internal_view_toolbar_light, null);
+            toolbarView.setBackgroundColor(toolbarColor);
+            ((Toolbar) toolbarView).setTitle(title);
+            ((ViewGroup) rootView).addView(toolbarView, 0);
+            return true;
+        }
+        return false;
+    }
+
     @SuppressWarnings("unchecked")
     protected <T extends View> T $(View view, int viewId) {
         return (T) view.findViewById(viewId);
@@ -254,7 +274,7 @@ public abstract class BaseFragment extends Fragment {
         return mDataLoader;
     }
 
-    protected DataLoader getDataLoader() {
+    public DataLoader getDataLoader() {
         return mDataLoader;
     }
 
