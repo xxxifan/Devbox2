@@ -18,6 +18,9 @@ package com.xxxifan.devbox.library.util;
 
 import android.util.Base64;
 
+import com.xxxifan.devbox.library.Devbox;
+import com.xxxifan.devbox.library.R;
+
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
@@ -31,7 +34,14 @@ import java.util.regex.Pattern;
 public class Strings {
     public static final String EMPTY = "";
 
-    private final static Pattern PHONE_PATTERN = Pattern.compile("^(1(3|4|5|7|8))\\d{9}$");
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^(1(3|4|5|7|8))\\d{9}$");
+    private static final int[] TIME_VALUE = {
+            60, //s
+            60, //m
+            60, //h
+            24, //d
+    };
+    private static String[] sTimeUnits;
 
     public static boolean isEmpty(CharSequence str) {
         return str == null || str.length() == 0 || str.toString().trim().isEmpty();
@@ -47,6 +57,22 @@ public class Strings {
             }
         }
         return true;
+    }
+
+    public static String downTimer(long timestamp) {
+        if (sTimeUnits == null) {
+            sTimeUnits = Devbox.getAppDelegate().getResources().getStringArray(R.array.time_unit);
+        }
+        String value = EMPTY;
+        long interval = (System.currentTimeMillis() - timestamp) / 1000; // start with minutes
+        for (int i = 0, s = sTimeUnits.length; i < s; i++) {
+            if (interval < TIME_VALUE[i]) {
+                break;
+            }
+
+            value = interval / TIME_VALUE[i] + sTimeUnits[i] + value;
+        }
+        return value;
     }
 
     public static String escapeExprSpecialWord(String keyword) {

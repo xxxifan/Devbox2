@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright(c) 2016 xxxifan
   ~
@@ -15,11 +16,10 @@
   -->
 
 <resources>
-    <string name="msg_loading">请稍候&#8230;</string>
-    <string name="msg_network_unavailable">网络不可用，请稍后再试</string>
-
-    <string name="time_unit_second">秒</string>
-    <string name="time_unit_minute">分钟</string>
-    <string name="time_unit_hour">小时</string>
-    <string name="time_unit_day">天</string>
+    <string-array name="time_unit">
+        <item>@string/time_unit_second</item>
+        <item>@string/time_unit_minute</item>
+        <item>@string/time_unit_hour</item>
+        <item>@string/time_unit_day</item>
+    </string-array>
 </resources>

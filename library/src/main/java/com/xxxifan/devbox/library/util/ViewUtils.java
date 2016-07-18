@@ -125,8 +125,9 @@ public class ViewUtils {
 
     public static int getSystemBarHeight() {
         if (sStatusBarHeight == 0) {
-            sStatusBarHeight = readInternalDimen(CONFIG_TOOLBAR_HEIGHT,
-                                                 Devbox.getAppDelegate().getResources(), dp2px(24));
+            sStatusBarHeight = readInternalDimen(CONFIG_TOOLBAR_HEIGHT, Devbox
+                    .getAppDelegate()
+                    .getResources(), dp2px(24));
         }
         return sStatusBarHeight;
     }
@@ -148,8 +149,8 @@ public class ViewUtils {
     public static int getNavBarHeight() {
         if (sNavBarHeight == 0) {
             int deviceScreenHeight = getDeviceScreenHeight();
-            int displayHeight = Devbox.getAppDelegate()
-                    .getResources().getDisplayMetrics().heightPixels;
+            int displayHeight = Devbox.getAppDelegate().getResources()
+                    .getDisplayMetrics().heightPixels;
             sNavBarHeight = deviceScreenHeight - displayHeight;
             if (sNavBarHeight <= 0) {
                 sNavBarHeight = dp2px(48);

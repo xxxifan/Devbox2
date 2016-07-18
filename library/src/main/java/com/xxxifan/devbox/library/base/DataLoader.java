@@ -72,8 +72,8 @@ public class DataLoader {
         ConnectivityManager mConnectivityManager = (ConnectivityManager) Devbox
                 .getAppDelegate()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-        return mNetworkInfo != null && mNetworkInfo.isAvailable();
+        NetworkInfo networkInfo = mConnectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 
     private void setCallback(LoadCallback callback) {
@@ -297,11 +297,7 @@ public class DataLoader {
         }
 
         private DataLoader getDataLoader() {
-            if (mDataLoaderRef != null) {
-                return mDataLoaderRef.get();
-            } else {
-                return null;
-            }
+            return mDataLoaderRef != null ? mDataLoaderRef.get() : null;
         }
 
         private WeakReference<DataLoader> getDataLoaderRef() {
