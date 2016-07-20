@@ -16,24 +16,31 @@
 
 package com.xxxifan.devbox.demo.ui.view.main;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.xxxifan.devbox.demo.R;
-import com.xxxifan.devbox.library.base.extended.ToolbarActivity;
+import com.xxxifan.devbox.library.base.extended.TranslucentDrawerActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * Generated for Devbox(https://github.com/xxxifan/Devbox2)
- * Date: 7/20/16 9:38 AM
+ * Date: 7/20/16 11:24 AM
  */
-public class NewMainActivity extends ToolbarActivity {
-    public static final String TAG = "NewMainActivity";
+public class TestDrawerActivity extends TranslucentDrawerActivity {
+    public static final String TAG = "TestDrawerActivity";
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, TestDrawerActivity.class);
+        context.startActivity(starter);
+    }
 
     @Override protected int getLayoutId() {
-        return R.layout.activity_main_new;
+        return R.layout.activity_transparent;
     }
 
     @Override protected void onSetupActivity(Bundle savedInstanceState) {
@@ -44,23 +51,11 @@ public class NewMainActivity extends ToolbarActivity {
         return TAG;
     }
 
-    @OnClick({R.id.main_drawer_activity, R.id.main_translucent_activity, R.id.main_image_translucent_activity, R.id.main_trans_drawer_activity, R.id.main_recycler_activity, R.id.main_fragment_activity})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.main_drawer_activity:
-                break;
-            case R.id.main_translucent_activity:
-                TestTranslucentActivity.start(getContext());
-                break;
-            case R.id.main_image_translucent_activity:
-                break;
-            case R.id.main_trans_drawer_activity:
-                TestDrawerActivity.start(getContext());
-                break;
-            case R.id.main_recycler_activity:
-                break;
-            case R.id.main_fragment_activity:
-                break;
-        }
+    @Override protected View getDrawerView() {
+        return View.inflate(getContext(), R.layout.view_drawer, null);
+    }
+
+    @OnClick(R.id.full_btn) public void onClick() {
+        transparentStatusBar();
     }
 }

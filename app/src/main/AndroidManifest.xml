@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.xxxifan.devbox.demo">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -13,14 +13,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.view.main.MainActivity">
+        </activity>
+        <activity android:name=".ui.view.main.NewMainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.view.main.CrashActivity"/>
-        <activity android:name=".ui.view.main.RecyclerActivity"/>
+        <activity
+            android:name=".ui.view.main.TestTranslucentActivity"
+            android:label="Transparent" />
+        <activity android:name=".ui.view.main.TestDrawerActivity" />
+        <activity android:name=".ui.view.main.CrashActivity" />
+        <activity android:name=".ui.view.main.RecyclerActivity" />
     </application>
 
 </manifest>

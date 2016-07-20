@@ -21,15 +21,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.LayoutRes;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 
 import com.xxxifan.devbox.library.R;
-import com.xxxifan.devbox.library.util.ViewUtils;
-
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import com.xxxifan.devbox.library.base.SystemBarTintManager;
 
 
 /**
@@ -42,36 +38,22 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 public abstract class TranslucentActivity extends ToolbarActivity {
 
     private boolean mFullTransparent;
+    private SystemBarTintManager mSystemBarManager;
 
     @Override
     protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
-        if (containerView == null) {
-            throw new IllegalStateException("Cannot find container view");
-        }
-        if (layoutResID == 0) {
-            throw new IllegalStateException("Invalid layout id");
-        }
-        View contentView = getLayoutInflater().inflate(layoutResID, null, false);
-        if (containerView instanceof FrameLayout) {
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
-            params.topMargin = getResources().getDimensionPixelSize(R.dimen.toolbar_height) + ViewUtils.getSystemBarHeight();
-            ((ViewGroup) containerView).addView(contentView, 0, params);
-        } else {
-            ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(MATCH_PARENT, MATCH_PARENT);
-            params.topMargin = getResources().getDimensionPixelSize(R.dimen.toolbar_height) + ViewUtils.getSystemBarHeight();
-            ((ViewGroup) containerView).addView(contentView, 0, params);
-        }
-
+        super.attachContentView(containerView, layoutResID);
+        containerView.setFitsSystemWindows(true);
         setTransparentStatusBar();
     }
 
     @Override
     protected void setupToolbar(View toolbarView) {
         super.setupToolbar(toolbarView);
-        if (isKitkat()) {
-            toolbarView.setPadding(0, ViewUtils.getSystemBarHeight(), 0, 0);
-            toolbarView.getLayoutParams().height += ViewUtils.getSystemBarHeight();
-        }
+//        if (isKitkat()) {
+//            toolbarView.setPadding(0, ViewUtils.getSystemBarHeight(), 0, 0);
+//            toolbarView.getLayoutParams().height += ViewUtils.getSystemBarHeight();
+//        }
     }
 
     /**
@@ -107,17 +89,23 @@ public abstract class TranslucentActivity extends ToolbarActivity {
         if (isKitkat()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
+        if (mSystemBarManager == null) {
+            mSystemBarManager = new SystemBarTintManager(this);
+        }
+        mSystemBarManager.setStatusBarTintEnabled(true);
+        if (isLollipop()) {
+            // always use transparent status bar
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            int uiFlag = window.getDecorView().getSystemUiVisibility() |
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            window.getDecorView().setSystemUiVisibility(uiFlag);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
 
-        if (mFullTransparent) {
-            if (isLollipop()) {
-                Window window = getWindow();
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                int uiFlag = window.getDecorView().getSystemUiVisibility() |
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-                window.getDecorView().setSystemUiVisibility(uiFlag);
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(Color.TRANSPARENT);
-            }
+            mSystemBarManager.setTintColor(getCompatColor(mFullTransparent ? R.color.colorPrimary : R.color.colorPrimaryDark));
+        } else {
+            mSystemBarManager.setTintColor(getCompatColor(R.color.colorPrimaryDark));
         }
     }
 }
