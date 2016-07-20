@@ -38,6 +38,7 @@ import com.trello.rxlifecycle.RxLifecycle;
 import com.xxxifan.devbox.library.R;
 import com.xxxifan.devbox.library.event.BaseEvent;
 import com.xxxifan.devbox.library.util.IOUtils;
+import com.xxxifan.devbox.library.util.StatisticsUtil;
 import com.xxxifan.devbox.library.util.ViewUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -106,6 +107,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         lifecycleSubject.onNext(ActivityEvent.RESUME);
+        StatisticsUtil.onPageStart(this, getSimpleName());
 
         // register eventBus
         if (mRegisterEventBus) {
@@ -125,6 +127,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         lifecycleSubject.onNext(ActivityEvent.PAUSE);
+        StatisticsUtil.onPageEnd();
         super.onPause();
 
         if (mRegisterEventBus) {

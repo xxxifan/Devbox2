@@ -39,6 +39,7 @@ import com.xxxifan.devbox.library.R;
 import com.xxxifan.devbox.library.event.BaseEvent;
 import com.xxxifan.devbox.library.util.Fragments;
 import com.xxxifan.devbox.library.util.IOUtils;
+import com.xxxifan.devbox.library.util.StatisticsUtil;
 import com.xxxifan.devbox.library.util.Tests;
 import com.xxxifan.devbox.library.util.ViewUtils;
 
@@ -115,6 +116,7 @@ public abstract class BaseFragment extends Fragment {
     public void onResume() {
         super.onResume();
         lifecycleSubject.onNext(FragmentEvent.RESUME);
+        StatisticsUtil.onPageStart(getContext(), getSimpleName());
 
         // register eventBus
         if (mRegisterEventBus) {
@@ -144,6 +146,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onPause() {
         lifecycleSubject.onNext(FragmentEvent.PAUSE);
+        StatisticsUtil.onPageEnd();
         super.onPause();
 
         if (mRegisterEventBus) {
