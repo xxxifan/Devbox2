@@ -87,7 +87,7 @@ public abstract class BaseFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         lifecycleSubject.onNext(FragmentEvent.CREATE_VIEW);
-        UICanon.load(view);
+        Cannon.load(view);
 
         onSetupFragment(view, savedInstanceState);
 
@@ -167,7 +167,7 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         lifecycleSubject.onNext(FragmentEvent.DESTROY_VIEW);
         super.onDestroyView();
-        UICanon.reset();
+        Cannon.reset();
     }
 
     @Override
@@ -326,7 +326,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * Stupid thing to post task
      */
-    protected static class UICanon {
+    protected static class Cannon {
         static View mView;
 
         static void load(View view) {

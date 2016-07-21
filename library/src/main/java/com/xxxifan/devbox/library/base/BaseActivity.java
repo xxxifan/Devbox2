@@ -75,7 +75,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         onConfigActivity();
         mConfigured = true;
-        UICanon.load(this);
+        Cannon.load(this);
         super.onCreate(savedInstanceState);
         lifecycleSubject.onNext(ActivityEvent.CREATE);
 
@@ -147,7 +147,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         lifecycleSubject.onNext(ActivityEvent.DESTROY);
-        UICanon.reset();
+        Cannon.reset();
         super.onDestroy();
         if (mBackKeyListener != null) {
             mBackKeyListener = null;
@@ -325,7 +325,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Stupid thing to post task
      */
-    protected static class UICanon {
+    protected static class Cannon {
         static Activity mActivity;
 
         static void load(Activity activity) {
