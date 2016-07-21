@@ -52,7 +52,7 @@ public class TestDrawerActivity extends TranslucentDrawerActivity {
     }
 
     @Override protected View getDrawerView() {
-        return View.inflate(getContext(), R.layout.view_drawer, null);
+        return View.inflate(getContext(), R.layout.activity_transparent, null);
     }
 
     @OnClick(R.id.full_btn) public void onClick() {

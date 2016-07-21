@@ -47,7 +47,6 @@ public abstract class TranslucentDrawerActivity extends TranslucentActivity {
         if (drawerLayout == null) {
             throw new IllegalStateException("Cannot find drawer_layout");
         }
-
         // setup drawer view
         View drawerView = getDrawerView();
         if (drawerView != null) {
