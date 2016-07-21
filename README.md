@@ -181,7 +181,7 @@ and then, onLoadStart() will be called automatically in onResume(). In additiona
 Base already handle savedInstance for dataLoader.
 
 In [RecyclerFragment](https://github.com/xxxifan/Devbox2/blob/master/library/src/main/java/com/xxxifan/devbox/library/base/extended/RecyclerFragment.java) it supply some methods to connect wit DataLoader
-```
+```java
 enableScrollToLoad(lastItemNum);
 notifyDataLoaded();
 ```
@@ -210,7 +210,7 @@ public interface MvpContract {
 ### AppPref
 A wrapper for SharedPreference, you can simply use putXxx/getXxx to save variables, and also get chained editor by edit() just like what SharedPreference do.
 
-```
+```java
 AppPref.putString(key, value);
 AppPref.edit()
         .putString(key, value)
@@ -220,14 +220,14 @@ AppPref.edit()
 
 Also, you can get SharedPreference instance by specify preference name
 
-```
+```java
 // AppPref.getPrefs();
 AppPref.getPrefs(prefName);
 ```
 
 ### Once
 A simple helper for check a block is called once in current state. It uses SharedPreference for key storage.
-```
+```java
 // check a key has been used.
 boolean isFirstBoot = Once.check("isFirstBoot");
 if (isFirstBoot) {
@@ -236,7 +236,7 @@ if (isFirstBoot) {
 ```
 
 if you like non-blocking style, then consider using callback style
-```
+```java
 Once.check("isFirstBoot", new OnceCallback() {
     @Override public void onOnce() {
         init();
@@ -246,7 +246,7 @@ Once.check("isFirstBoot", new OnceCallback() {
 ```
 
 you can also reset key state by using reset()
-```
+```java
 Once.reset("isFirstBoot");
 ```
 
