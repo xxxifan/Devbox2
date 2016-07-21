@@ -15,6 +15,7 @@
   -->
 
 <resources>
+    <string name="app_name">Devbox2</string>
     <string name="msg_loading">请稍候&#8230;</string>
     <string name="msg_network_unavailable">网络不可用，请稍后再试</string>
 
