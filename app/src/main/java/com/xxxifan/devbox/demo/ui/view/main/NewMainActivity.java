@@ -53,6 +53,7 @@ public class NewMainActivity extends ToolbarActivity {
                 TestTranslucentActivity.start(getContext());
                 break;
             case R.id.main_image_translucent_activity:
+                TestImageTranslucent.start(getContext());
                 break;
             case R.id.main_trans_drawer_activity:
                 TestDrawerActivity.start(getContext());

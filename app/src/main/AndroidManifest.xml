@@ -25,6 +25,7 @@
             android:name=".ui.view.main.TestTranslucentActivity"
             android:label="Transparent" />
         <activity android:name=".ui.view.main.TestDrawerActivity" />
+        <activity android:name=".ui.view.main.TestImageTranslucent" />
         <activity android:name=".ui.view.main.CrashActivity" />
         <activity android:name=".ui.view.main.RecyclerActivity" />
     </application>

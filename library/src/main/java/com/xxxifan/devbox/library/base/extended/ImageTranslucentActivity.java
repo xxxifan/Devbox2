@@ -26,7 +26,8 @@ import com.xxxifan.devbox.library.util.ViewUtils;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 /**
- * Created by xifan on 5/17/16.
+ * Translucent Activity for Image background. Note the layout will start from status bar,
+ * you may need set a margin manually.
  */
 public abstract class ImageTranslucentActivity extends TranslucentActivity {
 
@@ -42,19 +43,29 @@ public abstract class ImageTranslucentActivity extends TranslucentActivity {
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         ((ViewGroup) containerView).addView(contentView, 0, params);
 
-        transparentStatusBar(); // default is full transparent
+        View view = getContentView();
+        if (view != null) {
+            if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+                ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).topMargin = ViewUtils.getSystemBarHeight() + getResources()
+                        .getDimensionPixelSize(R.dimen.toolbar_height);
+            }
+        }
+        setTranslucentStatusBar();
     }
 
     @Override
     protected void setupToolbar(View toolbarView) {
         super.setupToolbar(toolbarView);
+        transparentToolbar();
         if (isKitkat()) {
             ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) toolbarView.getLayoutParams();
             layoutParams.topMargin = ViewUtils.getSystemBarHeight();
-            // reset parent change
-            layoutParams.height = getResources().getDimensionPixelSize(R.dimen.toolbar_height);
-            toolbarView.setPadding(0, 0, 0, 0);
         }
     }
+
+    /**
+     * @return get a real content view beside image background to let base correct layout.
+     */
+    protected abstract View getContentView();
 
 }
