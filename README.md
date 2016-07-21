@@ -24,6 +24,13 @@ public class App extends Application {
 
 ```warning: using this library may add up your method count at least 15000+.```
 
+## Changelog
+
+    2016-07-20 Add StatisticUtil
+    2016-07-18 Add attachToolbar() in BaseFragment
+    2016-07-13 Add Dataloader.RxNotifier
+    2016-07-11 Add Cannon
+
 ## Classes
 
 ### BaseActivity
