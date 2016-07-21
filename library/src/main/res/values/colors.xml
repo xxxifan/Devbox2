@@ -22,4 +22,7 @@
 
     <color name="white">#FFF</color>
     <color name="black">#000</color>
+    <color name="transparent">#00FF</color>
+    <color name="status_bar_mask">#36000000</color>
+
 </resources>

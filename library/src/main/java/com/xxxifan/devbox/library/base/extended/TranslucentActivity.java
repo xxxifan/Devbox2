@@ -44,16 +44,7 @@ public abstract class TranslucentActivity extends ToolbarActivity {
     protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
         super.attachContentView(containerView, layoutResID);
         containerView.setFitsSystemWindows(true);
-        setTransparentStatusBar();
-    }
-
-    @Override
-    protected void setupToolbar(View toolbarView) {
-        super.setupToolbar(toolbarView);
-//        if (isKitkat()) {
-//            toolbarView.setPadding(0, ViewUtils.getSystemBarHeight(), 0, 0);
-//            toolbarView.getLayoutParams().height += ViewUtils.getSystemBarHeight();
-//        }
+        setTranslucentStatusBar();
     }
 
     /**
@@ -62,7 +53,7 @@ public abstract class TranslucentActivity extends ToolbarActivity {
     protected void transparentStatusBar() {
         mFullTransparent = true;
         if (isConfigured()) {
-            setTransparentStatusBar();
+            setTranslucentStatusBar();
         }
     }
 
@@ -85,7 +76,7 @@ public abstract class TranslucentActivity extends ToolbarActivity {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
-    private void setTransparentStatusBar() {
+    protected void setTranslucentStatusBar() {
         if (isKitkat()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
@@ -93,6 +84,7 @@ public abstract class TranslucentActivity extends ToolbarActivity {
             mSystemBarManager = new SystemBarTintManager(this);
         }
         mSystemBarManager.setStatusBarTintEnabled(true);
+        mSystemBarManager.setTintColor(getCompatColor(R.color.colorPrimary));
         if (isLollipop()) {
             // always use transparent status bar
             Window window = getWindow();
@@ -101,11 +93,11 @@ public abstract class TranslucentActivity extends ToolbarActivity {
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             window.getDecorView().setSystemUiVisibility(uiFlag);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-
-            mSystemBarManager.setTintColor(getCompatColor(mFullTransparent ? R.color.colorPrimary : R.color.colorPrimaryDark));
-        } else {
-            mSystemBarManager.setTintColor(getCompatColor(R.color.colorPrimaryDark));
+            if (mFullTransparent) {
+                window.setStatusBarColor(Color.TRANSPARENT);
+            } else {
+                window.setStatusBarColor(getCompatColor(R.color.status_bar_mask));
+            }
         }
     }
 }

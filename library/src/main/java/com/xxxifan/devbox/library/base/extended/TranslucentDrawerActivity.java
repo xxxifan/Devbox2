@@ -39,14 +39,6 @@ public abstract class TranslucentDrawerActivity extends TranslucentActivity {
     protected void onConfigActivity() {
         super.onConfigActivity();
         setRootLayoutId(R.layout._internal_activity_drawer_base);
-        transparentStatusBar();
-    }
-
-    @Override
-    protected void setActivityView(int layoutResID) {
-        super.setContentView(layoutResID);
-        attachContentView($(BASE_DRAWER_ID), layoutResID);
-        setViews();
     }
 
     @Override

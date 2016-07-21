@@ -21,7 +21,7 @@ subprojects {
     ext {
         minSdk = 16
         sdk = 24
-        buildTools = "24.0.0"
+        buildTools = "24.0.1"
     }
 }
 
