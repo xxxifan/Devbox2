@@ -61,6 +61,7 @@ public class NewMainActivity extends ToolbarActivity {
             case R.id.main_recycler_activity:
                 break;
             case R.id.main_fragment_activity:
+                TestFragmentActivity.start(getContext());
                 break;
         }
     }

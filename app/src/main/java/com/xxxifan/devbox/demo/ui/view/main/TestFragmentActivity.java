@@ -1,5 +1,7 @@
 package com.xxxifan.devbox.demo.ui.view.main;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -15,9 +17,14 @@ import butterknife.OnClick;
 import rx.Observable;
 import rx.functions.Action1;
 
-public class MainActivity extends TranslucentActivity {
+public class TestFragmentActivity extends TranslucentActivity {
 
-    public static final String TAG = "MainActivity";
+    public static final String TAG = "TestFragmentActivity";
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, TestFragmentActivity.class);
+        context.startActivity(starter);
+    }
 
     @Override
     protected void onConfigActivity() {

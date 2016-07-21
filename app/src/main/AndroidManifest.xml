@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.view.main.MainActivity">
+        <activity android:name=".ui.view.main.TestFragmentActivity">
         </activity>
         <activity android:name=".ui.view.main.NewMainActivity">
             <intent-filter>
