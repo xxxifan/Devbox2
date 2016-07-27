@@ -196,16 +196,17 @@ public class DataLoader {
     }
 
     public void notifyPageLoaded() {
+        isLoading.set(false);
         if (callback != null && callback instanceof ListLoadCallback) {
             mPage++;
+            ((ListLoadCallback) callback).notifyDataLoaded();
         }
         setDataLoaded(true);
-        isLoading.set(false);
     }
 
     public void notifyPageLoadFailed() {
-        setDataLoaded(false);
         isLoading.set(false);
+        setDataLoaded(false);
     }
 
     public int getPage() {
@@ -253,6 +254,8 @@ public class DataLoader {
          * setRefresh data list due to loadType, should be called in onLoadStart().
          */
         void onRefreshStart();
+
+        void notifyDataLoaded();
     }
 
     public static class RxNotifier {
@@ -262,16 +265,21 @@ public class DataLoader {
             mDataLoaderRef = new WeakReference<>(dataLoader);
         }
 
+        /**
+         * It's work in main thread, make sure it will be called after scheduler transformer
+         */
         public static <T> Observable.Transformer<T, T> instance(DataLoader dataLoader) {
             final RxNotifier notifier = new RxNotifier(dataLoader);
             return new Observable.Transformer<T, T>() {
                 @Override
                 public Observable<T> call(Observable<T> observable) {
                     return observable
-                            .doOnNext(new Action1<T>() {
-                                @Override public void call(T t) {
+                            .doOnCompleted(new Action0() {
+                                @Override public void call() {
                                     if (notifier.getDataLoader() != null) {
                                         notifier.getDataLoader().notifyPageLoaded();
+                                        // clear ref
+                                        notifier.getDataLoaderRef().clear();
                                     }
                                 }
                             })
@@ -279,15 +287,7 @@ public class DataLoader {
                                 @Override public void call(Throwable throwable) {
                                     if (notifier.getDataLoader() != null) {
                                         notifier.getDataLoader().notifyPageLoadFailed();
-
                                         // clear ref
-                                        notifier.getDataLoaderRef().clear();
-                                    }
-                                }
-                            })
-                            .doOnCompleted(new Action0() {
-                                @Override public void call() {
-                                    if (notifier.getDataLoader() != null) {
                                         notifier.getDataLoaderRef().clear();
                                     }
                                 }

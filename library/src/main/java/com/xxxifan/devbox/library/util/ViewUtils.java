@@ -317,6 +317,7 @@ public class ViewUtils {
 
     /**
      * transformer for Observables needs a loading dialog.
+     * It's work in main thread, make sure it will be called after scheduler transformer
      */
     public static <T> Observable.Transformer<T, T> loadingObservable(final Context context) {
         return new Observable.Transformer<T, T>() {
