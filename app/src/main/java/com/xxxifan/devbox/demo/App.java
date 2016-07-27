@@ -9,6 +9,7 @@ import com.xxxifan.devbox.library.util.http.Http;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -31,9 +32,12 @@ public class App extends Application {
         sApp = this;
         Devbox.init(this);
 
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         Cache cache = new Cache(IOUtils.getCacheDir(), 300 * 1024 * 1024); // 500MB
         OkHttpClient client = new OkHttpClient.Builder()
                 .cache(cache)
+                .addInterceptor(logging)
                 .build();
         Http.initClient(client);
 
