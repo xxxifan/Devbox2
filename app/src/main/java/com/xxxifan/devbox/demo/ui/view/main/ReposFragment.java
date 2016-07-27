@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.orhanobut.logger.Logger;
 import com.xxxifan.devbox.demo.R;
 import com.xxxifan.devbox.demo.data.model.Repo;
@@ -30,9 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import kale.adapter.CommonRcvAdapter;
 import kale.adapter.item.AdapterItem;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import rx.functions.Action1;
 
 /**
  * Created by xifan on 6/17/16.
@@ -51,6 +48,7 @@ public class ReposFragment extends RecyclerFragment implements DataLoader.ListLo
         registerDataLoader(true, this).enableLazyLoad();
         registerEventBus();
         enableScrollToLoad(2);
+
         TextView textView = new TextView(getContext());
         textView.setGravity(Gravity.CENTER);
         textView.setText("暂无数据");
@@ -60,6 +58,7 @@ public class ReposFragment extends RecyclerFragment implements DataLoader.ListLo
 
     @Override
     protected RecyclerView.Adapter setupAdapter() {
+        // create a simple adapter.
         return new CommonRcvAdapter<Repo>(mRepoList) {
             @NonNull
             @Override
@@ -100,24 +99,35 @@ public class ReposFragment extends RecyclerFragment implements DataLoader.ListLo
     }
 
     @Override public boolean onLoadStart() {
-        final MaterialDialog dialog = ViewUtils.getLoadingDialog(getContext());
-        dialog.show();
+//        Http.createRetroService(GithubService.class)
+//                .getUserRepos(GithubService.REPO_TYPE_OWNER, GithubService.REPO_SORT_UPDATED, GithubService.DIRECTION_DESC)
+//                .enqueue(new Callback<List<Repo>>() {
+//                    @Override
+//                    public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
+//                        mRepoList.clear();
+//                        mRepoList.addAll(response.body());
+//                        notifyDataLoaded();
+//                        getDataLoader().setDataEnd(true); // mark data load end
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<List<Repo>> call, Throwable t) {
+//                        t.printStackTrace();
+//                    }
+//                });
         Http.createRetroService(GithubService.class)
-                .getUserRepos(GithubService.REPO_TYPE_OWNER, GithubService.REPO_SORT_UPDATED, GithubService.DIRECTION_DESC)
-                .enqueue(new Callback<List<Repo>>() {
-                    @Override
-                    public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
+                .getRxUserRepos(GithubService.REPO_TYPE_OWNER, GithubService.REPO_SORT_UPDATED, GithubService.DIRECTION_DESC)
+                .compose(io())
+                .compose(DataLoader.RxNotifier.instance(getDataLoader()))
+                .compose(ViewUtils.loadingObservable(getContext()))
+                .subscribe(new Action1<Object>() {
+                    @Override public void call(Object repos) {
                         mRepoList.clear();
-                        mRepoList.addAll(response.body());
-                        notifyDataLoaded();
-                        getDataLoader().setDataEnd(true); // mark data load end
-                        ViewUtils.dismissDialog(dialog);
+                        mRepoList.addAll((List<Repo>)repos);
                     }
-
-                    @Override
-                    public void onFailure(Call<List<Repo>> call, Throwable t) {
-                        t.printStackTrace();
-                        ViewUtils.dismissDialog(dialog);
+                }, new Action1<Throwable>() {
+                    @Override public void call(Throwable throwable) {
+                        throwable.printStackTrace();
                     }
                 });
         return false;
