@@ -125,7 +125,7 @@ Fragments.add(this, new Fragment1(), new Fragment2(), new Fragment3())
 ### DataLoader
 DataLoader help you to control data load requests. See demo [ReposFragment](https://github.com/xxxifan/Devbox2/blob/master/app/src/main/java/com/xxxifan/devbox/demo/ui/view/main/ReposFragment.java)
 
-Available methods below:
+Available methods:
 ```java
 // init to use dataLoader, it will return its instance.
 DataLoader.init(callback, useNetwork);
@@ -152,28 +152,9 @@ dataLoader.notifyPageLoaded();
 // this flag automatically set by startLoad()/startRefresh(), and will be set to false when notifyPageLoaded() called.
 dataLoader.isLoading();
 ```
-and some other methods is used by host activity/fragment, see BaseActivity/BaseFragment for more detail. 
+and some other methods is used by host activity/fragment, see BaseActivity/BaseFragment for more detail.
 
-Usage:
-First, make your Activity/Fragment implements LoadCallback, if it's a list loader, use ListLoadCallback for refresh ability, it will make your class to override 
-```
-@Override public boolean onLoadStart() {}
-```
-with ListLoadCallback it also override
-```
-@Override public void onRefreshStart() {}
-```
-and then, register dataLoader to enable it.
-```Note the functions below is available only in BaseFragment/BaseActivity and its children, you can implement it if not using it```
-```
-registerDataLoader(useNetwork, callback);
-```
-and get instance by
-```
-getDataLoader();
-```
-
-and then, onLoadStart() will be called automatically in onResume(). In additional if you enabled lazyLoad in fragment, it will be called in onVisible() instead of onResume(), the best practice is using fragments with ViewPager, it will call setUserVisibleHint, which is onVisible() comes from.
+onLoadStart() will be called automatically in onResume(). In additional if you enabled lazyLoad in fragment, it will be called in onVisible() instead of onResume(), the best practice is using fragments with ViewPager, it will call setUserVisibleHint, which is onVisible() comes from.
 
 Base already handle savedInstance for dataLoader.
 
@@ -313,6 +294,12 @@ You may need basic network permissions
      * apply plugin: 'com.neenbedankt.android-apt'
      * apt 'com.jakewharton:butterknife-compiler:8.2.1'
      */
+
+Java files included in library:
+
+[SystemBarTintManager](https://github.com/xxxifan/Devbox2/blob/master/library/src/main/java/com/xxxifan/devbox/library/base/SystemBarTintManager.java)
+[PinchImageView](https://github.com/xxxifan/Devbox2/blob/master/library/src/main/java/com/xxxifan/devbox/library/widget/PinchImageView.java)
+
 
 ## License
 ```
