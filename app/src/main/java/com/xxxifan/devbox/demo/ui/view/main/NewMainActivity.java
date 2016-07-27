@@ -21,6 +21,8 @@ import android.view.View;
 
 import com.xxxifan.devbox.demo.R;
 import com.xxxifan.devbox.library.base.extended.ToolbarActivity;
+import com.xxxifan.devbox.library.util.Once;
+import com.xxxifan.devbox.library.util.ViewUtils;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -38,6 +40,13 @@ public class NewMainActivity extends ToolbarActivity {
 
     @Override protected void onSetupActivity(Bundle savedInstanceState) {
         ButterKnife.bind(this);
+        Once.check("firstBoot", new Once.OnceCallback() {
+            @Override public void onOnce() {
+                ViewUtils.getSimpleDialogBuilder(getContext(), "首次启动\n\n\nPowered by Once.")
+                        .build().show();
+            }
+        });
+
     }
 
     @Override public String getSimpleName() {
