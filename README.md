@@ -26,12 +26,9 @@ public class App extends Application {
 
 ## Changelog
 
-    2016-07-20 Add StatisticUtil
-    2016-07-18 Add attachToolbar() in BaseFragment
-    2016-07-13 Add Dataloader.RxNotifier
-    2016-07-11 Add Cannon
+see [realese tag](https://github.com/xxxifan/Devbox2/releases)
 
-## Classes
+## Classes/Functions
 
 ### BaseActivity
 It used a special way to load views, but it would be simpler to implement a Activity, and there's more functional activities for extends.
