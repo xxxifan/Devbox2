@@ -269,7 +269,7 @@ You may need basic network permissions
 ## Dependencies
 
     compile "com.android.support:appcompat-v7:${support_lib}"
-
+    
     /*
      * Network/Loaders
      */
@@ -280,30 +280,26 @@ You may need basic network permissions
     compile "com.squareup.retrofit2:converter-gson:${retrofit}"
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
-    compile 'com.liulishuo.filedownloader:library:0.3.2'
+    compile 'com.liulishuo.filedownloader:library:0.3.3'
 
     /*
      * Rx
      */
-    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'io.reactivex:rxjava:1.1.8'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.trello:rxlifecycle:0.6.1'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
     compile "com.github.VictorAlbertos:RxActivityResult:0.3.4"
 
     /*
-     * Dagger
-     */
-    compile 'com.google.dagger:dagger:2.2'
-
-    /*
      * Tools
      */
-    compile 'com.jakewharton:butterknife:8.1.0'
-    compile 'com.afollestad.material-dialogs:core:0.8.5.9'
+    compile 'com.jakewharton:butterknife:8.2.1'
+    compile 'com.afollestad.material-dialogs:core:0.8.6.2'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.github.tianzhijiexian:CommonAdapter:1.1.9'
+    compile 'com.orhanobut:logger:1.15'
 
     provided 'com.android.support:multidex:1.0.1'
 
@@ -312,13 +308,13 @@ You may need basic network permissions
      */
     compile 'jp.wasabeef:glide-transformations:2.0.1'
     compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.3.0'
+    compile 'com.amitshekhar.android:glide-bitmap-pool:0.0.1'
 
     /*
      * apt needed
      *
      * apply plugin: 'com.neenbedankt.android-apt'
-     * apt 'com.google.dagger:dagger-compiler:2.2'
-     * apt 'com.jakewharton:butterknife-compiler:8.1.0'
+     * apt 'com.jakewharton:butterknife-compiler:8.2.1'
      */
 
 ## License
