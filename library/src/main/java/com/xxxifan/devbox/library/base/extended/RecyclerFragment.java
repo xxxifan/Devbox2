@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 
 import com.xxxifan.devbox.library.R;
 import com.xxxifan.devbox.library.base.BaseFragment;
+import com.xxxifan.devbox.library.base.DataLoader;
 
 import kale.adapter.RcvAdapterWrapper;
 
@@ -111,12 +112,13 @@ public abstract class RecyclerFragment extends BaseFragment {
         }
     }
 
+    /**
+     * Default implements for {@link DataLoader.ListLoadCallback#notifyDataLoaded()},
+     * better call this through it.
+     */
     public void notifyDataLoaded() {
         if (getAdapterWrapper() != null) {
             getAdapterWrapper().notifyDataSetChanged();
-        }
-        if (getDataLoader() != null) {
-            getDataLoader().notifyPageLoaded();
         }
 
         if (mEmptyView != null) {
