@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion minSdk as int
         targetSdkVersion sdk as int
-        versionCode 1
-        versionName "1.0"
+        versionCode 16072701
+        versionName "0.3.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -63,6 +63,7 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.8'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.trello:rxlifecycle:0.6.1'
+    compile 'com.jakewharton.rxrelay:rxrelay:1.1.0'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
     compile "com.github.VictorAlbertos:RxActivityResult:0.3.4"
 
