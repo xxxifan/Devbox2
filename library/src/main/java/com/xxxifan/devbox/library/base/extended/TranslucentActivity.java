@@ -79,6 +79,7 @@ public abstract class TranslucentActivity extends ToolbarActivity {
     protected void setTranslucentStatusBar() {
         if (isKitkat()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
         if (mSystemBarManager == null) {
             mSystemBarManager = new SystemBarTintManager(this);
@@ -95,6 +96,8 @@ public abstract class TranslucentActivity extends ToolbarActivity {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             if (mFullTransparent) {
                 window.setStatusBarColor(Color.TRANSPARENT);
+//                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//                window.setNavigationBarColor(Color.TRANSPARENT);
             } else {
                 window.setStatusBarColor(getCompatColor(R.color.status_bar_mask));
             }
