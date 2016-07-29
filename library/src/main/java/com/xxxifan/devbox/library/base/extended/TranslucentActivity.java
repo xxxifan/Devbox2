@@ -21,11 +21,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.LayoutRes;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.xxxifan.devbox.library.R;
 import com.xxxifan.devbox.library.base.SystemBarTintManager;
+import com.xxxifan.devbox.library.util.ViewUtils;
 
 
 /**
@@ -37,24 +40,48 @@ import com.xxxifan.devbox.library.base.SystemBarTintManager;
  */
 public abstract class TranslucentActivity extends ToolbarActivity {
 
-    private boolean mFullTransparent;
+    public static final int FIT_NONE = 0;
+    public static final int FIT_TOOLBAR = 1;
+    public static final int FIT_WINDOW = 2;
+
     private SystemBarTintManager mSystemBarManager;
+    private boolean mTransparentStatusBar;
+    private boolean mTranslucentNavBar;
+    private int mFitWindowMode;
+
+    @Override protected void onConfigActivity() {
+        super.onConfigActivity();
+        setFitSystemWindowMode(FIT_WINDOW);
+    }
 
     @Override
     protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
         super.attachContentView(containerView, layoutResID);
-        containerView.setFitsSystemWindows(true);
-        setTranslucentStatusBar();
+        if (mFitWindowMode == FIT_WINDOW) {
+            ((MarginLayoutParams) containerView.getLayoutParams()).topMargin = ViewUtils.getSystemBarHeight();
+        } else if (mFitWindowMode == FIT_TOOLBAR) {
+            View contentView = ((ViewGroup) containerView).getChildAt(0);
+            MarginLayoutParams layoutParams = ((MarginLayoutParams) contentView.getLayoutParams());
+            layoutParams.topMargin = getResources().getDimensionPixelSize(R.dimen.toolbar_height)
+                    + ViewUtils.getSystemBarHeight();
+        }
+        setTranslucentBar();
+    }
+
+    @Override protected void setupToolbar(View toolbarView) {
+        super.setupToolbar(toolbarView);
+        if (mFitWindowMode == FIT_TOOLBAR) {
+            // use margin to fit system window.
+            ((MarginLayoutParams) toolbarView.getLayoutParams()).topMargin = ViewUtils.getSystemBarHeight();
+        }
     }
 
     /**
-     * switch to full transparent status bar immediately, or configured in onConfigActivity()
+     * @param mode one of {@link #FIT_NONE}, {@link #FIT_TOOLBAR}, {@link #FIT_WINDOW},
+     *             default {@link #FIT_WINDOW}.
      */
-    protected void transparentStatusBar() {
-        mFullTransparent = true;
-        if (isConfigured()) {
-            setTranslucentStatusBar();
-        }
+    protected void setFitSystemWindowMode(int mode) {
+        mFitWindowMode = mode;
     }
 
     /**
@@ -68,6 +95,27 @@ public abstract class TranslucentActivity extends ToolbarActivity {
         }
     }
 
+    /**
+     * switch to full transparent status bar immediately, or configured in onConfigActivity()
+     */
+    protected void transparentStatusBar() {
+        mTransparentStatusBar = true;
+        if (isConfigured()) {
+            setTranslucentBar();
+        }
+    }
+
+    protected void translucentNavBar() {
+        mTranslucentNavBar = true;
+        if (isConfigured()) {
+            setTranslucentBar();
+        }
+    }
+
+    protected void lightStatusBar() {
+        ViewUtils.setStatusBarLightMode(this, true);
+    }
+
     protected boolean isKitkat() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
@@ -76,30 +124,34 @@ public abstract class TranslucentActivity extends ToolbarActivity {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
-    protected void setTranslucentStatusBar() {
+    protected void setTranslucentBar() {
+        // setup translucent bar for kitkat devices
+        if (!isKitkat()) {
+            return;
+        }
+
         if (isKitkat()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            if (mTranslucentNavBar) {
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            }
+            if (mSystemBarManager == null) {
+                mSystemBarManager = new SystemBarTintManager(this);
+            }
+            mSystemBarManager.setStatusBarTintEnabled(true);
+            mSystemBarManager.setTintColor(getCompatColor(R.color.colorPrimary));
         }
-        if (mSystemBarManager == null) {
-            mSystemBarManager = new SystemBarTintManager(this);
-        }
-        mSystemBarManager.setStatusBarTintEnabled(true);
-        mSystemBarManager.setTintColor(getCompatColor(R.color.colorPrimary));
+
         if (isLollipop()) {
             // always use transparent status bar
             Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             int uiFlag = window.getDecorView().getSystemUiVisibility() |
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             window.getDecorView().setSystemUiVisibility(uiFlag);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            if (mFullTransparent) {
+            if (mTransparentStatusBar) {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 window.setStatusBarColor(Color.TRANSPARENT);
-//                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//                window.setNavigationBarColor(Color.TRANSPARENT);
-            } else {
-                window.setStatusBarColor(getCompatColor(R.color.status_bar_mask));
             }
         }
     }

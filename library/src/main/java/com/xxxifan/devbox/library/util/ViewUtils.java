@@ -180,7 +180,7 @@ public class ViewUtils {
      * set status bar icon to light theme, which is called dark mode.
      * should be called in onCreate()
      */
-    public static void setStatusBarDarkMode(Activity activity, boolean darkmode) {
+    public static void setStatusBarLightMode(Activity activity, boolean lightMode) {
         if (activity == null || activity.getWindow() == null) {
             return;
         }
@@ -191,10 +191,10 @@ public class ViewUtils {
         try {
             Class<?> layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
             Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
-            int darkModeFlag = field.getInt(layoutParams);
+            int darkIcon = field.getInt(layoutParams);
             Method extraFlagField = window.getClass()
                     .getMethod("setExtraFlags", int.class, int.class);
-            extraFlagField.invoke(window, darkmode ? darkModeFlag : 0, darkModeFlag);
+            extraFlagField.invoke(window, lightMode ? darkIcon : 0, darkIcon);
             changed = true;
         } catch (Exception ignored) {
         }
@@ -202,13 +202,13 @@ public class ViewUtils {
         // try flyme
         try {
             WindowManager.LayoutParams lp = window.getAttributes();
-            Field darkFlag = WindowManager.LayoutParams.class.getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
+            Field darkIcon = WindowManager.LayoutParams.class.getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
             Field meizuFlags = WindowManager.LayoutParams.class.getDeclaredField("meizuFlags");
-            darkFlag.setAccessible(true);
+            darkIcon.setAccessible(true);
             meizuFlags.setAccessible(true);
-            int bit = darkFlag.getInt(null);
+            int bit = darkIcon.getInt(null);
             int value = meizuFlags.getInt(lp);
-            if (darkmode) {
+            if (lightMode) {
                 value |= bit;
             } else {
                 value &= ~bit;
@@ -221,7 +221,7 @@ public class ViewUtils {
 
         if (!changed && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int visibility = window.getDecorView().getSystemUiVisibility();
-            if (darkmode) {
+            if (lightMode) {
                 visibility |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
             } else {
                 visibility &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;

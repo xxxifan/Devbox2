@@ -50,7 +50,7 @@ public abstract class ImageTranslucentActivity extends TranslucentActivity {
                         .getDimensionPixelSize(R.dimen.toolbar_height);
             }
         }
-        setTranslucentStatusBar();
+        setTranslucentBar();
     }
 
     @Override

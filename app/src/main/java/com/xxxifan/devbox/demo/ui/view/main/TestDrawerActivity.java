@@ -39,6 +39,12 @@ public class TestDrawerActivity extends TranslucentDrawerActivity {
         context.startActivity(starter);
     }
 
+    @Override protected void onConfigActivity() {
+        super.onConfigActivity();
+        translucentNavBar();
+        setFitSystemWindowMode(FIT_WINDOW);
+    }
+
     @Override protected int getLayoutId() {
         return R.layout.activity_transparent;
     }
@@ -52,7 +58,7 @@ public class TestDrawerActivity extends TranslucentDrawerActivity {
     }
 
     @Override protected View getDrawerView() {
-        return View.inflate(getContext(), R.layout.activity_transparent, null);
+        return View.inflate(getContext(), R.layout.view_drawer, null);
     }
 
     @OnClick(R.id.full_btn) public void onClick() {

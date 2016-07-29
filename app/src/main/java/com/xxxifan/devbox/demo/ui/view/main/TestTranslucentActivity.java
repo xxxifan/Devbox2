@@ -44,6 +44,7 @@ public class TestTranslucentActivity extends TranslucentActivity {
 
     @Override protected void onSetupActivity(Bundle savedInstanceState) {
         ButterKnife.bind(this);
+        translucentNavBar();
     }
 
     @Override public String getSimpleName() {

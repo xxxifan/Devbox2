@@ -50,6 +50,7 @@ public abstract class TranslucentDrawerActivity extends TranslucentActivity {
         // setup drawer view
         View drawerView = getDrawerView();
         if (drawerView != null) {
+            drawerView.setFitsSystemWindows(true);
             DrawerLayout.LayoutParams params = new DrawerLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
             params.gravity = Gravity.LEFT;
             ((DrawerLayout) drawerLayout).addView(drawerView, params);
