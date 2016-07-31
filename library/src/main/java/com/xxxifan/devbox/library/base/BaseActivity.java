@@ -73,7 +73,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        onConfigActivity();
+        onConfigureActivity();
         mConfigured = true;
         Cannon.load(this);
         super.onCreate(savedInstanceState);
@@ -170,7 +170,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     //##########  Protected construct methods  ##########
-    protected void onConfigActivity() {
+    protected void onConfigureActivity() {
         //Stub
     }
 
@@ -228,12 +228,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void checkConfigured() {
         if (mConfigured) {
-            throw new IllegalStateException("You must call this method in onConfigActivity");
+            throw new IllegalStateException("You must call this method in onConfigureActivity");
         }
     }
 
     /**
-     * register EventBus on resume/pause by default, must be called onConfigActivity
+     * register EventBus on resume/pause by default, must be called onConfigureActivity
      */
     @BeforeConfigActivity
     protected void registerEventBus() {
@@ -312,7 +312,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public abstract String getSimpleName();
 
     /**
-     * Annotated methods should run in {@link #onConfigActivity()}
+     * Annotated methods should run in {@link #onConfigureActivity()}
      */
     @Target(ElementType.METHOD)
     public @interface BeforeConfigActivity {

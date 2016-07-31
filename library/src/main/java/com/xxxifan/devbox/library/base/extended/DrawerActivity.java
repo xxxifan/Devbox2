@@ -36,8 +36,8 @@ public abstract class DrawerActivity extends ToolbarActivity {
     private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
-    protected void onConfigActivity() {
-        super.onConfigActivity();
+    protected void onConfigureActivity() {
+        super.onConfigureActivity();
         setRootLayoutId(R.layout._internal_activity_drawer_base);
     }
 

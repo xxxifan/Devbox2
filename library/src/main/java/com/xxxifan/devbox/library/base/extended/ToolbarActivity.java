@@ -35,8 +35,8 @@ public abstract class ToolbarActivity extends BaseActivity {
     private boolean mUseLightToolbar;
 
     @Override
-    protected void onConfigActivity() {
-        super.onConfigActivity();
+    protected void onConfigureActivity() {
+        super.onConfigureActivity();
         setRootLayoutId(R.layout._internal_activity_base);
     }
 
@@ -77,7 +77,7 @@ public abstract class ToolbarActivity extends BaseActivity {
     }
 
     /**
-     * make toolbar content use Light theme, it must be called in onConfigActivity().
+     * make toolbar content use Light theme, it must be called in onConfigureActivity().
      */
     @BeforeConfigActivity
     protected void useLightToolbar() {

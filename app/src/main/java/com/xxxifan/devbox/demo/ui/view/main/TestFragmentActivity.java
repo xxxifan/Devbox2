@@ -27,8 +27,8 @@ public class TestFragmentActivity extends TranslucentActivity {
     }
 
     @Override
-    protected void onConfigActivity() {
-        super.onConfigActivity();
+    protected void onConfigureActivity() {
+        super.onConfigureActivity();
         transparentStatusBar();
     }
 

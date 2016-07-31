@@ -39,8 +39,8 @@ public class TestDrawerActivity extends TranslucentDrawerActivity {
         context.startActivity(starter);
     }
 
-    @Override protected void onConfigActivity() {
-        super.onConfigActivity();
+    @Override protected void onConfigureActivity() {
+        super.onConfigureActivity();
         translucentNavBar();
         setFitSystemWindowMode(FIT_WINDOW);
     }

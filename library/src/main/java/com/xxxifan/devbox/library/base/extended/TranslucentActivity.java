@@ -49,8 +49,8 @@ public abstract class TranslucentActivity extends ToolbarActivity {
     private boolean mTranslucentNavBar;
     private int mFitWindowMode;
 
-    @Override protected void onConfigActivity() {
-        super.onConfigActivity();
+    @Override protected void onConfigureActivity() {
+        super.onConfigureActivity();
         setFitSystemWindowMode(FIT_WINDOW);
     }
 
@@ -96,7 +96,7 @@ public abstract class TranslucentActivity extends ToolbarActivity {
     }
 
     /**
-     * switch to full transparent status bar immediately, or configured in onConfigActivity()
+     * switch to full transparent status bar immediately, or configured in onConfigureActivity()
      */
     protected void transparentStatusBar() {
         mTransparentStatusBar = true;
