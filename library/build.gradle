@@ -43,8 +43,7 @@ def okhttp = "3.4.1"
 def retrofit = "2.1.0"
 
 dependencies {
-    compile "com.android.support:appcompat-v7:${support_lib}"
-
+    compile "com.android.support:design:${support_lib}"
     /*
      * Network/Loaders
      */
