@@ -7,10 +7,8 @@ android {
     defaultConfig {
         minSdkVersion minSdk as int
         targetSdkVersion sdk as int
-        versionCode 16072801
-        versionName "0.3.1"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        versionCode 16080301
+        versionName "0.4.0"
     }
     buildTypes {
         release {
