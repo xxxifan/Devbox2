@@ -16,11 +16,13 @@
 
 package com.xxxifan.devbox.library.base.extended;
 
+import android.support.annotation.CallSuper;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.WindowDecorActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
 
 import com.xxxifan.devbox.library.R;
@@ -36,7 +38,6 @@ public abstract class ToolbarActivity extends BaseActivity {
 
     @Override
     protected void onConfigureActivity() {
-        super.onConfigureActivity();
         setRootLayoutId(R.layout._internal_activity_base);
     }
 
@@ -47,12 +48,23 @@ public abstract class ToolbarActivity extends BaseActivity {
         setViews();
     }
 
+    @CallSuper protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
+        if (containerView == null) {
+            throw new IllegalStateException("Cannot find container view");
+        }
+        if (layoutResID == 0) {
+            throw new IllegalStateException("Invalid layout id");
+        }
+        View contentView = getLayoutInflater().inflate(layoutResID, null, false);
+        ((ViewGroup) containerView).addView(contentView, 0);
+    }
+
     protected void setViews() {
         ViewStub toolbarStub = $(BASE_TOOLBAR_STUB_ID);
         if (toolbarStub != null) {
             toolbarStub.setLayoutResource(mUseLightToolbar ? R.layout._internal_view_toolbar_light : R.layout._internal_view_toolbar_dark);
             toolbarStub.inflate();
-            View toolbarView = $(R.id._internal_toolbar);
+            View toolbarView = $(BASE_TOOLBAR_ID);
             if (toolbarView != null) {
                 setupToolbar(toolbarView);
             } else {
@@ -61,19 +73,29 @@ public abstract class ToolbarActivity extends BaseActivity {
         }
     }
 
-    protected void setupToolbar(View toolbarView) {
+    @CallSuper protected void setupToolbar(View toolbarView) {
+        // fix content position if toolbar exists.
+        ((ViewGroup.MarginLayoutParams) getContentView().getLayoutParams()).topMargin = getResources()
+                .getDimensionPixelSize(R.dimen.toolbar_height);
+
         Toolbar toolbar = (Toolbar) toolbarView;
         toolbar.setBackgroundColor(getCompatColor(R.color.colorPrimary));
 
         if (getSupportActionBar() instanceof WindowDecorActionBar) {
-            throw new IllegalStateException("You must make your app theme extends from " +
-                    "Devbox.AppTheme or manually set windowActionBar to false.");
+            throw new IllegalStateException("You must make your app theme extends from Devbox.AppTheme or manually set windowActionBar to false.");
         }
 
         setSupportActionBar(toolbar);
         if (!isTaskRoot() && getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    /**
+     * @return user defined content view attached to container.
+     */
+    protected View getContentView() {
+        return ((ViewGroup) $(BASE_CONTAINER_ID)).getChildAt(0);
     }
 
     /**

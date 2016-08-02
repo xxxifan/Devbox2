@@ -42,7 +42,6 @@ public class TestDrawerActivity extends TranslucentDrawerActivity {
     @Override protected void onConfigureActivity() {
         super.onConfigureActivity();
         translucentNavBar();
-        setFitSystemWindowMode(FIT_WINDOW);
     }
 
     @Override protected int getLayoutId() {
@@ -58,7 +57,7 @@ public class TestDrawerActivity extends TranslucentDrawerActivity {
     }
 
     @Override protected View getDrawerView() {
-        return View.inflate(getContext(), R.layout.view_drawer, null);
+        return View.inflate(getContext(), R.layout.view_test_drawer, null);
     }
 
     @OnClick(R.id.full_btn) public void onClick() {

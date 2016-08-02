@@ -48,6 +48,7 @@ public class ReposFragment extends RecyclerFragment implements DataLoader.ListLo
         registerDataLoader(true, this).enableLazyLoad();
         registerEventBus();
         enableScrollToLoad(2);
+        getRecyclerView().setClipToPadding(true);
 
         TextView textView = new TextView(getContext());
         textView.setGravity(Gravity.CENTER);

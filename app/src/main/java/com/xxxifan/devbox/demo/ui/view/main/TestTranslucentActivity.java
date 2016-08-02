@@ -38,6 +38,11 @@ public class TestTranslucentActivity extends TranslucentActivity {
         context.startActivity(starter);
     }
 
+    @Override protected void onConfigureActivity() {
+        super.onConfigureActivity();
+        setFitSystemWindowMode(FIT_WINDOW_TOP);
+    }
+
     @Override protected int getLayoutId() {
         return R.layout.activity_transparent;
     }

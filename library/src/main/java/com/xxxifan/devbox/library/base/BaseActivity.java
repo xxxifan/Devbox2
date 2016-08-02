@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -28,8 +29,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.ActivityEvent;
@@ -44,22 +43,25 @@ import com.xxxifan.devbox.library.util.ViewUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
- * Created by xifan on 3/30/16.
+ * BaseActivity uses a special way to inflate views. Execute order is
+ * {@link #onConfigureActivity()}  -> {@link #getLayoutId()} -> {@link #setActivityView(int)} ->
+ * {@link #onSetupActivity(Bundle)}
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
     public static final int BASE_CONTAINER_ID = R.id._internal_base_container;
     public static final int BASE_TOOLBAR_STUB_ID = R.id._internal_toolbar_stub;
+    public static final int BASE_TOOLBAR_ID = R.id._internal_toolbar;
     public static final int BASE_TOOLBAR_SHADOW_ID = R.id._internal_toolbar_shadow;
-    public static final int BASE_DRAWER_ID = R.id._internal_drawer_layout;
     public static final int FRAGMENT_CONTAINER = R.id.fragment_container;
 
     private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
@@ -71,8 +73,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private int mRootLayoutId;
     private boolean mRegisterEventBus;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         onConfigureActivity();
         mConfigured = true;
         Cannon.load(this);
@@ -87,8 +88,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void setContentView(@LayoutRes int layoutResID) {
+    @Override public void setContentView(@LayoutRes int layoutResID) {
         // if root layout has been set, then it's a container, so let subclass
         // to handle content view.
         if (mRootLayoutId == 0) {
@@ -97,14 +97,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.setContentView(mRootLayoutId);
     }
 
-    @Override
-    protected void onStart() {
+    @Override protected void onStart() {
         super.onStart();
         lifecycleSubject.onNext(ActivityEvent.START);
     }
 
-    @Override
-    protected void onResume() {
+    @Override protected void onResume() {
         super.onResume();
         lifecycleSubject.onNext(ActivityEvent.RESUME);
         StatisticsUtil.onPageStart(this, getSimpleName());
@@ -124,8 +122,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onPause() {
+    @Override protected void onPause() {
         lifecycleSubject.onNext(ActivityEvent.PAUSE);
         StatisticsUtil.onPageEnd();
         super.onPause();
@@ -138,14 +135,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStop() {
+    @Override protected void onStop() {
         lifecycleSubject.onNext(ActivityEvent.STOP);
         super.onStop();
     }
 
-    @Override
-    protected void onDestroy() {
+    @Override protected void onDestroy() {
         lifecycleSubject.onNext(ActivityEvent.DESTROY);
         Cannon.reset();
         super.onDestroy();
@@ -161,8 +156,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
+    @Override @CallSuper public void onBackPressed() {
         if (mBackKeyListener == null || getSupportFragmentManager().getBackStackEntryCount() > 0
                 || !mBackKeyListener.onPressed()) {
             super.onBackPressed();
@@ -178,32 +172,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(layoutResID);
     }
 
-    protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
-        if (containerView == null) {
-            throw new IllegalStateException("Cannot find container view");
-        }
-        if (layoutResID == 0) {
-            throw new IllegalStateException("Invalid layout id");
-        }
-        View contentView = getLayoutInflater().inflate(layoutResID, null, false);
-        if (containerView instanceof FrameLayout) {
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
-            params.topMargin = getResources().getDimensionPixelSize(R.dimen.toolbar_height);
-            ((ViewGroup) containerView).addView(contentView, 0, params);
-        } else {
-            ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(MATCH_PARENT, MATCH_PARENT);
-            params.topMargin = getResources().getDimensionPixelSize(R.dimen.toolbar_height);
-            ((ViewGroup) containerView).addView(contentView, 0, params);
-        }
-    }
-
     @SuppressWarnings("unchecked")
     protected <T extends View> T $(int viewId) {
         return (T) findViewById(viewId);
     }
 
-    @BeforeConfigActivity
-    protected void setRootLayoutId(@LayoutRes int rootLayoutId) {
+    @BeforeConfigActivity protected void setRootLayoutId(@LayoutRes int rootLayoutId) {
         checkConfigured();
         mRootLayoutId = rootLayoutId;
     }
@@ -213,8 +187,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         return this;
     }
 
-    @ColorInt
-    public int getCompatColor(@ColorRes int resId) {
+    @ColorInt public int getCompatColor(@ColorRes int resId) {
         return ContextCompat.getColor(this, resId);
     }
 
@@ -233,9 +206,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * register EventBus on resume/pause by default, must be called onConfigureActivity
+     * register EventBus on resume/pause by default
      */
-    @BeforeConfigActivity
     protected void registerEventBus() {
         mRegisterEventBus = true;
     }
@@ -245,7 +217,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @param useNetwork if is network data loader, it will not request if no network there.
      */
-    @BeforeConfigActivity
     protected DataLoader registerDataLoader(boolean useNetwork, DataLoader.LoadCallback callback) {
         mDataLoader = DataLoader.init(useNetwork, callback);
         return mDataLoader;
@@ -314,7 +285,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Annotated methods should run in {@link #onConfigureActivity()}
      */
-    @Target(ElementType.METHOD)
+    @Target(ElementType.METHOD) @Retention(SOURCE)
     public @interface BeforeConfigActivity {
     }
 

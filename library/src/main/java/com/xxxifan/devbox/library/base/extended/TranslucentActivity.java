@@ -16,19 +16,28 @@
 
 package com.xxxifan.devbox.library.base.extended;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
+import android.support.v4.view.OnApplyWindowInsetsListener;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.WindowInsetsCompat;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.xxxifan.devbox.library.R;
 import com.xxxifan.devbox.library.base.SystemBarTintManager;
 import com.xxxifan.devbox.library.util.ViewUtils;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 
 /**
@@ -40,47 +49,75 @@ import com.xxxifan.devbox.library.util.ViewUtils;
  */
 public abstract class TranslucentActivity extends ToolbarActivity {
 
-    public static final int FIT_NONE = 0;
+    public static final int FIT_NONE = -1;
+    public static final int FIT_WINDOW_TOP = 0;
     public static final int FIT_TOOLBAR = 1;
-    public static final int FIT_WINDOW = 2;
+    public static final int FIT_WINDOW_BOTH = 2;
 
     private SystemBarTintManager mSystemBarManager;
     private boolean mTransparentStatusBar;
     private boolean mTranslucentNavBar;
     private int mFitWindowMode;
-
-    @Override protected void onConfigureActivity() {
-        super.onConfigureActivity();
-        setFitSystemWindowMode(FIT_WINDOW);
-    }
+    private int mToolbarOffset;
 
     @Override
     protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
         super.attachContentView(containerView, layoutResID);
-        if (mFitWindowMode == FIT_WINDOW) {
-            ((MarginLayoutParams) containerView.getLayoutParams()).topMargin = ViewUtils.getSystemBarHeight();
-        } else if (mFitWindowMode == FIT_TOOLBAR) {
-            View contentView = ((ViewGroup) containerView).getChildAt(0);
-            MarginLayoutParams layoutParams = ((MarginLayoutParams) contentView.getLayoutParams());
-            layoutParams.topMargin = getResources().getDimensionPixelSize(R.dimen.toolbar_height)
-                    + ViewUtils.getSystemBarHeight();
+        if (isKitkat()) {
+            setWindowOffset(containerView, ViewUtils.getSystemBarHeight());
         }
+
+        if (isLollipop() && getFitWindowMode() != FIT_WINDOW_BOTH) {
+            ViewCompat.setOnApplyWindowInsetsListener(getWindow().getDecorView(), new OnApplyWindowInsetsListener() {
+                @Override
+                public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+                    setWindowOffset($(BASE_CONTAINER_ID), insets.getStableInsetTop());
+                    return insets;
+                }
+            });
+        }
+
         setTranslucentBar();
+    }
+
+    /**
+     * set offset between container and window, {@link #FIT_WINDOW_TOP} make container top have space with transcluent bar,
+     * {@link #FIT_TOOLBAR} make both container and toolbar have space, {@link #FIT_WINDOW_BOTH} works like {@link View#setFitsSystemWindows(boolean)}
+     *
+     * @param containerView container view that need to fit window.
+     * @param offset        pixels to margin
+     */
+    protected void setWindowOffset(View containerView, int offset) {
+        if (getFitWindowMode() == FIT_WINDOW_TOP) {
+            ((ViewGroup.MarginLayoutParams) containerView.getLayoutParams()).topMargin = offset;
+        } else if (getFitWindowMode() == FIT_TOOLBAR) {
+            mToolbarOffset = offset;
+            if ($(BASE_TOOLBAR_ID) != null) {
+                ((ViewGroup.MarginLayoutParams) $(BASE_TOOLBAR_ID).getLayoutParams()).topMargin = offset;
+            }
+        } else if (getFitWindowMode() == FIT_WINDOW_BOTH) {
+            containerView.setFitsSystemWindows(true);
+        }
     }
 
     @Override protected void setupToolbar(View toolbarView) {
         super.setupToolbar(toolbarView);
-        if (mFitWindowMode == FIT_TOOLBAR) {
-            // use margin to fit system window.
-            ((MarginLayoutParams) toolbarView.getLayoutParams()).topMargin = ViewUtils.getSystemBarHeight();
+        if (getFitWindowMode() != FIT_WINDOW_BOTH) {
+            if (getFitWindowMode() == FIT_TOOLBAR) {
+                ((ViewGroup.MarginLayoutParams) getContentView().getLayoutParams()).topMargin = 0;
+            }
+            ((ViewGroup.MarginLayoutParams) toolbarView.getLayoutParams()).topMargin = mToolbarOffset;
         }
     }
 
     /**
-     * @param mode one of {@link #FIT_NONE}, {@link #FIT_TOOLBAR}, {@link #FIT_WINDOW},
-     *             default {@link #FIT_WINDOW}.
+     * only set for kitkat and newer apis, more see from {@link #setWindowOffset(View, int)}
+     *
+     * @param mode one of {@link #FIT_NONE}, {@link #FIT_TOOLBAR}, {@link #FIT_WINDOW_TOP},
+     *             default {@link #FIT_WINDOW_BOTH}.
      */
-    protected void setFitSystemWindowMode(int mode) {
+    @BeforeConfigActivity protected void setFitSystemWindowMode(@FitWindowMode int mode) {
+        checkConfigured();
         mFitWindowMode = mode;
     }
 
@@ -124,6 +161,11 @@ public abstract class TranslucentActivity extends ToolbarActivity {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
+    @FitWindowMode
+    protected int getFitWindowMode() {
+        return mFitWindowMode;
+    }
+
     protected void setTranslucentBar() {
         // setup translucent bar for kitkat devices
         if (!isKitkat()) {
@@ -132,7 +174,7 @@ public abstract class TranslucentActivity extends ToolbarActivity {
 
         if (isKitkat()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            if (mTranslucentNavBar) {
+            if (mTranslucentNavBar && getFitWindowMode() != FIT_WINDOW_BOTH) {
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             }
             if (mSystemBarManager == null) {
@@ -143,7 +185,7 @@ public abstract class TranslucentActivity extends ToolbarActivity {
         }
 
         if (isLollipop()) {
-            // always use transparent status bar
+            // always use translucent status bar
             Window window = getWindow();
             int uiFlag = window.getDecorView().getSystemUiVisibility() |
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
@@ -155,4 +197,16 @@ public abstract class TranslucentActivity extends ToolbarActivity {
             }
         }
     }
+
+    @SuppressLint("NewApi") @Override protected void onDestroy() {
+        if (isLollipop() && getWindow() != null && getWindow().getDecorView() != null) {
+            getWindow().getDecorView().setOnApplyWindowInsetsListener(null);
+        }
+        super.onDestroy();
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.PARAMETER, ElementType.FIELD, ElementType.METHOD})
+    @IntDef({FIT_NONE, FIT_TOOLBAR, FIT_WINDOW_TOP, FIT_WINDOW_BOTH})
+    public @interface FitWindowMode {}
 }

@@ -43,7 +43,7 @@ public abstract class TranslucentDrawerActivity extends TranslucentActivity {
 
     @Override
     protected void setViews() {
-        View drawerLayout = $(BASE_DRAWER_ID);
+        View drawerLayout = $(DrawerActivity.BASE_DRAWER_ID);
         if (drawerLayout == null) {
             throw new IllegalStateException("Cannot find drawer_layout");
         }
@@ -64,7 +64,7 @@ public abstract class TranslucentDrawerActivity extends TranslucentActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
-            mDrawerLayout = $(R.id._internal_drawer_layout);
+            mDrawerLayout = $(DrawerActivity.BASE_DRAWER_ID);
             mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, ((Toolbar) toolbarView), 0, 0);
             mDrawerLayout.addDrawerListener(mDrawerToggle);
             mDrawerLayout.post(new Runnable() {

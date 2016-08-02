@@ -43,10 +43,6 @@ public class TestImageTranslucent extends ImageTranslucentActivity {
         return R.layout.activity_image;
     }
 
-    @Override protected View getContentView() {
-        return $(R.id.real_content);
-    }
-
     @Override protected void onSetupActivity(Bundle savedInstanceState) {
         ButterKnife.bind(this);
     }
