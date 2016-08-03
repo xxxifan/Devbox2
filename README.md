@@ -25,6 +25,7 @@ dependencies {
 check [LatestRelease](https://github.com/xxxifan/Devbox2/releases) here
 
 2.add apt needed dependencies to your main project.
+
 3.init Devbox
 
 ```java
