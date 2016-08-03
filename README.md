@@ -3,9 +3,9 @@ Yet another Android development toolbox.
 It's a new generation of [DevBox](https://github.com/xxxifan/DevBox)
 
 ## Usage
-1. add this project as your module (maybe publish this to jitpack? but this won't allow you select what dependencies you need)
-2. add apt needed dependencies to your main project.
-3. init Devbox
+1.add this project as your module (maybe publish this to jitpack? but this won't allow you select what dependencies you need)
+2.add apt needed dependencies to your main project.
+3.init Devbox
 
 ```java
 public class App extends Application {
@@ -21,13 +21,13 @@ public class App extends Application {
     }
 }
 ```
-4. use Devbox.Theme or turn off your windowActionBar in your style
+4.use Devbox.Theme or turn off your windowActionBar in your style
 ```
 <style name="AppTheme" parent="Devbox.AppTheme">
 </style>
 ```
 
-5. feel free to copy a proguard rules to your app project from here
+5.feel free to copy a proguard rules to your app project from here
 > [proguard-rules.pro](https://github.com/xxxifan/Devbox2/blob/master/library/proguard-rules.pro)
 
 ```warning: using this library may add up your method count at least 15000+.```
