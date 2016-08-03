@@ -3,10 +3,26 @@ Yet another Android development toolbox.
 It's a new generation of [DevBox](https://github.com/xxxifan/DevBox)
 
 ## Usage
-1.add this project as your module (maybe publish this to jitpack? but this won't allow you select what dependencies you need)
+1.add this project as your module ~~(maybe publish this to jitpack? but this won't allow you select what dependencies you need)~~
+or config it in gradle way now!
+```groovy
+// in root build.gradle file
+allprojects {
+    repositories {
+        // ...
+        maven { url "https://jitpack.io" }
+    }
+}
+
+// in app build.gradle file
+dependencies {
+        // ...
+        compile 'com.github.xxxifan:Devbox2:v0.4.1' // see [LatestRelease](https://github.com/xxxifan/Devbox2/releases) here
+}
+
+```
 2.add apt needed dependencies to your main project.
 3.init Devbox
-
 ```java
 public class App extends Application {
 
@@ -26,10 +42,46 @@ public class App extends Application {
 <style name="AppTheme" parent="Devbox.AppTheme">
 </style>
 ```
-
 5.feel free to copy a proguard rules to your app project from here
 > [proguard-rules.pro](https://github.com/xxxifan/Devbox2/blob/master/library/proguard-rules.pro)
+6.Butterknife and some library need android-apt, and also if you want to enable retrolambda, add following in you root build.gradle
+```groovy
+buildscript {
+    // ...
+    dependencies {
+        // ...
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8' // android-apt
+        classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4' // retrolamda
+    }
+    
+    subprojects {
+        ext {
+            minSdk = 16
+            sdk = 23
+            buildTool = "your build tool version here"
+        }
+    }
+}
+```
+and in your app build.gradle
+```groovy
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.neenbedankt.android-apt'
 
+android {
+    // ...
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    
+    // ...
+    dependencies {
+        // ...
+        apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    }
+}
+```
 ```warning: using this library may add up your method count at least 15000+.```
 
 ## Changelog
