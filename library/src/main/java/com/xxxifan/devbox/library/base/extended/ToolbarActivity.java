@@ -28,7 +28,6 @@ import android.view.ViewStub;
 import com.xxxifan.devbox.library.R;
 import com.xxxifan.devbox.library.base.BaseActivity;
 
-
 /**
  * Created by xifan on 4/5/16.
  */
