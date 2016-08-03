@@ -21,6 +21,14 @@ public class App extends Application {
     }
 }
 ```
+4. use Devbox.Theme or turn off your windowActionBar in your style
+```
+<style name="AppTheme" parent="Devbox.AppTheme">
+</style>
+```
+
+5. feel free to copy a proguard rules to your app project from here
+> [proguard-rules.pro](https://github.com/xxxifan/Devbox2/blob/master/library/proguard-rules.pro)
 
 ```warning: using this library may add up your method count at least 15000+.```
 
