@@ -1,4 +1,4 @@
-## Devbox2 [![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=578cb3974a7be5010070ef32&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/578cb3974a7be5010070ef32/build/latest)
+## Devbox2 [![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=578cb3974a7be5010070ef32&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/578cb3974a7be5010070ef32/build/latest) [![Jitpack.io](https://jitpack.io/v/xxxifan/Devbox2.svg)](https://jitpack.io/#xxxifan/Devbox2)
 Yet another Android development toolbox.
 It's a new generation of [DevBox](https://github.com/xxxifan/DevBox)
 
