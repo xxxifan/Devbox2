@@ -29,6 +29,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
@@ -113,6 +114,14 @@ public class ViewUtils {
 
     public static float px2dp(int px) {
         return px / getDensity() + 0.5f;
+    }
+
+    public static int getDimenInt(@DimenRes int dimenId) {
+        return Devbox.getAppDelegate().getResources().getDimensionPixelSize(dimenId);
+    }
+
+    public static float getDimen(@DimenRes int dimenId) {
+        return Devbox.getAppDelegate().getResources().getDimension(dimenId);
     }
 
     public static boolean hasTranslucentNavBar() {
