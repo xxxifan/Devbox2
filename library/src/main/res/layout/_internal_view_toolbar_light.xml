@@ -19,6 +19,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/_internal_toolbar"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/toolbar_height"
+    android:layout_height="wrap_content"
     android:minHeight="@dimen/toolbar_height"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
