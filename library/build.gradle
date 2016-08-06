@@ -44,6 +44,8 @@ def okhttp = "3.4.1"
 def retrofit = "2.1.0"
 
 dependencies {
+    testCompile 'junit:junit:4.12'
+
     compile "com.android.support:design:${support_lib}"
     /*
      * Network/Loaders
