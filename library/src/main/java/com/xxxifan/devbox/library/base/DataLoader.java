@@ -20,6 +20,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Looper;
 
 import com.orhanobut.logger.Logger;
 import com.xxxifan.devbox.library.Devbox;
@@ -32,6 +33,7 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
 
@@ -56,9 +58,9 @@ public class DataLoader {
 
     private int mPage;
 
-    public DataLoader(LoadCallback callbacks) {
+    private DataLoader(LoadCallback callback) {
         isLoading = new AtomicBoolean(false);
-        setCallback(callbacks);
+        this.callback = callback;
     }
 
     public static DataLoader init(boolean useNetwork, LoadCallback callbacks) {
@@ -76,12 +78,7 @@ public class DataLoader {
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 
-    private void setCallback(LoadCallback callback) {
-        if (this.callback != null && callback != null) {
-            Logger.e("You have set a callback already, did you really want to set it again?");
-        }
-        this.callback = callback;
-    }
+    // ########## Load Process ##########
 
     public void startRefresh() {
         if (isLoading.get()) {
@@ -156,6 +153,8 @@ public class DataLoader {
         }
     }
 
+    // ############ Flags ############
+
     public boolean isDataLoaded() {
         return isDataLoaded;
     }
@@ -195,11 +194,27 @@ public class DataLoader {
         this.useNetwork = useNetwork;
     }
 
+    // ########### Functions ###########
+
     public void notifyPageLoaded() {
         isLoading.set(false);
         if (callback != null && callback instanceof ListLoadCallback) {
             mPage++;
-            ((ListLoadCallback) callback).notifyDataLoaded();
+            if (Looper.myLooper() != Looper.getMainLooper()) {
+                Observable.just(null)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<Object>() {
+                            @Override public void call(Object o) {
+                                ((ListLoadCallback) callback).notifyDataLoaded();
+                            }
+                        }, new Action1<Throwable>() {
+                            @Override public void call(Throwable throwable) {
+                                throwable.printStackTrace();
+                            }
+                        });
+            } else {
+                ((ListLoadCallback) callback).notifyDataLoaded();
+            }
         }
         setDataLoaded(true);
     }

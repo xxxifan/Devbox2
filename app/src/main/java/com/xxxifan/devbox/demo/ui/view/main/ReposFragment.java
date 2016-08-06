@@ -124,7 +124,7 @@ public class ReposFragment extends RecyclerFragment implements DataLoader.ListLo
                 .subscribe(new Action1<Object>() {
                     @Override public void call(Object repos) {
                         mRepoList.clear();
-                        mRepoList.addAll((List<Repo>)repos);
+                        mRepoList.addAll((List<Repo>) repos);
                     }
                 }, new Action1<Throwable>() {
                     @Override public void call(Throwable throwable) {
