@@ -10,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion minSdk as int
         targetSdkVersion sdk as int
-        versionCode 16080502
-        versionName "0.4.2"
+        versionCode 16080901
+        versionName "0.4.3"
     }
     buildTypes {
         release {
