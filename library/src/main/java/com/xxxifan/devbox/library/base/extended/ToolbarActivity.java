@@ -72,7 +72,10 @@ public abstract class ToolbarActivity extends BaseActivity {
         }
     }
 
-    @CallSuper protected void setupToolbar(View toolbarView) {
+    /**
+     * override to change toolbar behavior, skip to call super.setupToolbar() to hide toolbar.
+     */
+    protected void setupToolbar(View toolbarView) {
         // fix content position if toolbar exists.
         ((ViewGroup.MarginLayoutParams) getContentView().getLayoutParams()).topMargin = getResources()
                 .getDimensionPixelSize(R.dimen.toolbar_height);
