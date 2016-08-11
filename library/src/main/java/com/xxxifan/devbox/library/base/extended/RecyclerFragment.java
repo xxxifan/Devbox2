@@ -35,6 +35,7 @@ import kale.adapter.RcvAdapterWrapper;
  * Created by xifan on 6/14/16.
  */
 public abstract class RecyclerFragment extends BaseFragment {
+    public static final int BASE_RECYCLER_ID = R.id.base_recycler_view;
 
     private RecyclerView mRecyclerView;
     private RcvAdapterWrapper mRecyclerWrapper;
@@ -48,7 +49,7 @@ public abstract class RecyclerFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         if (view != null) {
-            mRecyclerView = $(view, R.id.base_recycler_view);
+            mRecyclerView = $(view, BASE_RECYCLER_ID);
             Tests.checkNull(mRecyclerView);
 
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
