@@ -27,6 +27,8 @@ import kale.adapter.item.AdapterItem;
 public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
 
     private View root;
+    private T data;
+    private int position;
 
     public BaseAdapterItem() {
     }
@@ -39,8 +41,21 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
 
     @Override public void setViews() {}
 
+    @Override public void handleData(T t, int i) {
+        this.data = t;
+        this.position = i;
+    }
+
     public View getView() {
         return root;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public int getPosition() {
+        return position;
     }
 
     protected abstract void bindViews();
