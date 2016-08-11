@@ -16,6 +16,7 @@
 
 package com.xxxifan.devbox.library.base;
 
+import android.support.annotation.CallSuper;
 import android.view.View;
 
 import kale.adapter.item.AdapterItem;
@@ -41,7 +42,7 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
 
     @Override public void setViews() {}
 
-    @Override public void handleData(T t, int i) {
+    @CallSuper @Override public void handleData(T t, int i) {
         this.data = t;
         this.position = i;
     }

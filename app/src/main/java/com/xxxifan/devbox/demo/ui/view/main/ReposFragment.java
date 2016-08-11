@@ -86,6 +86,7 @@ public class ReposFragment extends RecyclerFragment implements DataLoader.ListLo
 
                     @Override
                     public void handleData(Repo repo, int index) {
+                        super.handleData(repo, index);
                         titleText.setText(repo.name);
                         String rankStr = String.format("Fork:%s Star:%s", repo.forks, repo.stargazers_count);
                         rankText.setText(rankStr);
