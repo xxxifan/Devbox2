@@ -16,12 +16,16 @@
 
 package com.xxxifan.devbox.library;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Process;
 
 import com.xxxifan.devbox.library.util.http.Http;
+
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 
@@ -30,7 +34,7 @@ import okhttp3.OkHttpClient;
  */
 public class Devbox {
 
-    private volatile static Context sContext;
+    private static Context sContext;
 
     public static void init(Context context) {
         sContext = context;
@@ -77,4 +81,18 @@ public class Devbox {
             return "";
         }
     }
+
+    public boolean isMainProcess() {
+        ActivityManager am = ((ActivityManager) getAppDelegate().getSystemService(Context.ACTIVITY_SERVICE));
+        List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
+        String mainProcessName = getAppDelegate().getPackageName();
+        int myPid = Process.myPid();
+        for (ActivityManager.RunningAppProcessInfo info : processInfos) {
+            if (info.pid == myPid && mainProcessName.equals(info.processName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
