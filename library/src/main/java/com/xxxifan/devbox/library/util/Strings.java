@@ -153,4 +153,25 @@ public class Strings {
     public static String decodeBase64ToString(String decodeStr) {
         return new String(decodeBase64(decodeStr), Charset.forName("utf-8"));
     }
+
+    public static String encodeSHA1(String string) {
+        try {
+            MessageDigest digest = java.security.MessageDigest.getInstance("SHA-1");
+            digest.update(string.getBytes());
+            byte messageDigest[] = digest.digest();
+            StringBuilder hexString = new StringBuilder();
+            for (int i = 0, s = messageDigest.length; i < s; i++) {
+                String shaHex = Integer.toHexString(messageDigest[i] & 0xFF);
+                if (shaHex.length() < 2) {
+                    hexString.append(0);
+                }
+                hexString.append(shaHex);
+            }
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return EMPTY;
+    }
 }
