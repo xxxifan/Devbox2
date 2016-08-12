@@ -82,7 +82,7 @@ public class Devbox {
         }
     }
 
-    public boolean isMainProcess() {
+    public static boolean isMainProcess() {
         ActivityManager am = ((ActivityManager) getAppDelegate().getSystemService(Context.ACTIVITY_SERVICE));
         List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
         String mainProcessName = getAppDelegate().getPackageName();
