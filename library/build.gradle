@@ -62,12 +62,12 @@ dependencies {
     /*
      * Rx
      */
-    compile 'io.reactivex:rxjava:1.1.8'
+    compile 'io.reactivex:rxjava:1.1.9'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.trello:rxlifecycle:0.6.1'
     compile 'com.jakewharton.rxrelay:rxrelay:1.1.0'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
-    compile "com.github.VictorAlbertos:RxActivityResult:0.3.4"
+    compile "com.github.VictorAlbertos:RxActivityResult:0.3.5"
 
     /*
      * Tools
@@ -78,8 +78,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.github.tianzhijiexian:CommonAdapter:1.1.9'
     compile 'com.orhanobut:logger:1.15'
-
-    provided 'com.android.support:multidex:1.0.1'
+    compile 'top.zibin:Luban:1.0.7'
 
     /*
      * Optional
