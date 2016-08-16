@@ -18,7 +18,7 @@ allprojects {
 // in app build.gradle file
 dependencies {
         // ...
-        compile 'com.github.xxxifan:Devbox2:v0.4.1'
+        compile 'com.github.xxxifan:Devbox2:v0.4.4'
 }
 ```
 
