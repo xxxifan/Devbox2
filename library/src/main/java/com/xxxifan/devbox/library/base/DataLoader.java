@@ -84,7 +84,7 @@ public class DataLoader {
     // ########## Load Process ##########
 
     public void startRefresh() {
-        if (isRefreshing.get()) {
+        if (isRefreshing() || isLoading()) {
             Logger.t(toString()).d("refresh is in progress, dismiss");
             return;
         } else {
@@ -123,11 +123,11 @@ public class DataLoader {
     }
 
     private void onDataLoad(boolean lazyMode) {
-        if (!isLoading.get()) {
-            isLoading.set(true);
-        } else {
+        if (isRefreshing() || isLoading()) {
             Logger.t(toString()).d("load is in progress, dismiss");
             return;
+        } else {
+            isLoading.set(true);
         }
         if (callback == null) {
             Logger.t(toString()).d("load callback is null");
@@ -162,11 +162,11 @@ public class DataLoader {
      * you shouldn't manually call this only if you understanding what you are doing.
      */
     public void forceLoad() {
-        if (!isLoading.get()) {
-            isLoading.set(true);
-        } else {
+        if (isRefreshing() || isLoading()) {
             Logger.t(toString()).d("load is in progress, dismiss");
             return;
+        } else {
+            isLoading.set(true);
         }
         if (callback == null) {
             Logger.t(toString()).d("load callback is null");
