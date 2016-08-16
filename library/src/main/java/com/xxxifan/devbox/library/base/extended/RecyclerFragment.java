@@ -98,7 +98,7 @@ public abstract class RecyclerFragment extends BaseFragment {
                     final int totalItemCount = layoutManager.getItemCount();
 
                     if (lastVisibleItem >= totalItemCount - loadThreshold && dy > 0) {
-                        getDataLoader().startRefresh();
+                        getDataLoader().startLoad();
                     }
                 }
             });
