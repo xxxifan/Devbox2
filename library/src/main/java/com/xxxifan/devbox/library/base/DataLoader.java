@@ -43,6 +43,7 @@ import rx.functions.Action1;
 public class DataLoader {
     private static final String PAGE_STATE = "page";
     private static final String LOADING_STATE = "isLoading";
+    private static final String REFRESHING_STATE = "isRefreshing";
     private static final String DATA_LOAD_STATE = "dataLoaded";
     private static final String DATA_END_STATE = "dataEnd";
     private static final String LAZY_LOAD_STATE = "lazyLoad";
@@ -55,11 +56,13 @@ public class DataLoader {
     private boolean isLazyLoadEnabled;
     private boolean useNetwork;
     private AtomicBoolean isLoading;
+    private AtomicBoolean isRefreshing;
 
     private int mPage;
 
     private DataLoader(LoadCallback callback) {
         isLoading = new AtomicBoolean(false);
+        isRefreshing = new AtomicBoolean(false);
         this.callback = callback;
     }
 
@@ -81,22 +84,22 @@ public class DataLoader {
     // ########## Load Process ##########
 
     public void startRefresh() {
-        if (isLoading.get()) {
-            Logger.t(toString()).d("load is in progress, dismiss");
+        if (isRefreshing.get()) {
+            Logger.t(toString()).d("refresh is in progress, dismiss");
             return;
         } else {
-            isLoading.set(true);
+            isRefreshing.set(true);
         }
         if (callback == null) {
             Logger.t(toString()).d("load callback is null");
-            isLoading.set(false); // reset state
+            isRefreshing.set(false); // reset state
             return;
         }
         if (useNetwork && !hasNetwork()) {
             NetworkEvent event = new NetworkEvent(
                     Devbox.getAppDelegate().getString(R.string.msg_network_unavailable));
             EventBus.getDefault().post(event);
-            isLoading.set(false); // reset state
+            isRefreshing.set(false); // reset state
             Logger.t(toString()).d("network not available, dismiss");
             return;
         }
@@ -105,7 +108,7 @@ public class DataLoader {
         if (callback instanceof ListLoadCallback) {
             ((ListLoadCallback) callback).onRefreshStart();
         } else {
-            isLoading.set(false); // reset state
+            isRefreshing.set(false); // reset state
             startLoad();
         }
     }
@@ -190,6 +193,10 @@ public class DataLoader {
         return isLoading.get();
     }
 
+    public boolean isRefreshing() {
+        return isRefreshing.get();
+    }
+
     public void useNetwork(boolean useNetwork) {
         this.useNetwork = useNetwork;
     }
@@ -198,6 +205,7 @@ public class DataLoader {
 
     public void notifyPageLoaded() {
         isLoading.set(false);
+        isRefreshing.set(false);
         if (callback != null && callback instanceof ListLoadCallback) {
             mPage++;
             if (Looper.myLooper() != Looper.getMainLooper()) {
@@ -221,6 +229,7 @@ public class DataLoader {
 
     public void notifyPageLoadFailed() {
         isLoading.set(false);
+        isRefreshing.set(false);
         setDataLoaded(false);
     }
 
@@ -239,6 +248,7 @@ public class DataLoader {
     public void onSavedState(Bundle savedInstanceState) {
         savedInstanceState.putInt(PAGE_STATE, mPage);
         savedInstanceState.putBoolean(LOADING_STATE, isLoading());
+        savedInstanceState.putBoolean(REFRESHING_STATE, isRefreshing());
         savedInstanceState.putBoolean(DATA_LOAD_STATE, isDataLoaded);
         savedInstanceState.putBoolean(DATA_END_STATE, isDataEnd);
         savedInstanceState.putBoolean(LAZY_LOAD_STATE, isLazyLoadEnabled);
@@ -248,6 +258,7 @@ public class DataLoader {
     public void onRestoreState(Bundle savedInstanceState) {
         mPage = savedInstanceState.getInt(PAGE_STATE);
         isLoading.set(savedInstanceState.getBoolean(LOADING_STATE));
+        isRefreshing.set(savedInstanceState.getBoolean(REFRESHING_STATE));
         savedInstanceState.putBoolean(DATA_LOAD_STATE, isDataLoaded);
         savedInstanceState.putBoolean(DATA_END_STATE, isDataEnd);
         savedInstanceState.putBoolean(LAZY_LOAD_STATE, isLazyLoadEnabled);
