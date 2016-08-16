@@ -145,7 +145,7 @@ public abstract class RecyclerFragment extends BaseFragment {
     /**
      * @return get RecyclerWrapper
      */
-    protected RecyclerView.Adapter getAdapterWrapper() {
+    protected RcvAdapterWrapper getAdapterWrapper() {
         return mRecyclerWrapper;
     }
 
