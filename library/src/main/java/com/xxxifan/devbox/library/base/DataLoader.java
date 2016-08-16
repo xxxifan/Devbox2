@@ -105,6 +105,7 @@ public class DataLoader {
         }
 
         // ready to start
+        resetPage();
         if (callback instanceof ListLoadCallback) {
             ((ListLoadCallback) callback).onRefreshStart();
         } else {
