@@ -150,9 +150,42 @@ public class DataLoader {
 
             boolean isDataLoaded = callback.onLoadStart();
             setDataLoaded(isDataLoaded);
-            // reset lazy load, it will only call once
-            isLazyLoadEnabled = false;
         } else {
+            isLoading.set(false);
+            Logger.t(toString())
+                    .d(isDataLoaded() ? "isDataLoaded" : isDataEnd ? "isDataEnd"
+                            : (lazyLoad || normalLoad) ? "load mode" : "unknown" + " is true, dismiss");
+        }
+    }
+
+    /**
+     * you shouldn't manually call this only if you understanding what you are doing.
+     */
+    public void forceLoad() {
+        if (!isLoading.get()) {
+            isLoading.set(true);
+        } else {
+            Logger.t(toString()).d("load is in progress, dismiss");
+            return;
+        }
+        if (callback == null) {
+            Logger.t(toString()).d("load callback is null");
+            isLoading.set(false); // reset state
+            return;
+        }
+        if (useNetwork && !hasNetwork()) {
+            NetworkEvent event = new NetworkEvent(
+                    Devbox.getAppDelegate().getString(R.string.msg_network_unavailable));
+            EventBus.getDefault().post(event);
+            isLoading.set(false); // reset state
+            Logger.t(toString()).d("network not available, dismiss");
+            return;
+        }
+
+        if (!isDataEnd()) {
+            callback.onLoadStart();
+        } else {
+            Logger.t(toString()).d("isDataEnd is true, dismiss");
             isLoading.set(false);
         }
     }
@@ -166,6 +199,7 @@ public class DataLoader {
     // mark data requested, then it won't call startLoad() again in onResume().
     public void setDataLoaded(boolean loaded) {
         isDataLoaded = loaded;
+        isLazyLoadEnabled = false;
     }
 
     public boolean isDataEnd() {
