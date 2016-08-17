@@ -17,6 +17,7 @@
 package com.xxxifan.devbox.library.base.extended;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,12 +30,14 @@ import com.xxxifan.devbox.library.base.BaseFragment;
 import com.xxxifan.devbox.library.base.DataLoader;
 import com.xxxifan.devbox.library.util.Tests;
 
+import kale.adapter.CommonRcvAdapter;
 import kale.adapter.RcvAdapterWrapper;
+import kale.adapter.item.AdapterItem;
 
 /**
  * Created by xifan on 6/14/16.
  */
-public abstract class RecyclerFragment extends BaseFragment {
+public abstract class RecyclerFragment<T> extends BaseFragment {
     public static final int BASE_RECYCLER_ID = R.id.base_recycler_view;
 
     private RecyclerView mRecyclerView;
@@ -53,11 +56,30 @@ public abstract class RecyclerFragment extends BaseFragment {
             Tests.checkNull(mRecyclerView);
 
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-            mRecyclerWrapper = new RcvAdapterWrapper(setupAdapter(), layoutManager);
+            mRecyclerWrapper = new RcvAdapterWrapper(createAdapter(), layoutManager);
             mRecyclerView.setLayoutManager(mRecyclerWrapper.getLayoutManager());
             mRecyclerView.setAdapter(mRecyclerWrapper);
         }
         return view;
+    }
+
+    /**
+     * @return create adapter, default use CommonRcvAdapter.
+     */
+    protected RecyclerView.Adapter createAdapter() {
+        return new CommonRcvAdapter<T>(null) {
+            @NonNull @Override public AdapterItem<T> createItem(Object type) {
+                return onCreateAdapterItem(type);
+            }
+
+            @Override public Object getItemType(T t) {
+                return getAdapterItemType(t);
+            }
+        };
+    }
+
+    protected Object getAdapterItemType(T t) {
+        return -1;
     }
 
     public void setFooterView(View view) {
@@ -149,5 +171,5 @@ public abstract class RecyclerFragment extends BaseFragment {
         return mRecyclerWrapper;
     }
 
-    protected abstract RecyclerView.Adapter setupAdapter();
+    protected abstract AdapterItem<T> onCreateAdapterItem(Object type);
 }

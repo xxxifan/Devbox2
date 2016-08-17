@@ -2,8 +2,6 @@ package com.xxxifan.devbox.demo.ui.view.main;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +32,7 @@ import rx.functions.Action1;
 /**
  * Created by xifan on 6/17/16.
  */
-public class ReposFragment extends RecyclerFragment implements DataLoader.ListLoadCallback {
+public class ReposFragment extends RecyclerFragment<Repo> implements DataLoader.ListLoadCallback {
 
     private List<Repo> mRepoList = new ArrayList<>();
 
@@ -57,50 +55,42 @@ public class ReposFragment extends RecyclerFragment implements DataLoader.ListLo
         setEmptyView(textView);
     }
 
-    @Override
-    protected RecyclerView.Adapter setupAdapter() {
-        // create a simple adapter.
-        return new CommonRcvAdapter<Repo>(mRepoList) {
-            @NonNull
+    @Override protected AdapterItem<Repo> onCreateAdapterItem(Object type) {
+        final int typeInt = (int) type;
+        return new BaseAdapterItem<Repo>() {
+            @BindView(R.id.repo_name)
+            TextView titleText;
+            @BindView(R.id.repo_rank)
+            TextView rankText;
+
             @Override
-            public AdapterItem<Repo> createItem(Object type) {
-                final int typeInt = (int) type;
-                return new BaseAdapterItem<Repo>() {
-                    @BindView(R.id.repo_name)
-                    TextView titleText;
-                    @BindView(R.id.repo_rank)
-                    TextView rankText;
-
-                    @Override
-                    protected void bindViews() {
-                        ButterKnife.bind(this, getView());
-                        titleText = ButterKnife.findById(getView(), R.id.repo_name);
-                        rankText = ButterKnife.findById(getView(), R.id.repo_rank);
-                        getView().setBackgroundColor(typeInt == 1 ? Color.RED : Color.WHITE);
-                    }
-
-                    @Override
-                    public int getLayoutResId() {
-                        return R.layout.item_repos;
-                    }
-
-                    @Override
-                    public void handleData(Repo repo, int index) {
-                        super.handleData(repo, index);
-                        titleText.setText(repo.name);
-                        String rankStr = String.format("Fork:%s Star:%s", repo.forks, repo.stargazers_count);
-                        rankText.setText(rankStr);
-                    }
-                };
+            protected void bindViews() {
+                ButterKnife.bind(this, getView());
+                titleText = ButterKnife.findById(getView(), R.id.repo_name);
+                rankText = ButterKnife.findById(getView(), R.id.repo_rank);
+                getView().setBackgroundColor(typeInt == 1 ? Color.RED : Color.WHITE);
             }
 
-            @Override public Object getItemType(Repo repo) {
-                return repo.fork ? 1 : 0;
+            @Override
+            public int getLayoutResId() {
+                return R.layout.item_repos;
+            }
+
+            @Override
+            public void handleData(Repo repo, int index) {
+                super.handleData(repo, index);
+                titleText.setText(repo.name);
+                String rankStr = String.format("Fork:%s Star:%s", repo.forks, repo.stargazers_count);
+                rankText.setText(rankStr);
             }
         };
     }
 
-    @Override public boolean onLoadStart() {
+     public Object getAdapterItemType(Repo repo) {
+        return repo.fork ? 1 : 0;
+    }
+
+    @Override @SuppressWarnings("unchecked") public boolean onLoadStart() {
 //        Http.createRetroService(GithubService.class)
 //                .getUserRepos(GithubService.REPO_TYPE_OWNER, GithubService.REPO_SORT_UPDATED, GithubService.DIRECTION_DESC)
 //                .enqueue(new Callback<List<Repo>>() {
@@ -126,6 +116,7 @@ public class ReposFragment extends RecyclerFragment implements DataLoader.ListLo
                     @Override public void call(Object repos) {
                         mRepoList.clear();
                         mRepoList.addAll((List<Repo>) repos);
+                        ((CommonRcvAdapter<Repo>) getAdapter()).setData(mRepoList);
                     }
                 }, new Action1<Throwable>() {
                     @Override public void call(Throwable throwable) {
