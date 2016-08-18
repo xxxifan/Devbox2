@@ -25,7 +25,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import kale.adapter.CommonRcvAdapter;
 import kale.adapter.item.AdapterItem;
 import rx.functions.Action1;
 
@@ -116,7 +115,7 @@ public class ReposFragment extends RecyclerFragment<Repo> implements DataLoader.
                     @Override public void call(Object repos) {
                         mRepoList.clear();
                         mRepoList.addAll((List<Repo>) repos);
-                        ((CommonRcvAdapter<Repo>) getAdapter()).setData(mRepoList);
+                        getCommonRcvAdapter().setData(mRepoList);
                     }
                 }, new Action1<Throwable>() {
                     @Override public void call(Throwable throwable) {

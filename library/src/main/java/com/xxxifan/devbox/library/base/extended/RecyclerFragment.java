@@ -165,6 +165,18 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
     }
 
     /**
+     * @return helper to retrieve CommonRcvAdapter, if not a CommonRcvAdapter, return null.
+     */
+    @SuppressWarnings("unchecked")
+    protected CommonRcvAdapter<T> getCommonRcvAdapter() {
+        if (mRecyclerWrapper.getWrappedAdapter() instanceof CommonRcvAdapter) {
+            return (CommonRcvAdapter<T>) getAdapter();
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * @return get RecyclerWrapper
      */
     protected RcvAdapterWrapper getAdapterWrapper() {
