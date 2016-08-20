@@ -177,6 +177,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         return (T) findViewById(viewId);
     }
 
+    @SuppressWarnings("unchecked")
+    protected <T extends View> T $(View view, int viewId) {
+        return (T) view.findViewById(viewId);
+    }
+
     @BeforeConfigActivity protected void setRootLayoutId(@LayoutRes int rootLayoutId) {
         checkConfigured();
         mRootLayoutId = rootLayoutId;
