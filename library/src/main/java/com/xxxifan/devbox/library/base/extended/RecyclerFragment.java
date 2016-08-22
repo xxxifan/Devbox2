@@ -98,7 +98,8 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
         mEmptyView = view;
         mEmptyView.setVisibility(View.GONE);
         if (getView() != null) {
-            ((ViewGroup) getView()).addView(view);
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            ((ViewGroup) getView()).addView(view, params);
         }
     }
 
