@@ -24,6 +24,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.xxxifan.devbox.library.R;
 import com.xxxifan.devbox.library.base.BaseFragment;
@@ -97,9 +98,9 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
     public void setEmptyView(View view) {
         mEmptyView = view;
         mEmptyView.setVisibility(View.GONE);
-        if (getView() != null) {
+        if (mRecyclerView != null && mRecyclerView.getParent() instanceof FrameLayout) {
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            ((ViewGroup) getView()).addView(view, params);
+            ((ViewGroup) mRecyclerView.getParent()).addView(view, params);
         }
     }
 
