@@ -266,6 +266,23 @@ public class DataLoader {
         isLoading.set(false);
         isRefreshing.set(false);
         setDataLoaded(false);
+        if (callback != null && callback instanceof ListLoadCallback) {
+            if (Looper.myLooper() != Looper.getMainLooper()) {
+                Observable.just(null)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<Object>() {
+                            @Override public void call(Object o) {
+                                ((ListLoadCallback) callback).notifyDataLoaded();
+                            }
+                        }, new Action1<Throwable>() {
+                            @Override public void call(Throwable throwable) {
+                                throwable.printStackTrace();
+                            }
+                        });
+            } else {
+                ((ListLoadCallback) callback).notifyDataLoaded();
+            }
+        }
     }
 
     public int getPage() {
