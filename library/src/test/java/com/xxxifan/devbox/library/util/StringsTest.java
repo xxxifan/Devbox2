@@ -25,6 +25,6 @@ public class StringsTest {
 
     @Test
     public void testSHA1() {
-        System.out.println(Strings.encodeSHA1("admin", true));
+        System.out.println(Strings.encodeBase64(Strings.encodeSHA1("admin")));
     }
 }
