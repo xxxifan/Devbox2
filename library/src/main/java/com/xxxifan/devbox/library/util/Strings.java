@@ -21,7 +21,6 @@ import android.util.Base64;
 import com.xxxifan.devbox.library.Devbox;
 import com.xxxifan.devbox.library.R;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -118,24 +117,30 @@ public class Strings {
 
     /**
      * MD5 encode string
+     * @param lazy true will not convert string to hexString, default false
      */
-    public static String encodeMD5(String string) {
-        byte[] hash;
+    public static String encodeMD5(String string, boolean lazy) {
         try {
-            hash = MessageDigest.getInstance("MD5")
-                    .digest(string.getBytes("UTF-8"));
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Huh, MD5 should be supported?", e);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Huh, UTF-8 should be supported?", e);
-        }
+            byte[] hash = MessageDigest.getInstance("MD5").digest(string.getBytes("UTF-8"));
 
-        StringBuilder hex = new StringBuilder(hash.length * 2);
-        for (byte b : hash) {
-            if ((b & 0xFF) < 0x10) hex.append("0");
-            hex.append(Integer.toHexString(b & 0xFF));
+            if (!lazy) {
+                StringBuilder hex = new StringBuilder(hash.length * 2);
+                for (byte b : hash) {
+                    if ((b & 0xFF) < 0x10) hex.append("0");
+                    hex.append(Integer.toHexString(b & 0xFF));
+                }
+                return hex.toString();
+            } else {
+                return new String(hash, Charset.defaultCharset());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return hex.toString();
+        return EMPTY;
+    }
+
+    public static String encodeMD5(String string) {
+        return encodeMD5(string, false);
     }
 
     public static String encodeBase64(String encodeStr) {
@@ -154,24 +159,34 @@ public class Strings {
         return new String(decodeBase64(decodeStr), Charset.forName("utf-8"));
     }
 
-    public static String encodeSHA1(String string) {
+    /**
+     * @param lazy true will not convert string to hexString, default false
+     */
+    public static String encodeSHA1(String string, boolean lazy) {
         try {
             MessageDigest digest = java.security.MessageDigest.getInstance("SHA-1");
             digest.update(string.getBytes());
             byte messageDigest[] = digest.digest();
-            StringBuilder hexString = new StringBuilder();
-            for (int i = 0, s = messageDigest.length; i < s; i++) {
-                String shaHex = Integer.toHexString(messageDigest[i] & 0xFF);
-                if (shaHex.length() < 2) {
-                    hexString.append(0);
+            if (!lazy) {
+                StringBuilder hexString = new StringBuilder();
+                for (int i = 0, s = messageDigest.length; i < s; i++) {
+                    String shaHex = Integer.toHexString(messageDigest[i] & 0xFF);
+                    if (shaHex.length() < 2) {
+                        hexString.append(0);
+                    }
+                    hexString.append(shaHex);
                 }
-                hexString.append(shaHex);
+                return hexString.toString();
+            } else {
+                return new String(messageDigest, Charset.defaultCharset());
             }
-            return hexString.toString();
-
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         return EMPTY;
+    }
+
+    public static String encodeSHA1(String string) {
+        return encodeSHA1(string, false);
     }
 }
