@@ -23,7 +23,6 @@ import com.xxxifan.devbox.library.R;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -115,32 +114,20 @@ public class Strings {
         return m.matches();
     }
 
-    /**
-     * MD5 encode string
-     * @param lazy true will not convert string to hexString, default false
-     */
-    public static String encodeMD5(String string, boolean lazy) {
+    public static String encodeMD5(String string) {
         try {
             byte[] hash = MessageDigest.getInstance("MD5").digest(string.getBytes("UTF-8"));
 
-            if (!lazy) {
-                StringBuilder hex = new StringBuilder(hash.length * 2);
-                for (byte b : hash) {
-                    if ((b & 0xFF) < 0x10) hex.append("0");
-                    hex.append(Integer.toHexString(b & 0xFF));
-                }
-                return hex.toString();
-            } else {
-                return new String(hash, Charset.defaultCharset());
+            StringBuilder hex = new StringBuilder(hash.length * 2);
+            for (byte b : hash) {
+                if ((b & 0xFF) < 0x10) hex.append("0");
+                hex.append(Integer.toHexString(b & 0xFF));
             }
+            return hex.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return EMPTY;
-    }
-
-    public static String encodeMD5(String string) {
-        return encodeMD5(string, false);
     }
 
     public static String encodeBase64(String encodeStr) {
@@ -159,34 +146,30 @@ public class Strings {
         return new String(decodeBase64(decodeStr), Charset.forName("utf-8"));
     }
 
-    /**
-     * @param lazy true will not convert string to hexString, default false
-     */
-    public static String encodeSHA1(String string, boolean lazy) {
+
+    public static String encodeSHA1ToString(String string) {
         try {
             MessageDigest digest = java.security.MessageDigest.getInstance("SHA-1");
-            digest.update(string.getBytes());
-            byte messageDigest[] = digest.digest();
-            if (!lazy) {
-                StringBuilder hexString = new StringBuilder();
-                for (int i = 0, s = messageDigest.length; i < s; i++) {
-                    String shaHex = Integer.toHexString(messageDigest[i] & 0xFF);
-                    if (shaHex.length() < 2) {
-                        hexString.append(0);
-                    }
-                    hexString.append(shaHex);
-                }
-                return hexString.toString();
-            } else {
-                return new String(messageDigest, Charset.defaultCharset());
+            byte hash[] = digest.digest(string.getBytes("UTF-8"));
+            StringBuilder hex = new StringBuilder(hash.length * 2);
+            for (byte b : hash) {
+                if ((b & 0xFF) < 0x10) hex.append("0");
+                hex.append(Integer.toHexString(b & 0xFF));
             }
-        } catch (NoSuchAlgorithmException e) {
+            return hex.toString();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return EMPTY;
     }
 
-    public static String encodeSHA1(String string) {
-        return encodeSHA1(string, false);
+    public static byte[] encodeSHA1(String string) {
+        try {
+            MessageDigest digest = java.security.MessageDigest.getInstance("SHA-1");
+            return digest.digest(string.getBytes("UTF-8"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new byte[0];
     }
 }
