@@ -28,6 +28,7 @@
         <activity android:name=".ui.view.main.TestImageTranslucent" />
         <activity android:name=".ui.view.main.CrashActivity" />
         <activity android:name=".ui.view.main.RecyclerActivity" />
+        <activity android:name=".ui.view.main.MvpActivity" />
     </application>
 
 </manifest>

@@ -57,6 +57,7 @@ public class NewMainActivity extends ToolbarActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.main_drawer_activity:
+                MvpActivity.start(getContext());
                 break;
             case R.id.main_translucent_activity:
                 TestTranslucentActivity.start(getContext());

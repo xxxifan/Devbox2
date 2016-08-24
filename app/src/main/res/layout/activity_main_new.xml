@@ -24,7 +24,7 @@
         android:id="@+id/main_drawer_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Drawer Activity" />
+        android:text="Mvp Activity" />
 
     <Button
         android:id="@+id/main_translucent_activity"
