@@ -57,14 +57,14 @@ dependencies {
     compile "com.squareup.retrofit2:converter-gson:${retrofit}"
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
-    compile 'com.liulishuo.filedownloader:library:0.3.5'
+    compile 'com.liulishuo.filedownloader:library:1.0.0'
 
     /*
      * Rx
      */
     compile 'io.reactivex:rxjava:1.1.9'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.trello:rxlifecycle:0.6.1'
+    compile 'com.trello:rxlifecycle:0.7.0'
     compile 'com.jakewharton.rxrelay:rxrelay:1.1.0'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
     compile "com.github.VictorAlbertos:RxActivityResult:0.3.5"
@@ -72,8 +72,8 @@ dependencies {
     /*
      * Tools
      */
-    compile 'com.jakewharton:butterknife:8.2.1'
-    compile 'com.afollestad.material-dialogs:core:0.8.6.2'
+    compile 'com.jakewharton:butterknife:8.3.0'
+    compile 'com.afollestad.material-dialogs:core:0.9.0.1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.github.tianzhijiexian:CommonAdapter:1.1.9'

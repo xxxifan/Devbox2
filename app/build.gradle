@@ -26,5 +26,5 @@ dependencies {
     compile "com.android.support:design:24.1.1"
     compile project(':library')
     compile 'in.srain.cube:ultra-ptr:1.0.11'
-    apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    apt 'com.jakewharton:butterknife-compiler:8.3.0'
 }
