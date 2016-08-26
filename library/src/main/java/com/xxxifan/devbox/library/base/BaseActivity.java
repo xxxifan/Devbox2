@@ -25,15 +25,16 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.orhanobut.logger.Logger;
-import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
+import com.trello.rxlifecycle.android.ActivityEvent;
 import com.xxxifan.devbox.library.R;
 import com.xxxifan.devbox.library.event.BaseEvent;
 import com.xxxifan.devbox.library.util.IOUtils;
@@ -231,11 +232,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         return mDataLoader;
     }
 
-    protected void postEvent(BaseEvent event, Class target) {
+    protected void postEvent(@NonNull BaseEvent event, Class target) {
         EventBus.getDefault().post(event);
     }
 
-    protected void postStickyEvent(BaseEvent event, Class target) {
+    protected void postStickyEvent(@NonNull BaseEvent event, Class target) {
         EventBus.getDefault().postSticky(event);
     }
 
@@ -248,7 +249,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public <T> LifecycleTransformer<T> bindToLifecycle() {
-        return RxLifecycle.bindActivity(lifecycleSubject);
+        return RxLifecycle.bind(lifecycleSubject);
     }
 
     protected <T> Observable.Transformer<T, T> io() {
