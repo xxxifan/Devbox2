@@ -32,9 +32,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.trello.rxlifecycle.FragmentEvent;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
+import com.trello.rxlifecycle.android.FragmentEvent;
 import com.xxxifan.devbox.library.R;
 import com.xxxifan.devbox.library.event.BaseEvent;
 import com.xxxifan.devbox.library.util.Fragments;
@@ -298,7 +298,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected final <T> LifecycleTransformer<T> bindToLifecycle() {
-        return RxLifecycle.bindFragment(lifecycleSubject);
+        return RxLifecycle.bind(lifecycleSubject);
     }
 
     protected <T> Observable.Transformer<T, T> io() {

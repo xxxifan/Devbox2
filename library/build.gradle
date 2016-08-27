@@ -39,7 +39,7 @@ android {
     }
 }
 
-def support_lib = "24.1.1"
+def support_lib = "24.2.0"
 def okhttp = "3.4.1"
 def retrofit = "2.1.0"
 
@@ -73,7 +73,7 @@ dependencies {
     /*
      * Tools
      */
-    compile 'com.jakewharton:butterknife:8.3.0'
+    compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.afollestad.material-dialogs:core:0.9.0.1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.google.code.gson:gson:2.7'
