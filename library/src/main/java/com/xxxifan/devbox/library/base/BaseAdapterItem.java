@@ -17,6 +17,7 @@
 package com.xxxifan.devbox.library.base;
 
 import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import kale.adapter.item.AdapterItem;
@@ -30,6 +31,8 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
     private View root;
     private T data;
     private int position;
+
+    private ItemClickListener mItemClickListener;
 
     public BaseAdapterItem() {
     }
@@ -59,6 +62,24 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
         return position;
     }
 
+    public void setOnItemClickListener(@NonNull final ItemClickListener listener) {
+        if (getView() != null) {
+            mItemClickListener = listener;
+
+            getView().setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onItemClick(v, getData(), getPosition());
+                    }
+                }
+            });
+        }
+    }
+
     protected abstract void bindViews();
+
+    public interface ItemClickListener {
+        <T> void onItemClick(View v, T data, int index);
+    }
 
 }
