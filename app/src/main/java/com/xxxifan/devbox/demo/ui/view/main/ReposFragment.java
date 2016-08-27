@@ -53,37 +53,16 @@ public class ReposFragment extends RecyclerFragment<Repo> implements DataLoader.
     }
 
     @Override protected AdapterItem<Repo> onCreateAdapterItem(Object type) {
-        final int typeInt = (int) type;
-        return new BaseAdapterItem<Repo>() {
-            @BindView(R.id.repo_name)
-            TextView titleText;
-            @BindView(R.id.repo_rank)
-            TextView rankText;
-
-            @Override
-            protected void bindViews() {
-                ButterKnife.bind(this, getView());
-                titleText = ButterKnife.findById(getView(), R.id.repo_name);
-                rankText = ButterKnife.findById(getView(), R.id.repo_rank);
-                getView().setBackgroundColor(typeInt == 1 ? Color.RED : Color.WHITE);
+        TestAdapter item = new TestAdapter((int) type);
+        item.setOnItemClickListener(new BaseAdapterItem.ItemClickListener<Repo>() {
+            @Override public void onItemClick(View v, Repo data, int index) {
+                showMessage("hehe " + data.description);
             }
-
-            @Override
-            public int getLayoutResId() {
-                return R.layout.item_repos;
-            }
-
-            @Override
-            public void handleData(Repo repo, int index) {
-                super.handleData(repo, index);
-                titleText.setText(repo.name);
-                String rankStr = String.format("Fork:%s Star:%s", repo.forks, repo.stargazers_count);
-                rankText.setText(rankStr);
-            }
-        };
+        });
+        return item;
     }
 
-     public Object getAdapterItemType(Repo repo) {
+    public Object getAdapterItemType(Repo repo) {
         return repo.fork ? 1 : 0;
     }
 
@@ -131,4 +110,36 @@ public class ReposFragment extends RecyclerFragment<Repo> implements DataLoader.
     @Override public void onRefreshStart() {
         Logger.d("onRefreshStart called");
     }
+
+    public class TestAdapter extends BaseAdapterItem<Repo> {
+        @BindView(R.id.repo_name)
+        TextView titleText;
+        @BindView(R.id.repo_rank)
+        TextView rankText;
+
+        private int typeInt;
+
+        public TestAdapter(int typeInt) {
+            this.typeInt = typeInt;
+        }
+
+        @Override protected void bindViews() {
+            ButterKnife.bind(this, getView());
+            titleText = ButterKnife.findById(getView(), R.id.repo_name);
+            rankText = ButterKnife.findById(getView(), R.id.repo_rank);
+            getView().setBackgroundColor(typeInt == 1 ? Color.RED : Color.WHITE);
+        }
+
+        @Override public int getLayoutResId() {
+            return R.layout.item_repos;
+        }
+
+        @Override public void handleData(Repo data, int position) {
+            super.handleData(data, position);
+            titleText.setText(data.name);
+            String rankStr = String.format("Fork:%s Star:%s", data.forks, data.stargazers_count);
+            rankText.setText(rankStr);
+        }
+    }
+
 }

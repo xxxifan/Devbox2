@@ -32,7 +32,7 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
     private T data;
     private int position;
 
-    private ItemClickListener mItemClickListener;
+    private ItemClickListener<T> mItemClickListener;
 
     public BaseAdapterItem() {
     }
@@ -40,14 +40,23 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
     @Override
     public void bindViews(View root) {
         this.root = root;
+        if (mItemClickListener != null && !root.hasOnClickListeners()) {
+            root.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onItemClick(v, getData(), getPosition());
+                    }
+                }
+            });
+        }
         bindViews();
     }
 
     @Override public void setViews() {}
 
-    @CallSuper @Override public void handleData(T t, int i) {
-        this.data = t;
-        this.position = i;
+    @CallSuper @Override public void handleData(T data, int position) {
+        this.data = data;
+        this.position = position;
     }
 
     public View getView() {
@@ -62,10 +71,10 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
         return position;
     }
 
-    public void setOnItemClickListener(@NonNull ItemClickListener listener) {
-        if (getView() != null) {
-            mItemClickListener = listener;
+    public void setOnItemClickListener(@NonNull ItemClickListener<T> listener) {
+        mItemClickListener = listener;
 
+        if (getView() != null) {
             getView().setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     if (mItemClickListener != null) {
@@ -78,8 +87,8 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
 
     protected abstract void bindViews();
 
-    public interface ItemClickListener {
-        <T> void onItemClick(View v, T data, int index);
+    public interface ItemClickListener<T> {
+        void onItemClick(View v, T data, int index);
     }
 
 }
