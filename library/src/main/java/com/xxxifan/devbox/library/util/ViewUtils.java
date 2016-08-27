@@ -348,6 +348,14 @@ public class ViewUtils {
                                     dialog = null;
                                 }
                             }
+                        })
+                        .doOnUnsubscribe(new Action0() {
+                            @Override public void call() {
+                                if (dialog != null && dialog.isShowing()) {
+                                    dialog.dismiss();
+                                    dialog = null;
+                                }
+                            }
                         });
             }
         };
