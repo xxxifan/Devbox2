@@ -62,7 +62,7 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
         return position;
     }
 
-    public void setOnItemClickListener(@NonNull final ItemClickListener listener) {
+    public void setOnItemClickListener(@NonNull ItemClickListener listener) {
         if (getView() != null) {
             mItemClickListener = listener;
 
