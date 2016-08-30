@@ -40,15 +40,14 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
     @Override
     public void bindViews(View root) {
         this.root = root;
-        if (mItemClickListener != null && !root.hasOnClickListeners()) {
-            root.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    if (mItemClickListener != null) {
-                        mItemClickListener.onItemClick(v, getData(), getPosition());
-                    }
+        root.post(new Runnable() {
+            @Override public void run() {
+                if (mItemClickListener != null && !getView().hasOnClickListeners()) {
+                    setOnItemClickListener(mItemClickListener);
                 }
-            });
-        }
+            }
+        });
+
         bindViews();
     }
 
