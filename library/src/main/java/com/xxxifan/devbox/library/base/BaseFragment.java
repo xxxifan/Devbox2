@@ -224,7 +224,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * manual control method for sometimes lifecycle not working for fragment.
      */
-    protected void onVisible() {}
+    public void onVisible() {}
 
     //##########  Protected helper methods ##########
     @ColorInt

@@ -186,7 +186,7 @@ public class Fragments {
         public void into(@IdRes int containerId) {
             if (fragment == null) {
                 Logger.t(TAG).e("fragment is null, will not do anything");
-                finish();
+                commit();
                 return;
             }
 
@@ -222,12 +222,6 @@ public class Fragments {
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             }
 
-            if (!fragment.isAdded()) {
-                transaction.add(containerId, fragment, tag);
-            }
-
-            transaction.show(fragment);
-
             if (addToBackStack) {
                 if (canAddBackStack) {
                     transaction.addToBackStack(tag);
@@ -237,11 +231,22 @@ public class Fragments {
                 }
             }
 
-            finish();
+            if (!fragment.isAdded()) {
+                transaction.add(containerId, fragment, tag);
+            }
+
+            transaction.show(fragment);
+
+            commit();
         }
 
-        private void finish() {
+        private void commit() {
             transaction.commitAllowingStateLoss();
+
+            if (fragment instanceof BaseFragment) {
+                ((BaseFragment) fragment).onVisible();
+            }
+
             transaction = null;
             fragment = null;
             activityRef.clear();
