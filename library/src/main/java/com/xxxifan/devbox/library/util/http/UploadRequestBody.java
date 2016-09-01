@@ -63,8 +63,9 @@ public class UploadRequestBody extends RequestBody {
             while ((read = source.read(sink.buffer(), SEGMENT_SIZE)) != -1) {
                 total += read;
                 sink.flush();
-                this.listener.onProgress(total, (int) (total / contentLength()));
-
+                if (this.listener != null) {
+                    this.listener.onProgress(total, (int) (total / contentLength()));
+                }
             }
         } finally {
             Util.closeQuietly(source);
