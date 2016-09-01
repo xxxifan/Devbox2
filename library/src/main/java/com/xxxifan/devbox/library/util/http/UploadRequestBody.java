@@ -33,13 +33,18 @@ public class UploadRequestBody extends RequestBody {
     private static final int SEGMENT_SIZE = 2048; // okio.Segment.SIZE
 
     private final File file;
-    private final ProgressListener listener;
+    private ProgressListener listener;
     private final String contentType;
 
     public UploadRequestBody(File file, String contentType, ProgressListener listener) {
         this.file = file;
         this.contentType = contentType;
         this.listener = listener;
+    }
+
+    public UploadRequestBody(File file, String contentType) {
+        this.file = file;
+        this.contentType = contentType;
     }
 
     @Override

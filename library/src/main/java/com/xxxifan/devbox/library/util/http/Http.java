@@ -22,6 +22,7 @@ import com.liulishuo.filedownloader.FileDownloader;
 import com.orhanobut.logger.Logger;
 import com.xxxifan.devbox.library.Devbox;
 import com.xxxifan.devbox.library.util.IOUtils;
+import com.xxxifan.devbox.library.util.Strings;
 import com.xxxifan.devbox.library.util.Tests;
 
 import org.json.JSONArray;
@@ -114,7 +115,7 @@ public class Http {
         return FileDownloader.getImpl();
     }
 
-    public static void upload(String url, MediaType mediaType, File file, UploadRequestBody.ProgressListener listener) {
+    public static <T> void upload(String url, MediaType mediaType, File file, UploadRequestBody.ProgressListener listener, final HttpCallback<T> callback) {
         UploadRequestBody requestBody = new UploadRequestBody(
                 file,
                 mediaType.type(),
@@ -129,12 +130,21 @@ public class Http {
         getClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
+                String body = response.body() == null? Strings.EMPTY: response.body().string();
+                if (callback.getGenericType() == String.class) {
+                    callback.onSuccess((T) body);
+                } else if (callback.getGenericType() == JSONObject.class) {
+                    callback.onSuccess((T) sGson.fromJson(body, JSONObject.class));
+                } else if (callback.getGenericType() == JSONArray.class) {
+                    callback.onSuccess((T) sGson.fromJson(body, JSONArray.class));
+                } else {
+                    callback.onSuccess((T) sGson.fromJson(body, callback.getGenericType()));
+                }
             }
 
             @Override
             public void onFailure(Call call, IOException e) {
-
+                callback.onFailed(e);
             }
         });
     }
