@@ -22,6 +22,7 @@ import android.view.View;
 import com.xxxifan.devbox.demo.R;
 import com.xxxifan.devbox.library.base.extended.ToolbarActivity;
 import com.xxxifan.devbox.library.util.Once;
+import com.xxxifan.devbox.library.util.Strings;
 import com.xxxifan.devbox.library.util.ViewUtils;
 
 import butterknife.ButterKnife;
@@ -46,6 +47,8 @@ public class NewMainActivity extends ToolbarActivity {
                         .build().show();
             }
         });
+
+        System.out.println(Strings.downTimer(1473076800000L) + " timer");
 
     }
 

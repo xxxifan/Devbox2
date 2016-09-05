@@ -34,10 +34,10 @@ public class Strings {
 
     private static final Pattern PHONE_PATTERN = Pattern.compile("^(1(3|4|5|7|8))\\d{9}$");
     private static final int[] TIME_VALUE = {
-            60, //s
+            1, //s
             60, //m
-            60, //h
-            24, //d
+            60 * 60, //h
+            24 * 60 * 60, //d
     };
     private static String[] sTimeUnits;
 
@@ -62,13 +62,16 @@ public class Strings {
             sTimeUnits = Devbox.getAppDelegate().getResources().getStringArray(R.array.time_unit);
         }
         String value = EMPTY;
-        long interval = (System.currentTimeMillis() - timestamp) / 1000; // start with minutes
-        for (int i = 0, s = sTimeUnits.length; i < s; i++) {
-            if (interval < TIME_VALUE[i]) {
-                break;
+        long interval = (System.currentTimeMillis() - timestamp) / 1000; // start with seconds
+        if (interval < 0) {
+            interval = -interval;
+        }
+        for (int i = sTimeUnits.length - 1; i >= 0; i--) {
+            long result = interval / TIME_VALUE[i];
+            if (result > 0) {
+                value += result + sTimeUnits[i];
+                interval %= TIME_VALUE[i];
             }
-
-            value = interval / TIME_VALUE[i] + sTimeUnits[i] + value;
         }
         return value;
     }
