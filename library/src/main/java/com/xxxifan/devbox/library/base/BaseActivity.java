@@ -35,6 +35,7 @@ import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.ActivityEvent;
+import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.xxxifan.devbox.library.R;
 import com.xxxifan.devbox.library.event.BaseEvent;
 import com.xxxifan.devbox.library.util.IOUtils;
@@ -249,7 +250,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public <T> LifecycleTransformer<T> bindToLifecycle() {
-        return RxLifecycle.bind(lifecycleSubject);
+        return RxLifecycleAndroid.bindActivity(lifecycleSubject);
     }
 
     protected <T> Observable.Transformer<T, T> io() {
