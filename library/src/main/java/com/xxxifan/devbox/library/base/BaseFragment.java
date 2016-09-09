@@ -183,7 +183,6 @@ public abstract class BaseFragment extends Fragment {
         super.onDetach();
         if (mDataLoader != null) {
             mDataLoader.destroy();
-            mDataLoader = null;
         }
     }
 

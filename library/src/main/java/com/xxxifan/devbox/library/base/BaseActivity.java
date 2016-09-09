@@ -146,6 +146,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         lifecycleSubject.onNext(ActivityEvent.DESTROY);
         Cannon.reset();
         super.onDestroy();
+        if (mDataLoader != null) {
+            mDataLoader.destroy();
+        }
         if (mBackKeyListener != null) {
             mBackKeyListener = null;
         }
