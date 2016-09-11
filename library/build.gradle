@@ -62,7 +62,7 @@ dependencies {
     /*
      * Rx
      */
-    compile 'io.reactivex:rxjava:1.1.9'
+    compile 'io.reactivex:rxjava:1.1.10'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.trello:rxlifecycle:0.7.0'
     compile 'com.trello:rxlifecycle-android:0.7.0'
@@ -92,7 +92,7 @@ dependencies {
      * apt needed
      *
      * apply plugin: 'com.neenbedankt.android-apt'
-     * apt 'com.jakewharton:butterknife-compiler:8.2.1'
+     * apt 'com.jakewharton:butterknife-compiler:8.4.0'
      */
 }
 
