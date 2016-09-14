@@ -39,7 +39,7 @@ android {
     }
 }
 
-def support_lib = "24.2.0"
+def support_lib = "24.2.1"
 def okhttp = "3.4.1"
 def retrofit = "2.1.0"
 
