@@ -20,7 +20,9 @@ import com.xxxifan.devbox.library.Devbox;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
+import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;
 import rx.Observable;
@@ -32,6 +34,52 @@ import rx.schedulers.Schedulers;
  */
 public class IOUtils {
 
+    /**
+     * save input stream into specified file
+     */
+    public static boolean saveToFile(InputStream source, File targetFile) {
+        return saveToFile(Okio.buffer(Okio.source(source)), targetFile);
+    }
+
+    /**
+     * save input stream source into specified file
+     */
+    public static boolean saveToFile(BufferedSource source, File targetFile) {
+        BufferedSink sink = null;
+        try {
+            sink = Okio.buffer(Okio.sink(targetFile));
+            sink.writeAll(source);
+            sink.emit();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (sink != null) {
+                try {
+                    sink.close();
+                } catch (IOException ignore) {
+                }
+            }
+        }
+    }
+
+    /**
+     * get file bytes
+     */
+    public static byte[] getFileBytes(File file) {
+        try {
+            BufferedSource source = Okio.buffer(Okio.source(file));
+            return source.readByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * get external cache dir by default, if fails, it return internal cache dir
+     */
     public static File getCacheDir() {
         File dir = Devbox.getAppDelegate().getExternalCacheDir();
         if (dir == null) {
@@ -40,6 +88,9 @@ public class IOUtils {
         return dir;
     }
 
+    /**
+     * run shell commands.
+     */
     public static void runCmd(String[] cmd, CommandCallback callback) {
         Process p;
         String result;
