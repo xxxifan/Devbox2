@@ -17,14 +17,13 @@
 package com.xxxifan.devbox.library.base;
 
 import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
 import android.view.View;
 
 import kale.adapter.item.AdapterItem;
 
 /**
  * Created by xifan on 4/10/16.
- * BaseAdapterItem for CommonAdapter.
+ * Devbox BaseAdapterItem for CommonAdapter.
  */
 public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
 
@@ -33,6 +32,7 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
     private int position;
 
     private ItemClickListener<T> mItemClickListener;
+    private ItemLongClickListener<T> mItemLongClickListener;
 
     public BaseAdapterItem() {
     }
@@ -40,18 +40,15 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
     @Override
     public void bindViews(View root) {
         this.root = root;
+
+        // bindViews may happens after set listeners
         root.post(new Runnable() {
             @Override public void run() {
-                if (mItemClickListener != null && !getView().hasOnClickListeners()) {
-                    setOnItemClickListener(mItemClickListener);
-                }
+                setOnItemClickListener(mItemClickListener);
+                setOnItemLongClickListener(mItemLongClickListener);
             }
         });
-
-        bindViews();
     }
-
-    @Override public void setViews() {}
 
     @CallSuper @Override public void handleData(T data, int position) {
         this.data = data;
@@ -70,11 +67,11 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
         return position;
     }
 
-    public void setOnItemClickListener(@NonNull ItemClickListener<T> listener) {
+    public void setOnItemClickListener(ItemClickListener<T> listener) {
         mItemClickListener = listener;
 
         if (getView() != null) {
-            getView().setOnClickListener(new View.OnClickListener() {
+            getView().setOnClickListener(listener == null ? null : new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     if (mItemClickListener != null) {
                         mItemClickListener.onItemClick(v, getData(), getPosition());
@@ -84,10 +81,28 @@ public abstract class BaseAdapterItem<T> implements AdapterItem<T> {
         }
     }
 
-    protected abstract void bindViews();
+    public void setOnItemLongClickListener(ItemLongClickListener<T> listener) {
+        mItemLongClickListener = listener;
+
+        if (getView() != null) {
+            getView().setOnLongClickListener(listener == null ? null : new View.OnLongClickListener() {
+                @Override public boolean onLongClick(View v) {
+                    if (mItemLongClickListener != null) {
+                        mItemLongClickListener.onItemLongClick(v, getData(), getPosition());
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
+    }
 
     public interface ItemClickListener<T> {
         void onItemClick(View v, T data, int index);
+    }
+
+    public interface ItemLongClickListener<T> {
+        void onItemLongClick(View v, T data, int index);
     }
 
 }
