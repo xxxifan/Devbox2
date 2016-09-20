@@ -62,19 +62,19 @@ dependencies {
     /*
      * Rx
      */
-    compile 'io.reactivex:rxjava:1.1.10'
+    compile 'io.reactivex:rxjava:1.2.0'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.trello:rxlifecycle:0.7.0'
-    compile 'com.trello:rxlifecycle-android:0.7.0'
+    compile 'com.trello:rxlifecycle:0.8.0'
+    compile 'com.trello:rxlifecycle-android:0.8.0'
     compile 'com.jakewharton.rxrelay:rxrelay:1.1.0'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
-    compile "com.github.VictorAlbertos:RxActivityResult:0.3.5"
+    compile "com.github.VictorAlbertos:RxActivityResult:0.3.6"
 
     /*
      * Tools
      */
     compile 'com.jakewharton:butterknife:8.4.0'
-    compile 'com.afollestad.material-dialogs:core:0.8.6.2'
+    compile 'com.afollestad.material-dialogs:core:0.8.6.2' // not update until cqqk stable release.
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.github.tianzhijiexian:CommonAdapter:1.1.9'
