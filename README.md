@@ -67,7 +67,7 @@ buildscript {
     subprojects {
         ext {
             minSdk = 16
-            sdk = 23
+            sdk = 24
             buildTool = "your build tool version here"
         }
     }
@@ -90,7 +90,7 @@ android {
     // ...
     dependencies {
         // optional
-        apt 'com.jakewharton:butterknife-compiler:8.2.1'
+        apt 'com.jakewharton:butterknife-compiler:8.4.0'
     }
 }
 ```
@@ -311,16 +311,15 @@ You may need basic network permissions
 ## TODO
 - [x] Network part (Including image load, file download)
 - [x] DataLoader
-- [ ] More extends for fragments (like recyclerView support)
-- [ ] Multidex
-- [ ] IOUtils based on okio
+- [x] More extends for fragments (like recyclerView support)
+- [x] IOUtils based on okio
 - [ ] NotificationUtils
 - [ ] More to come
 
 ## Dependencies
 
     testCompile 'junit:junit:4.12'
-
+    
     compile "com.android.support:design:${support_lib}"
     /*
      * Network/Loaders
@@ -332,18 +331,18 @@ You may need basic network permissions
     compile "com.squareup.retrofit2:converter-gson:${retrofit}"
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
-    compile 'com.liulishuo.filedownloader:library:1.0.0'
+    compile 'com.liulishuo.filedownloader:library:1.0.2'
 
     /*
      * Rx
      */
-    compile 'io.reactivex:rxjava:1.1.10'
+    compile 'io.reactivex:rxjava:1.2.0'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.trello:rxlifecycle:0.7.0'
-    compile 'com.trello:rxlifecycle-android:0.7.0'
+    compile 'com.trello:rxlifecycle:0.8.0'
+    compile 'com.trello:rxlifecycle-android:0.8.0'
     compile 'com.jakewharton.rxrelay:rxrelay:1.1.0'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
-    compile "com.github.VictorAlbertos:RxActivityResult:0.3.5"
+    compile "com.github.VictorAlbertos:RxActivityResult:0.3.6"
 
     /*
      * Tools
