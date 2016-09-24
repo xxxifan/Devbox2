@@ -45,9 +45,10 @@ public class MvpActivity extends ToolbarActivity {
         if (savedInstanceState == null) { // create fragment instance only when savedState is null.
             MvpFragment fragment = new MvpFragment();
             TestPresenter presenter = new TestPresenter();
-            presenter.setView(fragment);
             presenter.setInfo("activity info"); // test a value set once by activity
             Fragments.checkout(this, fragment)
+//                    .bindPresenter(new WrongPresenter())
+                    .bindPresenter(presenter)
                     .into(FRAGMENT_CONTAINER);
         }
         Logger.e("onSetupActivity");

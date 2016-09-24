@@ -27,6 +27,7 @@ import android.view.View;
 
 import com.orhanobut.logger.Logger;
 import com.xxxifan.devbox.library.base.BaseFragment;
+import com.xxxifan.devbox.library.base.BasePresenter;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -136,6 +137,12 @@ public class Fragments {
                     break;
                 }
             }
+        }
+
+        @SuppressWarnings("unchecked")
+        public SingleOperator bindPresenter(BasePresenter presenter) {
+            presenter.setView(fragment);
+            return this;
         }
 
         public SingleOperator addSharedElement(View sharedElement, String name) {
