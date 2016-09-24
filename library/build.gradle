@@ -52,6 +52,7 @@ dependencies {
      */
     compile "com.squareup.okhttp3:okhttp:${okhttp}"
     compile "com.squareup.okhttp3:logging-interceptor:${okhttp}"
+    compile 'com.github.franmontiel:PersistentCookieJar:v1.0.0'
     compile "com.squareup.retrofit2:retrofit:${retrofit}"
     compile "com.squareup.retrofit2:adapter-rxjava:${retrofit}"
     compile "com.squareup.retrofit2:converter-gson:${retrofit}"
