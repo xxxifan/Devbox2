@@ -123,7 +123,7 @@ public class ReposFragment extends RecyclerFragment<Repo> implements DataLoader.
             this.typeInt = typeInt;
         }
 
-        @Override protected void bindViews() {
+        @Override public void setViews() {
             ButterKnife.bind(this, getView());
             titleText = ButterKnife.findById(getView(), R.id.repo_name);
             rankText = ButterKnife.findById(getView(), R.id.repo_rank);
