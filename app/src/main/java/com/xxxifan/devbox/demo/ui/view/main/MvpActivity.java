@@ -43,11 +43,10 @@ public class MvpActivity extends ToolbarActivity {
 
     @Override protected void onSetupActivity(Bundle savedInstanceState) {
         if (savedInstanceState == null) { // create fragment instance only when savedState is null.
-            MvpFragment fragment = new MvpFragment();
             TestPresenter presenter = new TestPresenter();
             presenter.setInfo("activity info"); // test a value set once by activity
-            Fragments.checkout(this, fragment)
-//                    .bindPresenter(new WrongPresenter())
+            Fragments.checkout(this, new MvpFragment())
+//                    .bindPresenter(new WrongPresenter()) // which will cause an Exception
                     .bindPresenter(presenter)
                     .into(FRAGMENT_CONTAINER);
         }
