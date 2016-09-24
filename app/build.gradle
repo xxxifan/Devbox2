@@ -26,4 +26,5 @@ dependencies {
     compile project(':library')
     compile 'in.srain.cube:ultra-ptr:1.0.11'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    testCompile 'junit:junit:4.12'
 }
