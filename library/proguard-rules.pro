@@ -2,7 +2,6 @@
 -keepattributes Exceptions
 -keepattributes *Annotation*
 
-
 # OkHttp
 -keep class okhttp3.** { *; }
 -keep interface okhttp3.** { *; }
@@ -17,6 +16,7 @@
   public *;
 }
 
+# RxJava
 -dontwarn sun.misc.**
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
    long producerIndex;
@@ -29,11 +29,11 @@
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
 
+# EventBus
 -keepclassmembers class ** {
     @org.greenrobot.eventbus.Subscribe <methods>;
 }
 -keep enum org.greenrobot.eventbus.ThreadMode { *; }
-# Only required if you use AsyncExecutor
 -keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
     <init>(java.lang.Throwable);
 }
