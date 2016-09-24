@@ -32,6 +32,7 @@ public class Once {
 
     /**
      * check a key for once.
+     *
      * @return isOnce
      */
     public static boolean check(String key) {
@@ -61,7 +62,7 @@ public class Once {
         pref.edit().putBoolean(key, false).apply();
     }
 
-    public interface OnceCallback{
+    public interface OnceCallback {
         void onOnce();
     }
 }

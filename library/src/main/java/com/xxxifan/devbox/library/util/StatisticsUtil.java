@@ -25,7 +25,10 @@ import java.util.HashMap;
  * Created by xifan on 7/20/16.
  */
 public class StatisticsUtil {
+
     private static Statable sStatable;
+
+    protected StatisticsUtil() {}
 
     public static void install(Statable statable) {
         sStatable = statable;

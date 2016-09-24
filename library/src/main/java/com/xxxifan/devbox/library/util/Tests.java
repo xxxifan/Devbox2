@@ -20,6 +20,9 @@ package com.xxxifan.devbox.library.util;
  * Created by xifan on 6/8/16.
  */
 public class Tests {
+
+    protected Tests() {}
+
     public static <T> T checkNull(T reference) {
         if (reference == null) {
             throw new NullPointerException();

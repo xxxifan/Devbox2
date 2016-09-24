@@ -52,6 +52,8 @@ public class Http {
     private static Retrofit sRetrofit;
     private static Gson sGson;
 
+    protected Http() {}
+
     public static void initClient(OkHttpClient client) {
         sClient = client;
     }
@@ -130,7 +132,7 @@ public class Http {
         getClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String body = response.body() == null? Strings.EMPTY: response.body().string();
+                String body = response.body() == null ? Strings.EMPTY : response.body().string();
                 if (callback.getGenericType() == String.class) {
                     callback.onSuccess((T) body);
                 } else if (callback.getGenericType() == JSONObject.class) {

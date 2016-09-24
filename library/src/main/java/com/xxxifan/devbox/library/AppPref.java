@@ -25,7 +25,7 @@ import android.preference.PreferenceManager;
  */
 public class AppPref {
 
-    private AppPref() {
+    protected AppPref() {
     }
 
     public static SharedPreferences getPrefs() {

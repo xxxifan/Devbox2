@@ -34,6 +34,8 @@ import rx.schedulers.Schedulers;
  */
 public class IOUtils {
 
+    protected IOUtils() {}
+
     /**
      * save input stream into specified file
      */

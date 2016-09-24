@@ -90,15 +90,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    @Override public void setContentView(@LayoutRes int layoutResID) {
-        // if root layout has been set, then it's a container, so let subclass
-        // to handle content view.
-        if (mRootLayoutId == 0) {
-            mRootLayoutId = layoutResID;
-        }
-        super.setContentView(mRootLayoutId);
-    }
-
     @Override protected void onStart() {
         super.onStart();
         lifecycleSubject.onNext(ActivityEvent.START);
@@ -177,6 +168,21 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(layoutResID);
     }
 
+    @Override public void setContentView(@LayoutRes int layoutResID) {
+        // if root layout has been set, then it's a container, so let subclass
+        // to handle content view.
+        if (mRootLayoutId == 0) {
+            mRootLayoutId = layoutResID;
+        }
+        super.setContentView(mRootLayoutId);
+    }
+
+    @BeforeConfigActivity protected void setRootLayoutId(@LayoutRes int rootLayoutId) {
+        checkConfigured();
+        mRootLayoutId = rootLayoutId;
+    }
+
+    //##########  Protected helper methods ##########
     @SuppressWarnings("unchecked")
     protected <T extends View> T $(int viewId) {
         return (T) findViewById(viewId);
@@ -187,12 +193,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         return (T) view.findViewById(viewId);
     }
 
-    @BeforeConfigActivity protected void setRootLayoutId(@LayoutRes int rootLayoutId) {
-        checkConfigured();
-        mRootLayoutId = rootLayoutId;
-    }
-
-    //##########  Protected helper methods ##########
     public Context getContext() {
         return this;
     }
@@ -283,7 +283,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int getLayoutId();
 
     /**
-     * Do things like init views here.
+     * Do everything start here.
      */
     protected abstract void onSetupActivity(Bundle savedInstanceState);
 

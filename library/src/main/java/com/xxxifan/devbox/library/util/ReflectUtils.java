@@ -24,6 +24,8 @@ import java.lang.reflect.Type;
  */
 public class ReflectUtils {
 
+    protected ReflectUtils() {}
+
     public static Type getGenericType(Class<?> subclass) {
         return getGenericType(0, subclass);
     }
