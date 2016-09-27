@@ -47,3 +47,15 @@
 
 -dontwarn kale.adapter.**
 -dontwarn okio.**
+
+# Keep special methods
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+-keep class * implements Android.os.Parcelable {
+    public static final Android.os.Parcelable$Creator *;
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
