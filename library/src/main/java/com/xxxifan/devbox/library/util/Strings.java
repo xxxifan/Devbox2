@@ -59,7 +59,16 @@ public class Strings {
         return true;
     }
 
-    public static String downTimer(long timestamp) {
+    /**
+     * Parse timestamp to a down count timer like '34 hours ago'
+     *
+     * @param timestamp specified time
+     * @param unitLimit displayed unit limit, normally it will return full units of time like
+     *                  3 days 2 hours 34 minutes 23 seconds, this will limit to largest unit,
+     *                  if you passing 2, then it will return only 3 days 2 hours, negative number for no limits.
+     * @return parsed time format like '3 days 2 hours 34 minutes 23 seconds'
+     */
+    public static String downTimer(long timestamp, int unitLimit) {
         if (sTimeUnits == null) {
             sTimeUnits = Devbox.getAppDelegate().getResources().getStringArray(R.array.time_unit);
         }
@@ -68,11 +77,18 @@ public class Strings {
         if (interval < 0) {
             interval = -interval;
         }
+
+        int count = 0;
         for (int i = sTimeUnits.length - 1; i >= 0; i--) {
+            if (count == unitLimit) { // limit reached
+                break;
+            }
+
             long result = interval / TIME_VALUE[i];
             if (result > 0) {
                 value += result + sTimeUnits[i];
                 interval %= TIME_VALUE[i];
+                count++;
             }
         }
         return value;

@@ -48,7 +48,7 @@ public class NewMainActivity extends ToolbarActivity {
             }
         });
 
-        System.out.println(Strings.downTimer(1473076800000L) + " timer");
+        System.out.println(Strings.downTimer(1473076800000L, -1) + " timer");
 
     }
 

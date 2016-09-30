@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright(c) 2016 xxxifan
   ~
@@ -15,12 +16,11 @@
   -->
 
 <resources>
-    <string name="app_name">Devbox2</string>
-    <string name="msg_loading">Loading&#8230;</string>
-    <string name="msg_network_unavailable">Network is unavailable, please try again later</string>
+    <string name="msg_loading">请稍候&#8230;</string>
+    <string name="msg_network_unavailable">网络不可用，请稍后再试</string>
 
-    <string name="time_unit_second"> s </string>
-    <string name="time_unit_minute"> m </string>
-    <string name="time_unit_hour"> h </string>
-    <string name="time_unit_day"> d </string>
+    <string name="time_unit_second">秒</string>
+    <string name="time_unit_minute">分钟</string>
+    <string name="time_unit_hour">小时</string>
+    <string name="time_unit_day">天</string>
 </resources>
