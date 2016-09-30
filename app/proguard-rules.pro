@@ -1,7 +1,7 @@
 -keepattributes Signature
 -keepattributes Exceptions
 -keepattributes *Annotation*
-
+-dontwarn java.lang.invoke.*
 
 # OkHttp
 -keep class okhttp3.** { *; }
@@ -17,6 +17,7 @@
   public *;
 }
 
+# RxJava
 -dontwarn sun.misc.**
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
    long producerIndex;
@@ -29,11 +30,11 @@
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
 
+# EventBus
 -keepclassmembers class ** {
     @org.greenrobot.eventbus.Subscribe <methods>;
 }
 -keep enum org.greenrobot.eventbus.ThreadMode { *; }
-# Only required if you use AsyncExecutor
 -keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
     <init>(java.lang.Throwable);
 }
@@ -43,7 +44,19 @@
 -keep class com.google.gson.stream.** { *; }
 
 # Application classes that will be serialized/deserialized over Gson
--keep class com.xxxifan.devbox.demo.data.model.** { *; }
+#-keep class com.google.gson.examples.android.model.** { *; }
 
 -dontwarn kale.adapter.**
 -dontwarn okio.**
+
+# Keep special methods
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+-keep class * implements Android.os.Parcelable {
+    public static final Android.os.Parcelable$Creator *;
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}

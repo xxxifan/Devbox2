@@ -1,6 +1,7 @@
 -keepattributes Signature
 -keepattributes Exceptions
 -keepattributes *Annotation*
+-dontwarn java.lang.invoke.*
 
 # OkHttp
 -keep class okhttp3.** { *; }
