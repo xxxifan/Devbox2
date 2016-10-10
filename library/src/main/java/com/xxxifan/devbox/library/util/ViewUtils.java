@@ -31,6 +31,7 @@ import android.provider.Settings;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
@@ -328,33 +329,28 @@ public class ViewUtils {
      * transformer for Observables needs a loading dialog.
      * It's work in main thread, make sure it will be called after scheduler transformer
      */
-    public static <T> Observable.Transformer<T, T> loadingObservable(final Context context) {
+    public static <T> Observable.Transformer<T, T> rxDialog(@NonNull final Context context) {
         return new Observable.Transformer<T, T>() {
-            private MaterialDialog dialog;
+            private MaterialDialog dialog = getLoadingDialog(context);
 
             @Override
             public Observable<T> call(Observable<T> observable) {
                 return observable
                         .doOnSubscribe(new Action0() {
                             @Override public void call() {
-                                dialog = getLoadingDialog(context);
                                 dialog.show();
                             }
                         })
                         .doOnTerminate(new Action0() {
                             @Override public void call() {
-                                if (dialog != null && dialog.isShowing()) {
-                                    dialog.dismiss();
-                                    dialog = null;
-                                }
+                                dismissDialog(dialog);
+                                dialog = null;
                             }
                         })
                         .doOnUnsubscribe(new Action0() {
                             @Override public void call() {
-                                if (dialog != null && dialog.isShowing()) {
-                                    dialog.dismiss();
-                                    dialog = null;
-                                }
+                                dismissDialog(dialog);
+                                dialog = null;
                             }
                         });
             }
