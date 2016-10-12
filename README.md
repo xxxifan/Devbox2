@@ -61,14 +61,14 @@ buildscript {
     dependencies {
         // ...
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8' // android-apt
-        classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4' // retrolamda
+        classpath 'me.tatarka:gradle-retrolambda:3.3.0' // retrolamda
     }
     
     subprojects {
         ext {
-            minSdk = 16
-            sdk = 24
-            buildTool = "your build tool version here"
+            minSdk = 16 // min sdk is 15, 16 is recommended
+            sdk = 24 // target sdk version
+            buildTool = "24.0.2" //your build tool version here
         }
     }
 }
