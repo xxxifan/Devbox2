@@ -29,7 +29,6 @@ import com.xxxifan.devbox.library.event.NetworkEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.lang.ref.WeakReference;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import rx.Observable;
@@ -285,6 +284,28 @@ public class DataLoader {
         }
     }
 
+    /**
+     * It's work in main thread, make sure it will be called after scheduler transformer
+     */
+    public <T> Observable.Transformer<T, T> rxNotifier() {
+        return new Observable.Transformer<T, T>() {
+            @Override
+            public Observable<T> call(Observable<T> observable) {
+                return observable
+                        .doOnCompleted(new Action0() {
+                            @Override public void call() {
+                                notifyPageLoaded();
+                            }
+                        })
+                        .doOnError(new Action1<Throwable>() {
+                            @Override public void call(Throwable throwable) {
+                                notifyPageLoadFailed();
+                            }
+                        });
+            }
+        };
+    }
+
     public int getPage() {
         return mPage;
     }
@@ -334,53 +355,5 @@ public class DataLoader {
         void onRefreshStart();
 
         void notifyDataLoaded();
-    }
-
-    public static class RxNotifier {
-        private WeakReference<DataLoader> mDataLoaderRef;
-
-        private RxNotifier(DataLoader dataLoader) {
-            mDataLoaderRef = new WeakReference<>(dataLoader);
-        }
-
-        /**
-         * It's work in main thread, make sure it will be called after scheduler transformer
-         */
-        public static <T> Observable.Transformer<T, T> instance(DataLoader dataLoader) {
-            final RxNotifier notifier = new RxNotifier(dataLoader);
-            return new Observable.Transformer<T, T>() {
-                @Override
-                public Observable<T> call(Observable<T> observable) {
-                    return observable
-                            .doOnCompleted(new Action0() {
-                                @Override public void call() {
-                                    if (notifier.getDataLoader() != null) {
-                                        notifier.getDataLoader().notifyPageLoaded();
-                                        // clear ref
-                                        notifier.getDataLoaderRef().clear();
-                                    }
-                                }
-                            })
-                            .doOnError(new Action1<Throwable>() {
-                                @Override public void call(Throwable throwable) {
-                                    if (notifier.getDataLoader() != null) {
-                                        notifier.getDataLoader().notifyPageLoadFailed();
-                                        // clear ref
-                                        notifier.getDataLoaderRef().clear();
-                                    }
-                                }
-                            });
-                }
-            };
-        }
-
-        private DataLoader getDataLoader() {
-            return mDataLoaderRef != null ? mDataLoaderRef.get() : null;
-        }
-
-        private WeakReference<DataLoader> getDataLoaderRef() {
-            return mDataLoaderRef;
-        }
-
     }
 }

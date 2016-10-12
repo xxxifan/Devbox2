@@ -86,8 +86,8 @@ public class ReposFragment extends RecyclerFragment<Repo> implements DataLoader.
         Http.createRetroService(GithubService.class)
                 .getRxUserRepos(GithubService.REPO_TYPE_OWNER, GithubService.REPO_SORT_UPDATED, GithubService.DIRECTION_DESC)
                 .compose(io())
-                .compose(DataLoader.RxNotifier.instance(getDataLoader()))
-                .compose(ViewUtils.loadingObservable(getContext()))
+                .compose(getDataLoader().rxNotifier())
+                .compose(ViewUtils.rxDialog(getContext()))
                 .subscribe(new Action1<Object>() {
                     @Override public void call(Object repos) {
                         mRepoList.clear();
