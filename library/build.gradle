@@ -68,8 +68,8 @@ dependencies {
     compile 'com.trello:rxlifecycle:0.8.0'
     compile 'com.trello:rxlifecycle-android:0.8.0'
     compile 'com.jakewharton.rxrelay:rxrelay:1.1.0'
-    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.1@aar'
-    compile "com.github.VictorAlbertos:RxActivityResult:0.3.6"
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.8.0@aar'
+    compile "com.github.VictorAlbertos:RxActivityResult:0.3.7"
 
     /*
      * Tools
