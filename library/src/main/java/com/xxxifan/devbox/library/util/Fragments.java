@@ -17,9 +17,11 @@
 package com.xxxifan.devbox.library.util;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.support.annotation.AnimRes;
 import android.support.annotation.CheckResult;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -140,8 +142,20 @@ public class Fragments {
         }
 
         @SuppressWarnings("unchecked")
-        public SingleOperator bindPresenter(BasePresenter presenter) {
+        public SingleOperator bindPresenter(@NonNull BasePresenter presenter) {
             presenter.setView(fragment);
+            return this;
+        }
+
+        /**
+         * setArguments to target fragment.
+         */
+        public SingleOperator data(@NonNull Bundle data) {
+            if (fragment != null) {
+                fragment.setArguments(data);
+            } else {
+                Logger.t(TAG).e("fragment is null, will not add data to arguments");
+            }
             return this;
         }
 
@@ -192,7 +206,7 @@ public class Fragments {
 
         public void into(@IdRes int containerId) {
             if (fragment == null) {
-                Logger.t(TAG).e("fragment is null, will not do anything");
+                Logger.t(TAG).e("fragment is null, will do nothing");
                 commit();
                 return;
             }
@@ -250,7 +264,7 @@ public class Fragments {
         private void commit() {
             transaction.commitAllowingStateLoss();
 
-            if (fragment instanceof BaseFragment) {
+            if (fragment != null && fragment instanceof BaseFragment) {
                 ((BaseFragment) fragment).onVisible();
             }
 

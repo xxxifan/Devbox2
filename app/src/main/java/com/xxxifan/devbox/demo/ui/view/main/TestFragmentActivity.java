@@ -73,8 +73,11 @@ public class TestFragmentActivity extends TranslucentActivity {
 
     @OnClick(R.id.main_btn_2)
     public void onSecondClick(View view) {
+        Bundle bundle = new Bundle();
+        bundle.putString("data", "show data");
         Fragments.checkout(this, new TestFragment2(), TestFragment2.TAG + "Bottom")
                 .addToBackStack(true)
+                .data(bundle)
                 .into(FRAGMENT_CONTAINER);
     }
 
