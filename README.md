@@ -2,6 +2,12 @@
 Yet another Android development toolbox.
 It's a new generation of [DevBox](https://github.com/xxxifan/DevBox)
 
+## Features
+
+*   *Easier UI control*
+*   *Fast&Beautiful Fragment control*
+*   *Useful Utils inside*
+
 ## Usage
 1.add this project as your module ~~(maybe publish this to jitpack? but this won't allow you select what dependencies you need)~~
 or config it in gradle way now!
@@ -61,15 +67,13 @@ buildscript {
     dependencies {
         // ...
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8' // android-apt
-        classpath 'me.tatarka:gradle-retrolambda:3.3.0' // retrolamda
+        classpath 'me.tatarka:gradle-retrolambda:3.3.1' // retrolamda
     }
     
-    subprojects {
-        ext {
-            minSdk = 16 // min sdk is 15, 16 is recommended
-            sdk = 24 // target sdk version
-            buildTool = "24.0.2" //your build tool version here
-        }
+    ext {
+        minSdk = 16 // min sdk is 15, 16 is recommended
+        sdk = 24 // target sdk version
+        buildTool = "24.0.2" // your build tool version here
     }
 }
 ```
@@ -150,13 +154,13 @@ Other functions:
 
 - lifecycle control with RxLifeCycle
 - Eventbus, back key listener, rx schedulers control.
-- more comes with extends.
+- more comes with extended Activities.
 
-And other Activities in packages ```com.xxxifan.devbox.library.base.extended```, find what you need or just extend from BaseActivity
+And other activities in packages ```com.xxxifan.devbox.library.base.extended```, find what you need or just extend from BaseActivity
 
 ### BaseFragment
 almost same functions with BaseActivity, it will be come more extends with fragment.
-it also handled fragment visible state while restoreSavedInstance, so you just need to init fragments when savedInstance is null
+it also *handled fragment visible state while restoreSavedInstance, so you just need to init fragments when savedInstance is null*
 ```java
 protected void onSetupActivity(Bundle savedInstanceState) {
     if (savedInstanceState == null) {
@@ -168,7 +172,7 @@ protected void onSetupActivity(Bundle savedInstanceState) {
 
 ### Fragments
 Here present you Fragments. This is a helper class that help you quickly and nicely deal with fragment transaction.
-All operation is chained, you can follow this example to take a quick look:
+All operations are chained, you can follow this example to take a quick look:
 
 ```java
 // checkout with FRAGMENT_CONTAINER(which is defined in BaseActivity, is R.id.fragment_container
@@ -182,12 +186,13 @@ Fragments.checkout(this, new TestFragment(), "test")
 
 // more options
 Fragments.checkout(this, new TestFragment(), "test")
+        .data(bundle) // set bundle arguments
         .addToBackStack(true) // it will use tag name as state name
-        .replaceLast(true) // replace last fragment, default is true.
+        .hideLast(true) // replace last fragment, default is true.
         .removeLast(true) // remove last fragment while checkout.
-        .addSharedElement(view, name) // not tested
-        .setCustomAnimator(enter, exit) // not tested
-        .fade()
+        .addSharedElement(view, name)
+        .setCustomAnimator(enter, exit)
+        .fade() // default fade animation
         .into(FRAGMENT_CONTAINER);
 
 // add multi fragments
@@ -326,6 +331,7 @@ You may need basic network permissions
      */
     compile "com.squareup.okhttp3:okhttp:${okhttp}"
     compile "com.squareup.okhttp3:logging-interceptor:${okhttp}"
+    compile 'com.github.franmontiel:PersistentCookieJar:v1.0.0'
     compile "com.squareup.retrofit2:retrofit:${retrofit}"
     compile "com.squareup.retrofit2:adapter-rxjava:${retrofit}"
     compile "com.squareup.retrofit2:converter-gson:${retrofit}"
@@ -336,22 +342,22 @@ You may need basic network permissions
     /*
      * Rx
      */
-    compile 'io.reactivex:rxjava:1.2.0'
+    compile 'io.reactivex:rxjava:1.2.1'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.trello:rxlifecycle:0.8.0'
     compile 'com.trello:rxlifecycle-android:0.8.0'
     compile 'com.jakewharton.rxrelay:rxrelay:1.1.0'
-    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
-    compile "com.github.VictorAlbertos:RxActivityResult:0.3.6"
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.8.0@aar'
+    compile "com.github.VictorAlbertos:RxActivityResult:0.3.7"
 
     /*
      * Tools
      */
     compile 'com.jakewharton:butterknife:8.4.0'
-    compile 'com.afollestad.material-dialogs:core:0.8.6.2'
+    compile 'com.afollestad.material-dialogs:core:0.8.6.2' // not update until cqqk stable release.
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.google.code.gson:gson:2.7'
-    compile 'com.github.tianzhijiexian:CommonAdapter:1.1.9'
+    compile 'com.github.tianzhijiexian:CommonAdapter:1.2.0'
     compile 'com.orhanobut:logger:1.15'
     compile 'top.zibin:Luban:1.0.7'
 

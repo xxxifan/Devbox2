@@ -6,8 +6,13 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.2'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'me.tatarka:gradle-retrolambda:3.3.0'
+        classpath 'me.tatarka:gradle-retrolambda:3.3.1'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+    }
+    ext {
+        minSdk = 16
+        sdk = 24
+        buildTools = "24.0.2"
     }
 }
 
@@ -15,14 +20,6 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
-    }
-}
-
-subprojects {
-    ext {
-        minSdk = 16
-        sdk = 24
-        buildTools = "24.0.2"
     }
 }
 
