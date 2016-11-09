@@ -40,7 +40,7 @@ android {
 }
 
 def support_lib = "24.2.1"
-def okhttp = "3.4.1"
+def okhttp = "3.4.2"
 def retrofit = "2.1.0"
 
 dependencies {
@@ -63,21 +63,21 @@ dependencies {
     /*
      * Rx
      */
-    compile 'io.reactivex:rxjava:1.2.1'
+    compile 'io.reactivex:rxjava:1.2.2'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.trello:rxlifecycle:0.8.0'
-    compile 'com.trello:rxlifecycle-android:0.8.0'
-    compile 'com.jakewharton.rxrelay:rxrelay:1.1.0'
-    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.8.0@aar'
-    compile "com.github.VictorAlbertos:RxActivityResult:0.3.7"
+    compile 'com.trello:rxlifecycle:1.0'
+    compile 'com.trello:rxlifecycle-android:1.0'
+    compile 'com.jakewharton.rxrelay:rxrelay:1.2.0'
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.8.2@aar'
+    compile "com.github.VictorAlbertos:RxActivityResult:0.3.8"
 
     /*
      * Tools
      */
     compile 'com.jakewharton:butterknife:8.4.0'
-    compile 'com.afollestad.material-dialogs:core:0.8.6.2' // not update until cqqk stable release.
+    compile 'com.afollestad.material-dialogs:core:0.9.1.0'
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.github.tianzhijiexian:CommonAdapter:1.2.1'
     compile 'com.orhanobut:logger:1.15'
     compile 'top.zibin:Luban:1.0.7'
