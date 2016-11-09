@@ -86,7 +86,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion sdk as int
-    buildToolsVersion buildTools as String
+    buildToolsVersion buildTool as String
     defaultConfig {
         // recommended to use this universal version
         minSdkVersion minSdk as int

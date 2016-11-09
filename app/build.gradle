@@ -3,7 +3,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion sdk as int
-    buildToolsVersion buildTools as String
+    buildToolsVersion buildTool as String
     defaultConfig {
         applicationId "com.xxxifan.devbox.demo"
         minSdkVersion minSdk as int

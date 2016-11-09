@@ -5,7 +5,7 @@ group='com.github.xxxifan'
 
 android {
     compileSdkVersion sdk as int
-    buildToolsVersion buildTools as String
+    buildToolsVersion buildTool as String
 
     defaultConfig {
         minSdkVersion minSdk as int
