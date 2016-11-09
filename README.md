@@ -85,6 +85,13 @@ apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
+    compileSdkVersion sdk as int
+    buildToolsVersion buildTools as String
+    defaultConfig {
+        // recommended to use this universal version
+        minSdkVersion minSdk as int
+        targetSdkVersion sdk as int
+    }
     // ...
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
