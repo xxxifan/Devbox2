@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.xxxifan.devbox.demo.R;
-import com.xxxifan.devbox.library.base.BaseFragment;
+import com.xxxifan.devbox.core.base.BaseFragment;
 
 import butterknife.ButterKnife;
 

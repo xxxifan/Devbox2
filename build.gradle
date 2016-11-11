@@ -10,9 +10,19 @@ buildscript {
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
     }
     ext {
+        // sdk
         minSdk = 16
         sdk = 24
-        buildTool = "24.0.2"
+        buildTool = "24.0.3"
+
+        // library
+        devbox_version = "0.5.0"
+        devbox_code = 16110116
+
+        // dependencies
+        support_lib = "24.2.1"
+        okhttp = "3.4.2"
+        retrofit = "2.1.0"
     }
 }
 

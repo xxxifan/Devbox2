@@ -16,8 +16,8 @@
 
 package com.xxxifan.devbox.demo.ui.view.main;
 
-import com.xxxifan.devbox.library.base.BasePresenter;
-import com.xxxifan.devbox.library.base.BaseView;
+import com.xxxifan.devbox.core.base.BasePresenter;
+import com.xxxifan.devbox.core.base.BaseView;
 
 /**
  * Generated for Devbox(https://github.com/xxxifan/Devbox2)

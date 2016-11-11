@@ -22,7 +22,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.xxxifan.devbox.demo.R;
-import com.xxxifan.devbox.library.base.extended.ImageTranslucentActivity;
+import com.xxxifan.devbox.components.ImageTranslucentActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

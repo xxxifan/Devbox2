@@ -3,7 +3,7 @@ package com.xxxifan.devbox.demo.ui.view.main;
 import android.os.Bundle;
 
 import com.xxxifan.devbox.demo.R;
-import com.xxxifan.devbox.library.base.BaseActivity;
+import com.xxxifan.devbox.core.base.BaseActivity;
 
 /**
  * Created by xifan on 6/10/16.

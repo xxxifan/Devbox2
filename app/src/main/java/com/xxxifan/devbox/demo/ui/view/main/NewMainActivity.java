@@ -20,10 +20,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.xxxifan.devbox.demo.R;
-import com.xxxifan.devbox.library.base.extended.ToolbarActivity;
-import com.xxxifan.devbox.library.util.Once;
-import com.xxxifan.devbox.library.util.Strings;
-import com.xxxifan.devbox.library.util.ViewUtils;
+import com.xxxifan.devbox.core.base.extended.ToolbarActivity;
+import com.xxxifan.devbox.core.util.Once;
+import com.xxxifan.devbox.core.util.Strings;
+import com.xxxifan.devbox.core.util.ViewUtils;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

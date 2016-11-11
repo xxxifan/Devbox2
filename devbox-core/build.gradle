@@ -1,0 +1,49 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion sdk as int
+    buildToolsVersion buildTool as String
+
+    defaultConfig {
+        minSdkVersion minSdk as int
+        targetSdkVersion sdk as int
+        versionName devbox_version as String
+        versionCode devbox_code as int
+    }
+}
+
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+
+    compile "com.android.support:design:${support_lib}"
+
+    /*
+     * Rx
+     */
+    compile 'io.reactivex:rxjava:1.2.2'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.trello:rxlifecycle:1.0'
+    compile 'com.trello:rxlifecycle-android:1.0'
+    compile 'com.jakewharton.rxrelay:rxrelay:1.2.0'
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.8.2@aar'
+    compile "com.github.VictorAlbertos:RxActivityResult:0.3.8"
+
+    /*
+     * Tools
+     */
+    compile 'com.squareup.okio:okio:1.11.0'
+    compile 'com.afollestad.material-dialogs:core:0.9.1.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.github.tianzhijiexian:CommonAdapter:1.2.1'
+    compile 'com.orhanobut:logger:1.15'
+
+    /*
+     * apt needed
+     *
+     * apply plugin: 'com.neenbedankt.android-apt'
+     * apt 'com.jakewharton:butterknife-compiler:8.4.0'
+     */
+}
+
+apply from: '../artifacts.gradle'

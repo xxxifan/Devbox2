@@ -2,8 +2,8 @@ package com.xxxifan.devbox.demo.ui.view.main;
 
 import android.content.Context;
 
-import com.xxxifan.devbox.library.base.BasePresenter;
-import com.xxxifan.devbox.library.base.BaseView;
+import com.xxxifan.devbox.core.base.BasePresenter;
+import com.xxxifan.devbox.core.base.BaseView;
 
 /**
  * Created by xifan on 9/24/16.

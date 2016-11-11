@@ -10,12 +10,12 @@ import com.orhanobut.logger.Logger;
 import com.xxxifan.devbox.demo.R;
 import com.xxxifan.devbox.demo.data.model.Repo;
 import com.xxxifan.devbox.demo.repository.GithubService;
-import com.xxxifan.devbox.library.base.BaseAdapterItem;
-import com.xxxifan.devbox.library.base.DataLoader;
-import com.xxxifan.devbox.library.base.extended.RecyclerFragment;
-import com.xxxifan.devbox.library.event.NetworkEvent;
-import com.xxxifan.devbox.library.util.ViewUtils;
-import com.xxxifan.devbox.library.util.http.Http;
+import com.xxxifan.devbox.core.base.BaseAdapterItem;
+import com.xxxifan.devbox.core.base.DataLoader;
+import com.xxxifan.devbox.components.RecyclerFragment;
+import com.xxxifan.devbox.core.event.NetworkEvent;
+import com.xxxifan.devbox.core.util.ViewUtils;
+import com.xxxifan.devbox.components.http.Http;
 
 import org.greenrobot.eventbus.Subscribe;
 

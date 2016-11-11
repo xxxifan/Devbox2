@@ -1,7 +1,7 @@
 package com.xxxifan.devbox.demo;
 
 import com.xxxifan.devbox.demo.data.model.GithubModel;
-import com.xxxifan.devbox.library.util.FieldChecker;
+import com.xxxifan.devbox.core.util.FieldChecker;
 
 import java.util.ArrayList;
 

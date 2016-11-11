@@ -3,9 +3,9 @@ package com.xxxifan.devbox.demo;
 import android.app.Application;
 import android.os.StrictMode;
 
-import com.xxxifan.devbox.library.Devbox;
-import com.xxxifan.devbox.library.util.IOUtils;
-import com.xxxifan.devbox.library.util.http.Http;
+import com.xxxifan.devbox.core.Devbox;
+import com.xxxifan.devbox.core.util.IOUtils;
+import com.xxxifan.devbox.components.http.Http;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;

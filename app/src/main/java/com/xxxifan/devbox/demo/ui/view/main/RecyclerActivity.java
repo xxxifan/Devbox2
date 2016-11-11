@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.xxxifan.devbox.demo.R;
-import com.xxxifan.devbox.library.base.extended.TranslucentActivity;
-import com.xxxifan.devbox.library.util.Fragments;
+import com.xxxifan.devbox.components.TranslucentActivity;
+import com.xxxifan.devbox.core.util.Fragments;
 
 /**
  * Generated for Devbox(https://github.com/xxxifan/Devbox2)

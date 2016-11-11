@@ -1,7 +1,7 @@
 package com.xxxifan.devbox.demo.ui.view.main;
 
-import com.xxxifan.devbox.library.base.BasePresenter;
-import com.xxxifan.devbox.library.base.BaseView;
+import com.xxxifan.devbox.core.base.BasePresenter;
+import com.xxxifan.devbox.core.base.BaseView;
 
 /**
  * Created by drakeet(http://drakeet.me)
