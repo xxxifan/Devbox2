@@ -10,7 +10,7 @@ It's a new generation of [DevBox](https://github.com/xxxifan/DevBox)<br/>
 *   *Useful Utils inside*
 
 ## Usage
-1. add this project as your module ~~(maybe publish this to jitpack? but this won't allow you select what dependencies you need)~~
+1.add this project as your module ~~(maybe publish this to jitpack? but this won't allow you select what dependencies you need)~~
 or config it in gradle way now!
 
 ```groovy
@@ -34,9 +34,9 @@ dependencies {
 
 check [LatestRelease](https://github.com/xxxifan/Devbox2/releases) here
 
-2. add apt needed dependencies to your main project.
+2.add apt needed dependencies to your main project.
 
-3. init Devbox
+3.init Devbox
 
 ```java
 public class App extends Application {
@@ -53,17 +53,17 @@ public class App extends Application {
 }
 ```
 
-4. use Devbox.Theme or turn off your windowActionBar in your style
+4.use Devbox.Theme or turn off your windowActionBar in your style
 
 ```
 <style name="AppTheme" parent="Devbox.AppTheme">
 </style>
 ```
 
-5. feel free to copy a proguard rules to your app project from here
+5.feel free to copy a proguard rules to your app project from here
 > [proguard-rules.pro](https://github.com/xxxifan/Devbox2/blob/master/library/proguard-rules.pro)
 
-6. Butterknife and some library need android-apt, and also if you want to enable retrolambda, add following in you root build.gradle
+6.Butterknife and some library need android-apt, and also if you want to enable retrolambda, add following in you root build.gradle
 
 ```groovy
 buildscript {
@@ -109,7 +109,7 @@ android {
 }
 ```
 
-7. Required Permissions
+7.Required Permissions
 You may need basic network permissions
 ```
 <uses-permission android:name="android.permission.INTERNET"/>
