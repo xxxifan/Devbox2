@@ -10,7 +10,7 @@ It's a new generation of [DevBox](https://github.com/xxxifan/DevBox)<br/>
 *   *Useful Utils inside*
 
 ## Usage
-1.add this project as your module ~~(maybe publish this to jitpack? but this won't allow you select what dependencies you need)~~
+1. add this project as your module ~~(maybe publish this to jitpack? but this won't allow you select what dependencies you need)~~
 or config it in gradle way now!
 
 ```groovy
