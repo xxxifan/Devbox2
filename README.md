@@ -23,7 +23,7 @@ allprojects {
 }
 
 // in app build.gradle file
-def devbox_version = "v0.5.0"
+def devbox_version = "0.5.0"
 dependencies {
         // ...
         compile "com.github.xxxifan.Devbox2:devbox-core:${devbox_version}"
