@@ -53,7 +53,7 @@ public class App extends Application {
 }
 ```
 
-4.use Devbox.Theme or turn off your windowActionBar in your style
+4.use ```Devbox.Theme``` or turn off your ```windowActionBar``` in your style
 
 ```
 <style name="AppTheme" parent="Devbox.AppTheme">
@@ -63,7 +63,7 @@ public class App extends Application {
 5.feel free to copy a proguard rules to your app project from here
 > [proguard-rules.pro](https://github.com/xxxifan/Devbox2/blob/master/library/proguard-rules.pro)
 
-6.if you use ```devbox-componetns```, Butterknife and some library need android-apt, and also, if you want to enable retrolambda, add following in you root build.gradle
+6.if you use ```devbox-componetns```, Butterknife and some library need android-apt, and also, if you want to enable retrolambda, add following in your root build.gradle
 
 ```groovy
 buildscript {
@@ -87,7 +87,7 @@ buildscript {
     }
 }
 ```
-and in your app build.gradle
+and your app build.gradle
 
 ```groovy
 apply plugin: 'me.tatarka.retrolambda'
@@ -115,14 +115,14 @@ android {
 }
 ```
 
-7.Required Permissions
+7.Required permissions<br/>
 You may need basic network permissions
 ```
 <uses-permission android:name="android.permission.INTERNET"/>
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 ```
 
-~~warning: using this library may add up your method count at least 15000+~~<br/>
+~~Warning: using this library may add up your method count at least 15000+~~<br/>
 ***Warning: using core libray may add up your method count at least 8500+***<br/>
 ***Warning: using core + components library may add up your method count at least 16000+***
 
@@ -130,14 +130,15 @@ You may need basic network permissions
 
 see [release tag](https://github.com/xxxifan/Devbox2/releases)
 
-## Core<br/>
+## Guide
+### Core<br/>
 
 >[BaseActivity](https://github.com/xxxifan/Devbox2/tree/master/doc/BASE_ACTIVITY_EN.md)<br/>
 >[BaseFragment](https://github.com/xxxifan/Devbox2/tree/master/doc/BASE_FRAGMENT_EN.md)<br/>
 >[Fragments](https://github.com/xxxifan/Devbox2/tree/master/doc/FRAGMENTS_EN.md)<br/>
 >[DataLoader](https://github.com/xxxifan/Devbox2/tree/master/doc/DATALOADER_EN.md)<br/>
 
-## Utils
+### Utils
 
 >AppPref        - easier to access SharedPreference<br/>
 >Once           - quick to check whether to run one time code<br/>
@@ -146,8 +147,8 @@ see [release tag](https://github.com/xxxifan/Devbox2/releases)
 >IOUtils, ViewUtils, ReflectUtils, StatisticalUtil - like the name does<br/>
 >[Read introductions](https://github.com/xxxifan/Devbox2/tree/master/doc/COMPONENTS_EN.md)
 
-## Components
-from 0.5.0 devbox splited into two module, core and components, so feel free to choose what you need. Components package including:
+### Components
+From 0.5.0 devbox splited into two module, core and components, so feel free to choose what you need. Components package including:
 >DrawerActivity<br/>
 >TranslucentActivity<br/>
 >TranslucentDrawerActivity<br/>
@@ -219,10 +220,8 @@ from 0.5.0 devbox splited into two module, core and components, so feel free to 
      * apt 'com.jakewharton:butterknife-compiler:8.4.0'
      */
 
-Java files included in library:
-
-[SystemBarTintManager](https://github.com/xxxifan/Devbox2/blob/master/library/src/main/java/com/xxxifan/devbox/library/base/SystemBarTintManager.java)
-
+Java files included in library:<br/>
+[SystemBarTintManager](https://github.com/xxxifan/Devbox2/blob/master/library/src/main/java/com/xxxifan/devbox/library/base/SystemBarTintManager.java)<br/>
 [PinchImageView](https://github.com/xxxifan/Devbox2/blob/master/library/src/main/java/com/xxxifan/devbox/library/widget/PinchImageView.java)
 
 
