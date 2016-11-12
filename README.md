@@ -63,7 +63,7 @@ public class App extends Application {
 5.feel free to copy a proguard rules to your app project from here
 > [proguard-rules.pro](https://github.com/xxxifan/Devbox2/blob/master/library/proguard-rules.pro)
 
-6.Butterknife and some library need android-apt, and also if you want to enable retrolambda, add following in you root build.gradle
+6.if you using ```devbox-componetns```, Butterknife and some library need android-apt, and also, if you want to enable retrolambda, add following in you root build.gradle
 
 ```groovy
 buildscript {
@@ -73,11 +73,17 @@ buildscript {
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8' // android-apt
         classpath 'me.tatarka:gradle-retrolambda:3.3.1' // retrolamda
     }
-    
+
+    // don't forget these
     ext {
         minSdk = 16 // min sdk is 15, 16 is recommended
         sdk = 24 // target sdk version
-        buildTool = "24.0.2" // your build tool version here
+        buildTool = "24.0.3" // your build tool version here
+
+        // dependencies
+        support_lib = "24.2.1" // add this line
+        okhttp = "3.4.2" // add this line if you're using devbox-componets
+        retrofit = "2.1.0" // add this line if you're using devbox-componets
     }
 }
 ```
@@ -116,30 +122,32 @@ You may need basic network permissions
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 ```
 
-***warning: using this library may add up your method count at least 15000+.***
+~~warning: using this library may add up your method count at least 15000+~~<br/>
+***Warning: using core libray may add up your method count at least 8500+***<br/>
+***Warning: using core + components library may add up your method count at least 16000+***
 
 ## Changelog
 
 see [release tag](https://github.com/xxxifan/Devbox2/releases)
 
-## Core
+## Core<br/>
 
->[BaseActivity](https://github.com/xxxifan/Devbox2/tree/master/doc/BASE_ACTIVITY_EN.md)
->[BaseFragment](https://github.com/xxxifan/Devbox2/tree/master/doc/BASE_FRAGMENT_EN.md)
->[Fragments](https://github.com/xxxifan/Devbox2/tree/master/doc/FRAGMENTS_EN.md)
->[DataLoader](https://github.com/xxxifan/Devbox2/tree/master/doc/DATALOADER_EN.md)
+>[BaseActivity](https://github.com/xxxifan/Devbox2/tree/master/doc/BASE_ACTIVITY_EN.md)<br/>
+>[BaseFragment](https://github.com/xxxifan/Devbox2/tree/master/doc/BASE_FRAGMENT_EN.md)<br/>
+>[Fragments](https://github.com/xxxifan/Devbox2/tree/master/doc/FRAGMENTS_EN.md)<br/>
+>[DataLoader](https://github.com/xxxifan/Devbox2/tree/master/doc/DATALOADER_EN.md)<br/>
 
 ## Utils
 
->AppPref - easier to access SharedPreference<br/>
->Once - quick to check whether to run one time code<br/>
->Strings - util collection for string<br/>
->FieldChecker - easier to check a entity fields is required<br/>
+>AppPref        - easier to access SharedPreference<br/>
+>Once           - quick to check whether to run one time code<br/>
+>Strings        - util collection for string<br/>
+>FieldChecker   - easier to check a entity fields is required<br/>
 >IOUtils, ViewUtils, ReflectUtils, StatisticalUtil - like the name does<br/>
 >[Read introductions](https://github.com/xxxifan/Devbox2/tree/master/doc/COMPONENTS_EN.md)
 
 ## Components
-from 0.5.0) devbox splited into two module, core and components, so feel free to choose what you need. Components package including:
+from 0.5.0 devbox splited into two module, core and components, so feel free to choose what you need. Components package including:
 >DrawerActivity<br/>
 >TranslucentActivity<br/>
 >TranslucentDrawerActivity<br/>
