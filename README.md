@@ -5,9 +5,9 @@ It's a new generation of [DevBox](https://github.com/xxxifan/DevBox)<br/>
 
 ## Features
 
-*   *Easier UI control*
-*   *Fast&Beautiful Fragment control*
-*   *Useful Utils inside*
+*   *Easier UI and lifecycle control*
+*   *Fast Beautiful Clean fragment control*
+*   *Useful utils inside*
 
 ## Usage
 1.add this project as your module ~~(maybe publish this to jitpack? but this won't allow you select what dependencies you need)~~
@@ -63,7 +63,7 @@ public class App extends Application {
 5.feel free to copy a proguard rules to your app project from here
 > [proguard-rules.pro](https://github.com/xxxifan/Devbox2/blob/master/library/proguard-rules.pro)
 
-6.if you using ```devbox-componetns```, Butterknife and some library need android-apt, and also, if you want to enable retrolambda, add following in you root build.gradle
+6.if you use ```devbox-componetns```, Butterknife and some library need android-apt, and also, if you want to enable retrolambda, add following in you root build.gradle
 
 ```groovy
 buildscript {
