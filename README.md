@@ -132,20 +132,10 @@ see [release tag](https://github.com/xxxifan/Devbox2/releases)
 
 ## Guide
 ### Core<br/>
-
 >[BaseActivity](https://github.com/xxxifan/Devbox2/tree/master/doc/BASE_ACTIVITY_EN.md)<br/>
 >[BaseFragment](https://github.com/xxxifan/Devbox2/tree/master/doc/BASE_FRAGMENT_EN.md)<br/>
 >[Fragments](https://github.com/xxxifan/Devbox2/tree/master/doc/FRAGMENTS_EN.md)<br/>
 >[DataLoader](https://github.com/xxxifan/Devbox2/tree/master/doc/DATALOADER_EN.md)<br/>
-
-### Utils
-
->AppPref        - easier to access SharedPreference<br/>
->Once           - quick to check whether to run one time code<br/>
->Strings        - util collection for string<br/>
->FieldChecker   - easier to check a entity fields is required<br/>
->IOUtils, ViewUtils, ReflectUtils, StatisticalUtil - like the name does<br/>
->[Read introductions](https://github.com/xxxifan/Devbox2/tree/master/doc/COMPONENTS_EN.md)
 
 ### Components
 From 0.5.0 devbox splited into two module, core and components, so feel free to choose what you need. Components package including:
@@ -157,6 +147,14 @@ From 0.5.0 devbox splited into two module, core and components, so feel free to 
 >Http util, support normal requests, upload, download<br/>
 >okhttp, retrofit, glide, butterknife, gson and some other useful libraries.<br/>
 >[Read Source](https://github.com/xxxifan/Devbox2/tree/master/devbox-components)
+
+### Utils
+>AppPref        - easier to access SharedPreference<br/>
+>Once           - quick to check whether to run one time code<br/>
+>Strings        - util collection for string<br/>
+>FieldChecker   - easier to check a entity fields is required<br/>
+>IOUtils, ViewUtils, ReflectUtils, StatisticalUtil - like the name does<br/>
+>[Read introductions](https://github.com/xxxifan/Devbox2/tree/master/doc/COMPONENTS_EN.md)
 
 ## TODO
 - [x] Network part (Including image load, file download)

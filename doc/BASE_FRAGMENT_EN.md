@@ -1,6 +1,6 @@
 ### BaseFragment
 almost same functions with BaseActivity
-it also **handled fragment visible state while restoreSavedInstance, so you just need to init fragments when savedInstance is null**
+it also **handled fragment visible state while savedInstance exists, so you just need to init fragments when savedInstance is null**
 ```java
 protected void onSetupActivity(Bundle savedInstanceState) {
     if (savedInstanceState == null) {
@@ -9,3 +9,5 @@ protected void onSetupActivity(Bundle savedInstanceState) {
     }
 }
 ```
+
+You may ask how to control fragments in this situation, just use ```Fragments```

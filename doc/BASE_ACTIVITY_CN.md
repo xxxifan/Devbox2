@@ -1,6 +1,6 @@
 ## BaseActivity
-It used a special way to load views, but it would be simpler to implement a Activity, and there's more functional activities for extends.
-A Simple Activity looks like this:
+在这个类中，使用了比较复杂的方法去加载布局，但是能更加方便的去组合布局效果。
+在继承了该Activity之后将拥有这些基本的方法可以覆写：
 
 ```java
 public class MainActivity extends TranslucentDrawerActivity {
@@ -40,9 +40,10 @@ public class MainActivity extends TranslucentDrawerActivity {
 }
 
 ```
+其中只有 ```getLayoutId```, ```onSetupActivity```, ```getSimpleName``` 是必须覆写的
 
-Other functions:
+其他功能支持:
 
-- Lifecycle control with RxLifeCycle
-- Eventbus, back key listener, rx schedulers control.
-- More comes with ```devbox-components```, find what you need or just extend from BaseActivity
+- 集成RxLifeCycle的生命周期管理
+- Eventbus, 返回事件监听, rx 线程调度器控制.
+- 更多方便的继承自BaseActivity的类在components模块中.
