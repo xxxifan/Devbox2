@@ -161,7 +161,7 @@ From 0.5.0 devbox splited into two module, core and components, so feel free to 
 - [x] DataLoader
 - [x] More extends for fragments (like recyclerView support)
 - [x] IOUtils based on okio
-- [ ] CN Readme doc
+- [x] CN Readme doc
 - [ ] NotificationUtils
 - [ ] More
 
