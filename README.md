@@ -13,8 +13,8 @@ It's a new generation of [DevBox](https://github.com/xxxifan/DevBox)<br/>
 1.add this project as your module ~~(maybe publish this to jitpack? but this won't allow you select what dependencies you need)~~
 or config it in gradle way now!
 
+In root build.gradle file:
 ```groovy
-// in root build.gradle file
 allprojects {
     repositories {
         // ...
@@ -22,13 +22,22 @@ allprojects {
     }
 }
 
-// in app build.gradle file
+// universal version control
+ext {
+    minSdk = 16 // min sdk is 15, 16 is recommended
+    sdk = 24 // target sdk version
+    buildTool = "24.2.1" // your build tool version here
+}
+```
+
+And app build.gradle file:
+```groovy
 def devbox_version = "0.5.0"
 dependencies {
-        // ...
-        compile "com.github.xxxifan.Devbox2:devbox-core:${devbox_version}"
-        // components
-        compile "com.github.xxxifan.Devbox2:devbox-components:${devbox_version}"
+    // ...
+    compile "com.github.xxxifan.Devbox2:devbox-core:${devbox_version}"
+    // or with components
+    compile "com.github.xxxifan.Devbox2:devbox-components:${devbox_version}"
 }
 ```
 
@@ -53,9 +62,10 @@ public class App extends Application {
 }
 ```
 
-4.use ```Devbox.Theme``` or turn off your ```windowActionBar``` in your style
+4.use ```Devbox.Theme``` or turn off your ```android:windowActionBar``` in your style
 
 ```
+# use Devbox.AppTheme as parent theme
 <style name="AppTheme" parent="Devbox.AppTheme">
 </style>
 ```
@@ -63,7 +73,7 @@ public class App extends Application {
 5.feel free to copy a proguard rules to your app project from here
 > [proguard-rules.pro](https://github.com/xxxifan/Devbox2/blob/master/library/proguard-rules.pro)
 
-6.if you use ```devbox-componetns```, Butterknife and some library need android-apt, and also, if you want to enable retrolambda, add following in your root build.gradle
+6.if you use ```devbox-componetns```, Butterknife and some library need android-apt. And also, if you want to enable retrolambda, add following in your root build.gradle
 
 ```groovy
 buildscript {
@@ -72,18 +82,6 @@ buildscript {
         // ...
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8' // android-apt
         classpath 'me.tatarka:gradle-retrolambda:3.3.1' // retrolamda
-    }
-
-    // don't forget these
-    ext {
-        minSdk = 16 // min sdk is 15, 16 is recommended
-        sdk = 24 // target sdk version
-        buildTool = "24.0.3" // your build tool version here
-
-        // dependencies
-        support_lib = "24.2.1" // add this line
-        okhttp = "3.4.2" // add this line if you're using devbox-componets
-        retrofit = "2.1.0" // add this line if you're using devbox-componets
     }
 }
 ```
