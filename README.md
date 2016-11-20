@@ -26,7 +26,7 @@ allprojects {
 ext {
     minSdk = 16 // min sdk is 15, 16 is recommended
     sdk = 24 // target sdk version
-    buildTool = "24.2.1" // your build tool version here
+    buildTool = "24.0.3" // your build tool version here
 }
 ```
 
