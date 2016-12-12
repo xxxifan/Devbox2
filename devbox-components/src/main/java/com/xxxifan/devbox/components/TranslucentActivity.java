@@ -205,6 +205,10 @@ public abstract class TranslucentActivity extends ToolbarActivity {
         super.onDestroy();
     }
 
+    protected SystemBarTintManager getSystemBarManager() {
+        return mSystemBarManager;
+    }
+
     @Retention(RetentionPolicy.SOURCE)
     @Target({ElementType.PARAMETER, ElementType.FIELD, ElementType.METHOD})
     @IntDef({FIT_NONE, FIT_TOOLBAR, FIT_WINDOW_TOP, FIT_WINDOW_BOTH})
