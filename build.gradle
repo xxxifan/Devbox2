@@ -16,8 +16,8 @@ buildscript {
         buildTool = "25.0.2"
 
         // library
-        devbox_version = "0.5.1"
-        devbox_code = 16112019
+        devbox_version = "0.5.2"
+        devbox_code = 16121409
 
         // dependencies
         support_lib = "25.1.0"
