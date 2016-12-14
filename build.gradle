@@ -12,15 +12,15 @@ buildscript {
     ext {
         // sdk
         minSdk = 16
-        sdk = 24
-        buildTool = "24.0.3"
+        sdk = 25
+        buildTool = "25.0.2"
 
         // library
         devbox_version = "0.5.1"
         devbox_code = 16112019
 
         // dependencies
-        support_lib = "24.2.1"
+        support_lib = "25.1.0"
         okhttp = "3.5.0"
         retrofit = "2.1.0"
     }
