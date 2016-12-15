@@ -21,9 +21,9 @@ import com.liulishuo.filedownloader.FileDownloadListener;
 import com.liulishuo.filedownloader.FileDownloader;
 import com.orhanobut.logger.Logger;
 import com.xxxifan.devbox.core.Devbox;
+import com.xxxifan.devbox.core.util.Asserts;
 import com.xxxifan.devbox.core.util.IOUtils;
 import com.xxxifan.devbox.core.util.Strings;
-import com.xxxifan.devbox.core.util.Tests;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -152,7 +152,7 @@ public class Http {
     }
 
     public static <T> T createRetroService(Class<T> clazz) {
-        Tests.checkNull(sRetrofit);
+        Asserts.throwNull(sRetrofit);
         return sRetrofit.create(clazz);
     }
 

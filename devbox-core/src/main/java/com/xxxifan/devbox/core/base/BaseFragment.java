@@ -38,10 +38,10 @@ import com.trello.rxlifecycle.android.FragmentEvent;
 import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.xxxifan.devbox.core.R;
 import com.xxxifan.devbox.core.event.BaseEvent;
+import com.xxxifan.devbox.core.util.Asserts;
 import com.xxxifan.devbox.core.util.Fragments;
 import com.xxxifan.devbox.core.util.IOUtils;
 import com.xxxifan.devbox.core.util.StatisticalUtil;
-import com.xxxifan.devbox.core.util.Tests;
 import com.xxxifan.devbox.core.util.ViewUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -263,7 +263,7 @@ public abstract class BaseFragment extends Fragment {
      * register EventBus on resume/pause by default, must be called before onResume/onPause
      */
     protected void registerEventBus() {
-        Tests.checkBoolean(!isResumed());
+        Asserts.throwTrue(!isResumed());
         mRegisterEventBus = true;
     }
 

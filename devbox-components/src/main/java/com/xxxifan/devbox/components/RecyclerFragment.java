@@ -28,7 +28,7 @@ import android.widget.FrameLayout;
 
 import com.xxxifan.devbox.core.base.BaseFragment;
 import com.xxxifan.devbox.core.base.DataLoader;
-import com.xxxifan.devbox.core.util.Tests;
+import com.xxxifan.devbox.core.util.Asserts;
 
 import kale.adapter.CommonRcvAdapter;
 import kale.adapter.RcvAdapterWrapper;
@@ -53,7 +53,7 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         if (view != null) {
             mRecyclerView = $(view, BASE_RECYCLER_ID);
-            Tests.checkNull(mRecyclerView);
+            Asserts.throwNull(mRecyclerView);
 
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             mRecyclerWrapper = new RcvAdapterWrapper(createAdapter(), layoutManager);

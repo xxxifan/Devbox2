@@ -17,23 +17,29 @@
 package com.xxxifan.devbox.core.util;
 
 /**
+ * 一个奇怪的断言工具。
+ * 或许是因为在lambda中写null判断时能写起来更方便才写的 (滑稽
  * Created by xifan on 6/8/16.
  */
-public class Tests {
+public class Asserts {
 
-    protected Tests() {}
+    private Asserts() {}
 
-    public static <T> T checkNull(T reference) {
+    public static <T> T throwNull(T reference) {
         if (reference == null) {
             throw new NullPointerException();
         }
         return reference;
     }
 
-    public static boolean checkBoolean(boolean aBoolean) {
-        if (!aBoolean) {
+    public static boolean isNull(Object object) {
+        return object == null;
+    }
+
+    public static boolean throwTrue(boolean bool) {
+        if (!bool) {
             throw new IllegalArgumentException();
         }
-        return aBoolean;
+        return true;
     }
 }
