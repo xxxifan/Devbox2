@@ -16,6 +16,7 @@
 
 package com.xxxifan.devbox.core.base;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -60,8 +61,8 @@ public abstract class BaseFragment extends Fragment {
     private boolean mRegisterEventBus;
 
     @Override
-    public void onAttach(android.app.Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         lifecycleSubject.onNext(FragmentEvent.ATTACH);
     }
 
