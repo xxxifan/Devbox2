@@ -22,12 +22,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
-import android.support.v4.view.OnApplyWindowInsetsListener;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.WindowInsetsCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 
 import com.xxxifan.devbox.core.base.SystemBarTintManager;
@@ -60,7 +58,7 @@ public abstract class TranslucentActivity extends ToolbarActivity {
     private int mFitWindowMode;
     private int mToolbarOffset;
 
-    @Override
+    @Override @SuppressLint("NewApi")
     protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
         super.attachContentView(containerView, layoutResID);
         if (isKitkat()) {
@@ -68,13 +66,14 @@ public abstract class TranslucentActivity extends ToolbarActivity {
         }
 
         if (isLollipop() && getFitWindowMode() != FIT_WINDOW_BOTH) {
-            ViewCompat.setOnApplyWindowInsetsListener(getWindow().getDecorView(), new OnApplyWindowInsetsListener() {
-                @Override
-                public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
-                    setWindowOffset($(BASE_CONTAINER_ID), insets.getStableInsetTop());
-                    return insets;
-                }
-            });
+            getWindow().getDecorView()
+                    .setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+                        @Override
+                        public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
+                            setWindowOffset($(BASE_CONTAINER_ID), insets.getStableInsetTop());
+                            return v.onApplyWindowInsets(insets);
+                        }
+                    });
         }
 
         setTranslucentBar();
