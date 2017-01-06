@@ -3,10 +3,15 @@ package com.xxxifan.devbox.demo;
 import android.app.Application;
 import android.os.StrictMode;
 
+import com.liulishuo.filedownloader.FileDownloader;
+import com.liulishuo.filedownloader.services.DownloadMgrInitialParams;
+import com.xxxifan.devbox.components.http.Http;
 import com.xxxifan.devbox.core.Devbox;
 import com.xxxifan.devbox.core.util.IOUtils;
-import com.xxxifan.devbox.components.http.Http;
 
+import java.util.concurrent.TimeUnit;
+
+import cn.dreamtobe.filedownloader.OkHttp3Connection;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -32,9 +37,16 @@ public class App extends Application {
         sApp = this;
         Devbox.init(this);
 
+        initHttpComponent();
+
+        StrictMode.setThreadPolicy((new StrictMode.ThreadPolicy.Builder()).detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
+        StrictMode.setVmPolicy((new android.os.StrictMode.VmPolicy.Builder()).detectLeakedSqlLiteObjects().penaltyLog().penaltyDeath().build());
+    }
+
+    private void initHttpComponent() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        Cache cache = new Cache(IOUtils.getCacheDir(), 300 * 1024 * 1024); // 500MB
+        Cache cache = new Cache(IOUtils.getCacheDir(), 300 * 1024 * 1024); // 300MB
         OkHttpClient client = new OkHttpClient.Builder()
                 .cache(cache)
                 .addInterceptor(logging)
@@ -48,7 +60,12 @@ public class App extends Application {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
         Http.initRetrofit(retrofit);
-        StrictMode.setThreadPolicy((new StrictMode.ThreadPolicy.Builder()).detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
-        StrictMode.setVmPolicy((new android.os.StrictMode.VmPolicy.Builder()).detectLeakedSqlLiteObjects().penaltyLog().penaltyDeath().build());
+
+        // Init the FileDownloader with the OkHttp3Connection.Creator.
+        // use another client to avoid some issues
+        final OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(20000, TimeUnit.SECONDS); // 20s
+        FileDownloader.init(this, new DownloadMgrInitialParams.InitCustomMaker()
+                .connectionCreator(new OkHttp3Connection.Creator(builder)));
     }
 }
