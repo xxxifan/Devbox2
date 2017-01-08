@@ -19,8 +19,6 @@ package com.xxxifan.devbox.components;
 import android.support.annotation.LayoutRes;
 import android.view.View;
 
-import com.xxxifan.devbox.core.base.uicomponent.ToolbarComponent;
-
 import static com.xxxifan.devbox.components.uicomponent.TranslucentBarComponent.FIT_WINDOW_TOP;
 
 /**
@@ -31,11 +29,7 @@ public abstract class ImageTranslucentActivity extends TranslucentActivity {
 
     @Override protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
         super.attachContentView(containerView, layoutResID);
-        getUIComponents().remove(ToolbarComponent.TAG);
-
         setFitSystemWindowMode(FIT_WINDOW_TOP);
-        translucentNavBar();
         enableStatusBarHint(false);
-//        lightStatusBar();
     }
 }
