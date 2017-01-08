@@ -19,11 +19,11 @@ package com.xxxifan.devbox.demo.ui.view.main;
 import android.os.Bundle;
 import android.view.View;
 
-import com.xxxifan.devbox.demo.R;
-import com.xxxifan.devbox.core.base.extended.ToolbarActivity;
+import com.xxxifan.devbox.core.base.ToolbarActivity;
 import com.xxxifan.devbox.core.util.Once;
 import com.xxxifan.devbox.core.util.Strings;
 import com.xxxifan.devbox.core.util.ViewUtils;
+import com.xxxifan.devbox.demo.R;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

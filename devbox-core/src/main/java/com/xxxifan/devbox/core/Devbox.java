@@ -32,6 +32,8 @@ public class Devbox {
 
     private static Context sContext;
 
+    private Devbox() {}
+
     public static void init(Context context) {
         sContext = context;
     }
@@ -39,13 +41,22 @@ public class Devbox {
     public static Context getAppDelegate() {
         if (sContext == null) {
             throw new IllegalStateException("Application instance is null, please check you have " +
-                    "correct config");
+                                                    "correct config");
         }
         return sContext;
     }
 
     public static boolean isMarshmallow() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    }
+
+
+    public static boolean isKitkat() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    }
+
+    public static boolean isLollipop() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
     /**

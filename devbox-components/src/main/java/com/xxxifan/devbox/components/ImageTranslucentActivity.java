@@ -16,23 +16,26 @@
 
 package com.xxxifan.devbox.components;
 
+import android.support.annotation.LayoutRes;
 import android.view.View;
+
+import com.xxxifan.devbox.core.base.uicomponent.ToolbarComponent;
+
+import static com.xxxifan.devbox.components.uicomponent.TranslucentBarComponent.FIT_WINDOW_TOP;
 
 /**
  * Translucent Activity for Image background. Note the layout will start from status bar,
  * you may need set a margin manually.
  */
 public abstract class ImageTranslucentActivity extends TranslucentActivity {
-    @Override protected void onConfigureActivity() {
-        super.onConfigureActivity();
-        setFitSystemWindowMode(FIT_TOOLBAR);
+
+    @Override protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
+        super.attachContentView(containerView, layoutResID);
+        getUIComponents().remove(ToolbarComponent.TAG);
+
+        setFitSystemWindowMode(FIT_WINDOW_TOP);
         translucentNavBar();
+        enableStatusBarHint(false);
+//        lightStatusBar();
     }
-
-    @Override
-    protected void setupToolbar(View toolbarView) {
-        super.setupToolbar(toolbarView);
-        transparentToolbar();
-    }
-
 }

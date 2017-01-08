@@ -28,8 +28,10 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.LifecycleTransformer;
@@ -37,6 +39,7 @@ import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.ActivityEvent;
 import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.xxxifan.devbox.core.R;
+import com.xxxifan.devbox.core.base.uicomponent.UIComponent;
 import com.xxxifan.devbox.core.event.BaseEvent;
 import com.xxxifan.devbox.core.util.IOUtils;
 import com.xxxifan.devbox.core.util.StatisticalUtil;
@@ -70,6 +73,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private BackKeyListener mBackKeyListener;
     private DataLoader mDataLoader;
+    private ArrayMap<String, UIComponent> mUIComponents;
 
     private boolean mConfigured;
     private int mRootLayoutId;
@@ -84,6 +88,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         setActivityView(getLayoutId());
         onSetupActivity(savedInstanceState);
+        if (mRootLayoutId > 0) {
+            inflateComponents(getContainerView(), getUIComponents());
+        }
 
         if (getDataLoader() != null && savedInstanceState != null) {
             getDataLoader().onRestoreState(savedInstanceState);
@@ -159,22 +166,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    //##########  Protected construct methods  ##########
+    //##########  construct methods  ##########
     protected void onConfigureActivity() {
         //Stub
-    }
-
-    protected void setActivityView(@LayoutRes int layoutResID) {
-        setContentView(layoutResID);
-    }
-
-    @Override public void setContentView(@LayoutRes int layoutResID) {
-        // if root layout has been set, then it's a container, so let subclass
-        // to handle content view.
-        if (mRootLayoutId == 0) {
-            mRootLayoutId = layoutResID;
-        }
-        super.setContentView(mRootLayoutId);
     }
 
     @BeforeConfigActivity protected void setRootLayoutId(@LayoutRes int rootLayoutId) {
@@ -182,34 +176,80 @@ public abstract class BaseActivity extends AppCompatActivity {
         mRootLayoutId = rootLayoutId;
     }
 
+    protected void setActivityView(@LayoutRes int layoutResID) {
+        // if root layout has been set, then it's a container, so let subclass
+        // to handle content view.
+        boolean hasNewRoot = mRootLayoutId > 0;
+        setContentView(hasNewRoot ? mRootLayoutId : layoutResID);
+        if (hasNewRoot) {
+            attachContentView(getContainerView(), layoutResID);
+        }
+    }
+
+    /**
+     * Attach views to layout. It's good time to add UIComponent here.
+     * @param containerView
+     * @param layoutResID
+     */
+    @CallSuper protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
+        if (containerView == null) {
+            throw new IllegalStateException("Cannot find container view");
+        }
+        if (layoutResID == 0) {
+            throw new IllegalStateException("Invalid layout id");
+        }
+        View contentView = getLayoutInflater().inflate(layoutResID, null, false);
+        ((ViewGroup) containerView).addView(contentView, 0);
+    }
+
+    private void inflateComponents(View containerView, ArrayMap<String, UIComponent> uiComponents) {
+        if (uiComponents == null) {
+            return;
+        }
+        for (int i = 0; i < uiComponents.size(); i++) {
+            uiComponents.get(uiComponents.keyAt(i)).inflate(containerView);
+        }
+    }
+
+    /**
+     * Override {@link BaseView#showMessage(String)}
+     */
+    public void showMessage(String msg) {
+        ViewUtils.showToast(msg);
+    }
+
     //##########  Protected helper methods ##########
     @SuppressWarnings("unchecked")
-    protected <T extends View> T $(int viewId) {
+    protected final <T extends View> T $(int viewId) {
         return (T) findViewById(viewId);
     }
 
     @SuppressWarnings("unchecked")
-    protected <T extends View> T $(View view, int viewId) {
+    protected final <T extends View> T $(View view, int viewId) {
         return (T) view.findViewById(viewId);
     }
 
-    public Context getContext() {
+    public final Context getContext() {
         return this;
     }
 
-    @ColorInt public int getCompatColor(@ColorRes int resId) {
+    @ColorInt public final int getCompatColor(@ColorRes int resId) {
         return ContextCompat.getColor(this, resId);
     }
 
-    public Drawable getCompatDrawable(@DrawableRes int resId) {
+    public final Drawable getCompatDrawable(@DrawableRes int resId) {
         return ContextCompat.getDrawable(this, resId);
     }
 
-    protected boolean isConfigured() {
+    public final View getContainerView() {
+        return ((ViewGroup) $(android.R.id.content)).getChildAt(0);
+    }
+
+    protected final boolean isConfigured() {
         return mConfigured;
     }
 
-    protected void checkConfigured() {
+    protected final void checkConfigured() {
         if (mConfigured) {
             throw new IllegalStateException("You must call this method in onConfigureActivity");
         }
@@ -218,7 +258,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * register EventBus on resume/pause by default
      */
-    protected void registerEventBus() {
+    protected final void registerEventBus() {
         mRegisterEventBus = true;
     }
 
@@ -227,52 +267,73 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @param useNetwork if is network data loader, it will not request if no network there.
      */
-    protected DataLoader registerDataLoader(boolean useNetwork, DataLoader.LoadCallback callback) {
+    protected final DataLoader registerDataLoader(boolean useNetwork, DataLoader.LoadCallback callback) {
         mDataLoader = DataLoader.init(useNetwork, callback);
         return mDataLoader;
     }
 
-    protected DataLoader getDataLoader() {
+    /**
+     * add UIComponents, it will use {@link UIComponent#getTag()} as name, same component will be replaced
+     * should be called {@link #attachContentView(View, int)}
+     *
+     * @return current uiComponents
+     */
+    protected final ArrayMap<String, UIComponent> addUIComponents(UIComponent... uiComponents) {
+        if (mUIComponents == null) {
+            mUIComponents = new ArrayMap<>();
+        }
+        for (int i = 0, s = uiComponents.length; i < s; i++) {
+            mUIComponents.put(uiComponents[i].getTag(), uiComponents[i]);
+        }
+        return mUIComponents;
+    }
+
+    protected final ArrayMap<String, UIComponent> getUIComponents() {
+        return mUIComponents;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected final <T> T getUIComponent(String tag, Class<T> clazz) {
+        if (mUIComponents != null) {
+            return clazz.cast(mUIComponents.get(tag)) ;
+        }
+        return null;
+    }
+
+    protected final DataLoader getDataLoader() {
         return mDataLoader;
     }
 
-    protected void postEvent(@NonNull BaseEvent event, Class target) {
+    protected final void postEvent(@NonNull BaseEvent event, Class target) {
         EventBus.getDefault().post(event);
     }
 
-    protected void postStickyEvent(@NonNull BaseEvent event, Class target) {
+    protected final void postStickyEvent(@NonNull BaseEvent event, Class target) {
         EventBus.getDefault().postSticky(event);
     }
 
-    public Observable<ActivityEvent> lifecycle() {
+    public final Observable<ActivityEvent> lifecycle() {
         return lifecycleSubject.asObservable();
     }
 
-    public <T> LifecycleTransformer<T> bindUntilEvent(ActivityEvent event) {
+    public final <T> LifecycleTransformer<T> bindUntilEvent(ActivityEvent event) {
         return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
     }
 
-    public <T> LifecycleTransformer<T> bindToLifecycle() {
+    public final <T> LifecycleTransformer<T> bindToLifecycle() {
         return RxLifecycleAndroid.bindActivity(lifecycleSubject);
     }
 
-    protected <T> Observable.Transformer<T, T> io() {
+    protected final <T> Observable.Transformer<T, T> io() {
         return IOUtils.io();
     }
 
-    protected <T> Observable.Transformer<T, T> computation() {
+    protected final <T> Observable.Transformer<T, T> computation() {
         return IOUtils.computation();
     }
 
-    public void setBackKeyListener(BackKeyListener listener) {
+    public final void setBackKeyListener(BackKeyListener listener) {
         mBackKeyListener = listener;
-    }
-
-    /**
-     * Override {@link BaseView#showMessage(String)}
-     */
-    public void showMessage(String msg) {
-        ViewUtils.showToast(msg);
     }
 
     //##########  Abstract methods  ###########

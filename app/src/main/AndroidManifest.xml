@@ -31,6 +31,13 @@
         <activity android:name=".ui.view.main.CrashActivity" />
         <activity android:name=".ui.view.main.RecyclerActivity" />
         <activity android:name=".ui.view.main.MvpActivity" />
+        <activity android:name=".ui.view.main.ColorBarActivity" android:label="color bar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

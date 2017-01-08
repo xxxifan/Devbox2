@@ -20,8 +20,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.xxxifan.devbox.demo.R;
 import com.xxxifan.devbox.components.TranslucentActivity;
+import com.xxxifan.devbox.demo.R;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,11 +36,6 @@ public class TestTranslucentActivity extends TranslucentActivity {
     public static void start(Context context) {
         Intent starter = new Intent(context, TestTranslucentActivity.class);
         context.startActivity(starter);
-    }
-
-    @Override protected void onConfigureActivity() {
-        super.onConfigureActivity();
-        setFitSystemWindowMode(FIT_WINDOW_TOP);
     }
 
     @Override protected int getLayoutId() {

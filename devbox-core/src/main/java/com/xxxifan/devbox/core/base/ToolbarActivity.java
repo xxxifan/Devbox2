@@ -14,50 +14,44 @@
  * limitations under the License.
  */
 
-package com.xxxifan.devbox.components;
+package com.xxxifan.devbox.core.base;
 
 import android.support.annotation.LayoutRes;
-import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
-import com.xxxifan.devbox.components.uicomponent.DrawerComponent;
-import com.xxxifan.devbox.core.base.ToolbarActivity;
+import com.xxxifan.devbox.core.R;
 import com.xxxifan.devbox.core.base.uicomponent.ToolbarComponent;
 
 /**
- * Created by xifan on 4/6/16.
+ * Created by xifan on 4/5/16.
  */
-public abstract class DrawerActivity extends ToolbarActivity {
-    public static final int BASE_DRAWER_ID = R.id._internal_drawer_layout;
-
-    private DrawerComponent mDrawerComponent;
+public abstract class ToolbarActivity extends BaseActivity {
 
     @Override
     protected void onConfigureActivity() {
-        super.onConfigureActivity();
-        setRootLayoutId(R.layout._internal_activity_drawer_base);
+        setRootLayoutId(R.layout._internal_activity_base);
     }
 
     @Override protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
         super.attachContentView(containerView, layoutResID);
-        mDrawerComponent = new DrawerComponent(getDrawerView());
-        addUIComponents(mDrawerComponent, new ToolbarComponent());
+        addUIComponents(new ToolbarComponent());
+    }
+
+    /**
+     * @return user defined content view attached to container.
+     */
+    protected View getContentView() {
+        return ((ViewGroup) $(BASE_CONTAINER_ID)).getChildAt(0);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home && getDrawerLayout() != null) {
-            getDrawerLayout().openDrawer(Gravity.LEFT);
+        if (item.getItemId() == android.R.id.home) {
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
-    public DrawerLayout getDrawerLayout() {
-        return mDrawerComponent.getDrawerLayout();
-    }
-
-    protected abstract View getDrawerView();
 }
