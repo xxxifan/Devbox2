@@ -21,8 +21,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.xxxifan.devbox.demo.R;
 import com.xxxifan.devbox.components.ImageTranslucentActivity;
+import com.xxxifan.devbox.demo.R;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -45,6 +45,7 @@ public class TestImageTranslucent extends ImageTranslucentActivity {
 
     @Override protected void onSetupActivity(Bundle savedInstanceState) {
         ButterKnife.bind(this);
+        transparentToolbar();
     }
 
     @OnClick(R.id.full_btn)

@@ -26,7 +26,6 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 
 import com.xxxifan.devbox.components.R;
-import com.xxxifan.devbox.core.Devbox;
 import com.xxxifan.devbox.core.base.BaseActivity;
 import com.xxxifan.devbox.core.base.SystemBarTintManager;
 import com.xxxifan.devbox.core.base.uicomponent.UIComponent;
@@ -37,6 +36,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.ref.WeakReference;
+
+import static com.xxxifan.devbox.core.Devbox.isKitkat;
+import static com.xxxifan.devbox.core.Devbox.isLollipop;
 
 /**
  * Created by xifan on 1/6/17.
@@ -64,7 +66,7 @@ public class TranslucentBarComponent implements UIComponent {
     }
 
     @Override @SuppressLint("NewApi") public void inflate(View containerView) {
-        if (Devbox.isLollipop() && getFitWindowMode() != FIT_WINDOW_BOTH) {
+        if (isLollipop() && getFitWindowMode() != FIT_WINDOW_BOTH) {
             mActivityRef.get().getWindow().getDecorView()
                     .setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
                         @Override
@@ -81,37 +83,39 @@ public class TranslucentBarComponent implements UIComponent {
         setTranslucentBar();
     }
 
-    protected void setTranslucentBar() {
+    @SuppressLint("InlinedApi") protected void setTranslucentBar() {
         // setup translucent bar for kitkat devices
-        if (!Devbox.isKitkat()) {
+        if (!isKitkat()) {
             return;
         }
 
         BaseActivity activity = mActivityRef.get();
-        if (activity == null) {
+        if (activity == null || !isKitkat()) {
             return;
         }
 
-        if (Devbox.isKitkat()) {
-            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            if (mTranslucentNavBar && getFitWindowMode() != FIT_WINDOW_BOTH) {
-                activity.getWindow()
-                        .addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            }
-            if (mSystemBarManager == null) {
-                mSystemBarManager = new SystemBarTintManager(activity);
-                mSystemBarManager.setTintColor(ViewUtils.getCompatColor(R.color.colorPrimary));
-            }
-            mSystemBarManager.setStatusBarTintEnabled(!mDisableStatusBarHint);
+        // translucent status bar
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        // translucent nav bar
+        if (mTranslucentNavBar && getFitWindowMode() != FIT_WINDOW_BOTH) {
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
+        // status bar tint
+        if (mSystemBarManager == null) {
+            mSystemBarManager = new SystemBarTintManager(activity);
+            mSystemBarManager.setTintColor(ViewUtils.getCompatColor(R.color.colorPrimary));
+        }
+        mSystemBarManager.setStatusBarTintEnabled(!mDisableStatusBarHint);
 
-        if (Devbox.isLollipop()) {
+        // lollipop enhance
+        if (isLollipop()) {
             // always use translucent status bar
             Window window = activity.getWindow();
             int uiFlag = window.getDecorView().getSystemUiVisibility() |
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             window.getDecorView().setSystemUiVisibility(uiFlag);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
             if (mTransparentStatusBar) {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 window.setStatusBarColor(Color.TRANSPARENT);
@@ -183,7 +187,7 @@ public class TranslucentBarComponent implements UIComponent {
     @SuppressLint("NewApi") public void onDestroy() {
         if (mActivityRef.get() != null) {
             Window window = mActivityRef.get().getWindow();
-            if (Devbox.isLollipop() && window.getDecorView() != null) {
+            if (isLollipop() && window.getDecorView() != null) {
                 window.getDecorView().setOnApplyWindowInsetsListener(null);
             }
         }
