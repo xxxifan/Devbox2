@@ -101,9 +101,9 @@ public class TranslucentBarComponent implements UIComponent {
             }
             if (mSystemBarManager == null) {
                 mSystemBarManager = new SystemBarTintManager(activity);
+                mSystemBarManager.setTintColor(ViewUtils.getCompatColor(R.color.colorPrimary));
             }
             mSystemBarManager.setStatusBarTintEnabled(!mDisableStatusBarHint);
-            mSystemBarManager.setTintColor(ViewUtils.getCompatColor(R.color.colorPrimary));
         }
 
         if (Devbox.isLollipop()) {
