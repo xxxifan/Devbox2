@@ -41,7 +41,26 @@ public class MainActivity extends TranslucentDrawerActivity {
 
 ```
 
-Other functions:
+### Since 0.6.0
+All functions in activities(e.g. TranslucentActivity, DrawerActivity...) has been refactor to ```UIComponent``` like [ToolbarComponent](https://github.com/xxxifan/Devbox2/blob/master/devbox-core/src/main/java/com/xxxifan/devbox/core/base/uicomponent/ToolbarComponent.java).
+In that way users can write own components and much easier to control.
+When you need to add your component to an activity, just do override ```attachContentView``` in a BaseActivity:
+
+```java
+@Override protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
+    super.attachContentView(containerView, layoutResID); // do NOT remove this line
+    addUIComponents(new ToolbarComponent());
+}
+```
+
+What if you have a deep inherit activity and how to control your components? (like TranslucentDrawerActivity)
+you can use ```getUIComponents()``` to get your UIComponents and operate it as ArrayMap.
+you can also retrieve a UIComponent in a BaseActivity by its tag:
+```java
+ToolbarComponent toolbarComponent = getUIComponent(ToolbarComponent.TAG, ToolbarComponent.class);
+```
+
+### Other functions
 
 - Lifecycle control with RxLifeCycle
 - Eventbus, back key listener, rx schedulers control.

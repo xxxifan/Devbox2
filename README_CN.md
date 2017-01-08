@@ -12,13 +12,22 @@ allprojects {
     }
 }
 
-// in app build.gradle file
-def devbox_version = "0.5.0"
+// universal version control
+ext {
+    minSdk = 16 // min sdk is 15, 16 is recommended
+    sdk = 25 // target sdk version
+    buildTool = "25.0.2" // your build tool version here
+}
+```
+
+在 app 的 build.gradle 文件里加入
+```groovy
+def devbox_version = "0.6.0"
 dependencies {
-        // ...
-        compile "com.github.xxxifan.Devbox2:devbox-core:${devbox_version}"
-        // components
-        compile "com.github.xxxifan.Devbox2:devbox-components:${devbox_version}"
+    // ...
+    compile "com.github.xxxifan.Devbox2:devbox-core:${devbox_version}"
+    // 或者直接加入 components
+    compile "com.github.xxxifan.Devbox2:devbox-components:${devbox_version}"
 }
 ```
 
@@ -41,7 +50,7 @@ public class App extends Application {
 }
 ```
 
-3.在 style 文件中使用 ```Devbox.Theme``` 或禁用 ```windowActionBar```
+3.在 style 文件中使用 ```Devbox.Theme``` 或 禁用```windowActionBar```
 
 ```
 <style name="AppTheme" parent="Devbox.AppTheme">
@@ -59,19 +68,7 @@ buildscript {
     dependencies {
         // ...
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8' // android-apt
-        classpath 'me.tatarka:gradle-retrolambda:3.3.1' // retrolamda
-    }
-
-    // don't forget these
-    ext {
-        minSdk = 16 // min sdk is 15, 16 is recommended
-        sdk = 24 // target sdk version
-        buildTool = "24.0.3" // your build tool version here
-
-        // dependencies
-        support_lib = "24.2.1" // add this line
-        okhttp = "3.4.2" // add this line if you're using devbox-componets
-        retrofit = "2.1.0" // add this line if you're using devbox-componets
+        classpath 'me.tatarka:gradle-retrolambda:3.4.0' // retrolamda
     }
 }
 ```
@@ -103,7 +100,7 @@ android {
 }
 ```
 
-7.需要设置以下权限<br/>
+6.需要设置以下权限<br/>
 ```
 <uses-permission android:name="android.permission.INTERNET"/>
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

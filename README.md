@@ -1,4 +1,4 @@
-[EN|[简体中文](https://github.com/xxxifan/Devbox2/tree/master/doc/README_CN.md)]
+[EN|[简体中文](https://github.com/xxxifan/Devbox2/blob/master/README_CN.md)]
 ## Devbox2 [![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=578cb3974a7be5010070ef32&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/578cb3974a7be5010070ef32/build/latest) [![Jitpack.io](https://jitpack.io/v/xxxifan/Devbox2.svg)](https://jitpack.io/#xxxifan/Devbox2)
 Yet another Android development toolbox.
 It's a new generation of [DevBox](https://github.com/xxxifan/DevBox)<br/>
@@ -25,14 +25,14 @@ allprojects {
 // universal version control
 ext {
     minSdk = 16 // min sdk is 15, 16 is recommended
-    sdk = 24 // target sdk version
-    buildTool = "24.0.3" // your build tool version here
+    sdk = 25 // target sdk version
+    buildTool = "25.0.2" // your build tool version here
 }
 ```
 
 And app build.gradle file:
 ```groovy
-def devbox_version = "0.5.1"
+def devbox_version = "0.6.0"
 dependencies {
     // ...
     compile "com.github.xxxifan.Devbox2:devbox-core:${devbox_version}"
@@ -43,9 +43,7 @@ dependencies {
 
 check [LatestRelease](https://github.com/xxxifan/Devbox2/releases) here
 
-2.add apt needed dependencies to your main project.
-
-3.init Devbox
+2.init Devbox
 
 ```java
 public class App extends Application {
@@ -62,7 +60,7 @@ public class App extends Application {
 }
 ```
 
-4.use ```Devbox.Theme``` or turn off your ```android:windowActionBar``` in your style
+3.use ```Devbox.Theme``` or turn off your ```android:windowActionBar``` in your style
 
 ```
 # use Devbox.AppTheme as parent theme
@@ -70,10 +68,10 @@ public class App extends Application {
 </style>
 ```
 
-5.feel free to copy a proguard rules to your app project from here
+4.feel free to copy a proguard rules to your app project from here
 > [proguard-rules.pro](https://github.com/xxxifan/Devbox2/blob/master/library/proguard-rules.pro)
 
-6.if you use ```devbox-componetns```, Butterknife and some library need android-apt. And also, if you want to enable retrolambda, add following in your root build.gradle
+5.if you use ```devbox-componetns```, Butterknife and some library need android-apt. And also, if you want to enable retrolambda, add following in your root build.gradle
 
 ```groovy
 buildscript {
@@ -81,7 +79,7 @@ buildscript {
     dependencies {
         // ...
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8' // android-apt
-        classpath 'me.tatarka:gradle-retrolambda:3.3.1' // retrolamda
+        classpath 'me.tatarka:gradle-retrolambda:3.4.0' // retrolamda
     }
 }
 ```
@@ -113,7 +111,7 @@ android {
 }
 ```
 
-7.Required permissions<br/>
+6.Required permissions<br/>
 You may need basic network permissions
 ```
 <uses-permission android:name="android.permission.INTERNET"/>
@@ -166,56 +164,30 @@ From 0.5.0 devbox splited into two module, core and components, so feel free to 
 ## Dependencies
 
     testCompile 'junit:junit:4.12'
-    
+
     compile "com.android.support:design:${support_lib}"
-    /*
-     * Network/Loaders
-     */
-    compile "com.squareup.okhttp3:okhttp:${okhttp}"
-    compile "com.squareup.okhttp3:logging-interceptor:${okhttp}"
-    compile 'com.github.franmontiel:PersistentCookieJar:v1.0.0'
-    compile "com.squareup.retrofit2:retrofit:${retrofit}"
-    compile "com.squareup.retrofit2:adapter-rxjava:${retrofit}"
-    compile "com.squareup.retrofit2:converter-gson:${retrofit}"
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
-    compile 'com.liulishuo.filedownloader:library:1.0.2'
 
     /*
      * Rx
      */
-    compile 'io.reactivex:rxjava:1.2.1'
+    compile 'io.reactivex:rxjava:1.2.5'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.trello:rxlifecycle:0.8.0'
-    compile 'com.trello:rxlifecycle-android:0.8.0'
-    compile 'com.jakewharton.rxrelay:rxrelay:1.1.0'
-    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.8.0@aar'
-    compile "com.github.VictorAlbertos:RxActivityResult:0.3.7"
+    compile 'com.trello:rxlifecycle:1.0'
+    compile 'com.trello:rxlifecycle-android:1.0'
+    compile 'com.jakewharton.rxrelay:rxrelay:1.2.0'
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
+    compile "com.github.VictorAlbertos:RxActivityResult:0.3.9"
 
     /*
      * Tools
      */
-    compile 'com.jakewharton:butterknife:8.4.0'
-    compile 'com.afollestad.material-dialogs:core:0.8.6.2' // not update until cqqk stable release.
+    compile("com.afollestad.material-dialogs:core:0.9.2.2") {
+        exclude group:"com.android.support"
+    }
+    compile 'com.squareup.okio:okio:1.11.0'
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.google.code.gson:gson:2.7'
-    compile 'com.github.tianzhijiexian:CommonAdapter:1.2.0'
+    compile 'com.github.tianzhijiexian:CommonAdapter:1.2.2'
     compile 'com.orhanobut:logger:1.15'
-    compile 'top.zibin:Luban:1.0.7'
-
-    /*
-     * Optional
-     */
-    compile 'jp.wasabeef:glide-transformations:2.0.1'
-    compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.3.0'
-    compile 'com.amitshekhar.android:glide-bitmap-pool:0.0.1'
-
-    /*
-     * apt needed
-     *
-     * apply plugin: 'com.neenbedankt.android-apt'
-     * apt 'com.jakewharton:butterknife-compiler:8.4.0'
-     */
 
 Java files included in library:<br/>
 [SystemBarTintManager](https://github.com/xxxifan/Devbox2/blob/master/library/src/main/java/com/xxxifan/devbox/library/base/SystemBarTintManager.java)<br/>
