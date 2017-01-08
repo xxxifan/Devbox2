@@ -18,7 +18,6 @@ package com.xxxifan.devbox.components.uicomponent;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.IntDef;
 import android.view.View;
 import android.view.ViewGroup;
@@ -150,22 +149,6 @@ public class TranslucentBarComponent implements UIComponent {
      */
     public void setFitSystemWindowMode(@FitWindowMode int mode) {
         mFitWindowMode = mode;
-    }
-
-    /**
-     * make toolbar transparent, due to toolbar_container which has a shadow,
-     * we can't simply make toolbar transparent by toolbar.setBackgroundColor()
-     */
-    public void transparentToolbar() {
-        BaseActivity activity = mActivityRef.get();
-        if (activity == null) {
-            return;
-        }
-        if (activity.getSupportActionBar() != null) {
-            activity.getSupportActionBar()
-                    .setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            activity.findViewById(BaseActivity.BASE_TOOLBAR_SHADOW_ID).setVisibility(View.GONE);
-        }
     }
 
     /**

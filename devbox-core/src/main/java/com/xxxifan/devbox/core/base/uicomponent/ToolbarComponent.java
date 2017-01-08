@@ -16,6 +16,9 @@
 
 package com.xxxifan.devbox.core.base.uicomponent;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.WindowDecorActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -35,6 +38,7 @@ public class ToolbarComponent implements UIComponent {
     public static final String TAG = "ToolbarComponent";
 
     private boolean mUseLightToolbar;
+    private boolean mTranslucentToolbar;
 
     public ToolbarComponent() {
     }
@@ -70,12 +74,33 @@ public class ToolbarComponent implements UIComponent {
 
         // set support actionbar
         Toolbar toolbar = (Toolbar) toolbarView;
-        toolbar.setBackgroundColor(ViewUtils.getCompatColor(R.color.colorPrimary));
+        toolbar.setBackgroundColor(mTranslucentToolbar ? Color.TRANSPARENT :
+                                           ViewUtils.getCompatColor(R.color.colorPrimary));
         activity.setSupportActionBar(toolbar);
+
+        if (mTranslucentToolbar) {
+            activity.findViewById(BaseActivity.BASE_TOOLBAR_SHADOW_ID).setVisibility(View.GONE);
+        }
 
         // set home as up key
         if (!activity.isTaskRoot() && activity.getSupportActionBar() != null) {
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    /**
+     * make toolbar transparent, due to toolbar_container which has a shadow,
+     * we can't simply make toolbar transparent by toolbar.setBackgroundColor()
+     */
+    public void transparentToolbar(@NonNull BaseActivity activity) {
+        mTranslucentToolbar = true;
+        if (activity.isFinishing()) {
+            return;
+        }
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar()
+                    .setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            activity.findViewById(BaseActivity.BASE_TOOLBAR_SHADOW_ID).setVisibility(View.GONE);
         }
     }
 

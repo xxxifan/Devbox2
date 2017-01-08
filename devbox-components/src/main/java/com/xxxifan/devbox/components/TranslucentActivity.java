@@ -43,13 +43,14 @@ import static com.xxxifan.devbox.components.uicomponent.TranslucentBarComponent.
 public abstract class TranslucentActivity extends ToolbarActivity {
 
     private TranslucentBarComponent mBarComponent;
+    private ToolbarComponent mToolbarComponent;
 
     @Override @SuppressLint("NewApi")
     protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
         super.attachContentView(containerView, layoutResID);
 
         // override toolbar
-        ToolbarComponent toolbarComponent = new ToolbarComponent() {
+        mToolbarComponent = new ToolbarComponent() {
             @Override protected void setupToolbar(View containerView, View toolbarView) {
                 super.setupToolbar(containerView, toolbarView);
                 if (mBarComponent.getFitWindowMode() != FIT_WINDOW_BOTH) {
@@ -67,7 +68,7 @@ public abstract class TranslucentActivity extends ToolbarActivity {
                 }
             }
         };
-        addUIComponents(toolbarComponent, mBarComponent = new TranslucentBarComponent(this));
+        addUIComponents(mToolbarComponent, mBarComponent = new TranslucentBarComponent(this));
     }
 
     public void setFitSystemWindowMode(@TranslucentBarComponent.FitWindowMode int mode) {
@@ -81,10 +82,9 @@ public abstract class TranslucentActivity extends ToolbarActivity {
      * we can't simply make toolbar transparent by toolbar.setBackgroundColor()
      */
     public void transparentToolbar() {
-        if (mBarComponent != null) {
-            mBarComponent.transparentToolbar();
+        if (mToolbarComponent != null) {
+            mToolbarComponent.transparentToolbar(this);
         }
-
     }
 
     /**

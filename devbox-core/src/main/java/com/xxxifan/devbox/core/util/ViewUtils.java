@@ -28,6 +28,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
@@ -317,7 +318,7 @@ public class ViewUtils {
         showToast(toastStr, Toast.LENGTH_SHORT);
     }
 
-    public static int getCompatColor(@ColorRes int color) {
+    @ColorInt public static int getCompatColor(@ColorRes int color) {
         return ContextCompat.getColor(Devbox.getAppDelegate(), color);
     }
 
