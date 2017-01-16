@@ -42,6 +42,17 @@ public class MainActivity extends TranslucentDrawerActivity {
 ```
 其中只有 ```getLayoutId```, ```onSetupActivity```, ```getSimpleName``` 是必须覆写的
 
+### 特殊的生命周期
+
+onConfigActivity();<br/>
+```// onCreate() 开始```<br/>
+getLayoutId();<br/>
+setActivityView();<br/>
+attachContentView();<br/>
+inflateComponents();<br/>
+onSetupActivity();<br/>
+```// onCreate() 结束```<br/>
+
 ### 0.6.0 更新
 所有集成在 Activity 的模块(比如 TranslucentActivity, DrawerActivity 里面的功能)已经被重构成了 ```UIComponent``` 例如 [ToolbarComponent](https://github.com/xxxifan/Devbox2/blob/master/devbox-core/src/main/java/com/xxxifan/devbox/core/base/uicomponent/ToolbarComponent.java)。
 这样能够方便用户编写自己的模块，更加方便灵活。

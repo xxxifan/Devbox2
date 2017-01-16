@@ -41,6 +41,17 @@ public class MainActivity extends TranslucentDrawerActivity {
 
 ```
 
+### Special lifecycle
+
+onConfigActivity();<br/>
+```// onCreate() Start```<br/>
+getLayoutId();<br/>
+setActivityView();<br/>
+attachContentView();<br/>
+inflateComponents();<br/>
+onSetupActivity();<br/>
+```// onCreate() End```<br/>
+
 ### Since 0.6.0
 All functions in activities(e.g. TranslucentActivity, DrawerActivity...) has been refactor to ```UIComponent``` like [ToolbarComponent](https://github.com/xxxifan/Devbox2/blob/master/devbox-core/src/main/java/com/xxxifan/devbox/core/base/uicomponent/ToolbarComponent.java).
 In that way users can write own components and much easier to control.
