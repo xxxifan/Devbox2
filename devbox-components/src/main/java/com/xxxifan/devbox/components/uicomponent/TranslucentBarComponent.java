@@ -66,18 +66,25 @@ public class TranslucentBarComponent implements UIComponent {
     }
 
     @Override @SuppressLint("NewApi") public void inflate(View containerView) {
-        if (isLollipop() && getFitWindowMode() != FIT_WINDOW_BOTH) {
-            mActivityRef.get().getWindow().getDecorView()
-                    .setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
-                        @Override
-                        public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
-                            setWindowOffset(
-                                    mActivityRef.get().findViewById(BaseActivity.BASE_CONTAINER_ID),
-                                    insets.getStableInsetTop()
-                            );
-                            return v.onApplyWindowInsets(insets);
-                        }
-                    });
+        if (getFitWindowMode() != FIT_WINDOW_BOTH) {
+            if (isLollipop()) {
+                mActivityRef.get().getWindow().getDecorView()
+                        .setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+                            @Override
+                            public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
+                                setWindowOffset(
+                                        mActivityRef.get().findViewById(BaseActivity.BASE_CONTAINER_ID),
+                                        insets.getStableInsetTop()
+                                );
+                                return v.onApplyWindowInsets(insets);
+                            }
+                        });
+            } else if (isKitkat()) {
+                setWindowOffset(
+                        containerView,
+                        ViewUtils.getSystemBarHeight()
+                );
+            }
         }
 
         setTranslucentBar();
