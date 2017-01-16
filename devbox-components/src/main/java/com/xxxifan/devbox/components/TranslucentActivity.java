@@ -70,6 +70,8 @@ public abstract class TranslucentActivity extends ToolbarActivity {
                 }
             }
         };
+
+        toolbarComponent.loadConfig((ToolbarComponent) getUIComponent(ToolbarComponent.TAG));
         addUIComponents(toolbarComponent, new TranslucentBarComponent(this));
     }
 

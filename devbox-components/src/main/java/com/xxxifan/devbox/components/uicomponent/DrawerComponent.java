@@ -85,4 +85,7 @@ public class DrawerComponent implements UIComponent {
     @Override public String getTag() {
         return TAG;
     }
+
+    @Deprecated @Override public <T extends UIComponent> void loadConfig(T component) {}
+
 }

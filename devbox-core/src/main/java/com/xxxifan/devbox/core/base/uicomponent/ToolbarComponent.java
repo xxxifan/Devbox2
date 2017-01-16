@@ -108,7 +108,16 @@ public class ToolbarComponent implements UIComponent {
         mUseLightToolbar = true;
     }
 
+    @Override public <T extends UIComponent> void loadConfig(T component) {
+        if (component instanceof ToolbarComponent) {
+            ToolbarComponent toolbarComponent = (ToolbarComponent) component;
+            mTranslucentToolbar = toolbarComponent.mTranslucentToolbar;
+            mUseLightToolbar = toolbarComponent.mUseLightToolbar;
+        }
+    }
+
     @Override public String getTag() {
         return TAG;
     }
+
 }

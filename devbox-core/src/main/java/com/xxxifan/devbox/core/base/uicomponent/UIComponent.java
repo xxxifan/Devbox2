@@ -29,4 +29,6 @@ public interface UIComponent {
     void inflate(View containerView);
 
     String getTag();
+
+    <T extends UIComponent> void loadConfig(T component);
 }

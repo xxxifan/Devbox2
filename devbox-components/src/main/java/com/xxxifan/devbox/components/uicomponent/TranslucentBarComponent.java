@@ -204,6 +204,16 @@ public class TranslucentBarComponent implements UIComponent {
         return TAG;
     }
 
+    @Override public <T extends UIComponent> void loadConfig(T component) {
+        if (component instanceof TranslucentBarComponent) {
+            TranslucentBarComponent oldComponent = (TranslucentBarComponent) component;
+            mDisableStatusBarHint = oldComponent.mDisableStatusBarHint;
+            mFitWindowMode = oldComponent.mFitWindowMode;
+            mTranslucentNavBar = oldComponent.mTranslucentNavBar;
+            mTransparentStatusBar = oldComponent.mTransparentStatusBar;
+        }
+    }
+
     @Retention(RetentionPolicy.SOURCE)
     @Target({ElementType.PARAMETER, ElementType.FIELD, ElementType.METHOD})
     @IntDef({FIT_NONE, FIT_TOOLBAR, FIT_WINDOW_TOP, FIT_WINDOW_BOTH})
