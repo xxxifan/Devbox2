@@ -17,12 +17,14 @@
 package com.xxxifan.devbox.components;
 
 import android.support.annotation.LayoutRes;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.xxxifan.devbox.components.uicomponent.DrawerComponent;
+import com.xxxifan.devbox.core.base.uicomponent.UIComponent;
 
 import static com.xxxifan.devbox.components.uicomponent.TranslucentBarComponent.FIT_TOOLBAR;
 
@@ -42,8 +44,13 @@ public abstract class TranslucentDrawerActivity extends TranslucentActivity {
 
     @Override protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
         super.attachContentView(containerView, layoutResID);
-        mDrawerComponent = new DrawerComponent(getDrawerView());
-        addUIComponents(mDrawerComponent);
+        addUIComponents(new DrawerComponent(getDrawerView()));
+    }
+
+    @Override
+    protected void inflateComponents(View containerView, ArrayMap<String, UIComponent> uiComponents) {
+        super.inflateComponents(containerView, uiComponents);
+        mDrawerComponent = getUIComponent(DrawerComponent.TAG);
     }
 
     @Override
@@ -56,7 +63,7 @@ public abstract class TranslucentDrawerActivity extends TranslucentActivity {
     }
 
     public DrawerLayout getDrawerLayout() {
-        return mDrawerComponent.getDrawerLayout();
+        return mDrawerComponent == null ? null : mDrawerComponent.getDrawerLayout();
     }
 
     protected abstract View getDrawerView();

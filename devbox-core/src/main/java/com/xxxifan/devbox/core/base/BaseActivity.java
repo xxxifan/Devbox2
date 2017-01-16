@@ -188,6 +188,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * Attach views to layout. It's good time to add UIComponent here.
+     *
      * @param containerView
      * @param layoutResID
      */
@@ -202,7 +203,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         ((ViewGroup) containerView).addView(contentView, 0);
     }
 
-    private void inflateComponents(View containerView, ArrayMap<String, UIComponent> uiComponents) {
+    protected void inflateComponents(View containerView, ArrayMap<String, UIComponent> uiComponents) {
         if (uiComponents == null) {
             return;
         }
@@ -293,9 +294,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @SuppressWarnings("unchecked")
-    protected final <T> T getUIComponent(String tag, Class<T> clazz) {
+    protected final <T> T getUIComponent(String tag) {
         if (mUIComponents != null) {
-            return clazz.cast(mUIComponents.get(tag)) ;
+            return (T) mUIComponents.get(tag);
         }
         return null;
     }

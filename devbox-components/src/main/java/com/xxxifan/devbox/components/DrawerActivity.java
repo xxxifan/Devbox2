@@ -17,6 +17,7 @@
 package com.xxxifan.devbox.components;
 
 import android.support.annotation.LayoutRes;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -25,6 +26,7 @@ import android.view.View;
 import com.xxxifan.devbox.components.uicomponent.DrawerComponent;
 import com.xxxifan.devbox.core.base.ToolbarActivity;
 import com.xxxifan.devbox.core.base.uicomponent.ToolbarComponent;
+import com.xxxifan.devbox.core.base.uicomponent.UIComponent;
 
 /**
  * Created by xifan on 4/6/16.
@@ -42,8 +44,13 @@ public abstract class DrawerActivity extends ToolbarActivity {
 
     @Override protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
         super.attachContentView(containerView, layoutResID);
-        mDrawerComponent = new DrawerComponent(getDrawerView());
-        addUIComponents(mDrawerComponent, new ToolbarComponent());
+        addUIComponents(new DrawerComponent(getDrawerView()), new ToolbarComponent());
+    }
+
+    @Override
+    protected void inflateComponents(View containerView, ArrayMap<String, UIComponent> uiComponents) {
+        super.inflateComponents(containerView, uiComponents);
+        mDrawerComponent = getUIComponent(DrawerComponent.TAG);
     }
 
     @Override
@@ -56,7 +63,7 @@ public abstract class DrawerActivity extends ToolbarActivity {
     }
 
     public DrawerLayout getDrawerLayout() {
-        return mDrawerComponent.getDrawerLayout();
+        return mDrawerComponent == null ? null : mDrawerComponent.getDrawerLayout();
     }
 
     protected abstract View getDrawerView();

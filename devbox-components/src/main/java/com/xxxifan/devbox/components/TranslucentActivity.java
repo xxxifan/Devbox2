@@ -18,6 +18,7 @@ package com.xxxifan.devbox.components;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.LayoutRes;
+import android.support.v4.util.ArrayMap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -26,6 +27,7 @@ import com.xxxifan.devbox.components.uicomponent.TranslucentBarComponent;
 import com.xxxifan.devbox.core.Devbox;
 import com.xxxifan.devbox.core.base.ToolbarActivity;
 import com.xxxifan.devbox.core.base.uicomponent.ToolbarComponent;
+import com.xxxifan.devbox.core.base.uicomponent.UIComponent;
 import com.xxxifan.devbox.core.util.ViewUtils;
 
 import static com.xxxifan.devbox.components.uicomponent.TranslucentBarComponent.FIT_TOOLBAR;
@@ -50,7 +52,7 @@ public abstract class TranslucentActivity extends ToolbarActivity {
         super.attachContentView(containerView, layoutResID);
 
         // override toolbar
-        mToolbarComponent = new ToolbarComponent() {
+        ToolbarComponent toolbarComponent = new ToolbarComponent() {
             @Override protected void setupToolbar(View containerView, View toolbarView) {
                 super.setupToolbar(containerView, toolbarView);
                 if (mBarComponent.getFitWindowMode() != FIT_WINDOW_BOTH) {
@@ -68,7 +70,14 @@ public abstract class TranslucentActivity extends ToolbarActivity {
                 }
             }
         };
-        addUIComponents(mToolbarComponent, mBarComponent = new TranslucentBarComponent(this));
+        addUIComponents(toolbarComponent, new TranslucentBarComponent(this));
+    }
+
+    @Override
+    protected void inflateComponents(View containerView, ArrayMap<String, UIComponent> uiComponents) {
+        mBarComponent = getUIComponent(TranslucentBarComponent.TAG);
+        mToolbarComponent = getUIComponent(ToolbarComponent.TAG);
+        super.inflateComponents(containerView, uiComponents);
     }
 
     public void setFitSystemWindowMode(@TranslucentBarComponent.FitWindowMode int mode) {
