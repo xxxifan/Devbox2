@@ -32,7 +32,7 @@ ext {
 
 And app build.gradle file:
 ```groovy
-def devbox_version = "0.6.0"
+def devbox_version = "0.6.4"
 dependencies {
     // ...
     compile "com.github.xxxifan.Devbox2:devbox-core:${devbox_version}"
@@ -42,6 +42,11 @@ dependencies {
 ```
 
 check [LatestRelease](https://github.com/xxxifan/Devbox2/releases) here
+
+you can also try snapshot version via
+```groovy
+def devbox_version = "-SNAPSHOT"
+```
 
 2.init Devbox
 

@@ -22,7 +22,7 @@ ext {
 
 在 app 的 build.gradle 文件里加入
 ```groovy
-def devbox_version = "0.6.0"
+def devbox_version = "0.6.4"
 dependencies {
     // ...
     compile "com.github.xxxifan.Devbox2:devbox-core:${devbox_version}"
@@ -32,6 +32,11 @@ dependencies {
 ```
 
 查看[最新版本号](https://github.com/xxxifan/Devbox2/releases)
+
+你也可以尝试snapshot来获取最新的特性或bug修复
+```groovy
+def devbox_version = "-SNAPSHOT"
+```
 
 2.在Application中初始化
 
