@@ -88,9 +88,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         setActivityView(getLayoutId());
         onSetupActivity(savedInstanceState);
-        if (mRootLayoutId > 0) {
-            inflateComponents(getContainerView(), getUIComponents());
-        }
 
         if (getDataLoader() != null && savedInstanceState != null) {
             getDataLoader().onRestoreState(savedInstanceState);
@@ -183,6 +180,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(hasNewRoot ? mRootLayoutId : layoutResID);
         if (hasNewRoot) {
             attachContentView(getContainerView(), layoutResID);
+            inflateComponents(getContainerView(), getUIComponents());
         }
     }
 

@@ -109,7 +109,7 @@ public class ToolbarComponent implements UIComponent {
     }
 
     @Override public <T extends UIComponent> void loadConfig(T component) {
-        if (component instanceof ToolbarComponent) {
+        if (component != null && component instanceof ToolbarComponent) {
             ToolbarComponent toolbarComponent = (ToolbarComponent) component;
             mTranslucentToolbar = toolbarComponent.mTranslucentToolbar;
             mUseLightToolbar = toolbarComponent.mUseLightToolbar;

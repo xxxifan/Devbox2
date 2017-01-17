@@ -44,7 +44,7 @@ import static com.xxxifan.devbox.components.uicomponent.TranslucentBarComponent.
  */
 public abstract class TranslucentActivity extends ToolbarActivity {
 
-    private TranslucentBarComponent mBarComponent;
+    private TranslucentBarComponent mTranslucentComponent;
     private ToolbarComponent mToolbarComponent;
 
     @Override @SuppressLint("NewApi")
@@ -52,39 +52,49 @@ public abstract class TranslucentActivity extends ToolbarActivity {
         super.attachContentView(containerView, layoutResID);
 
         // override toolbar
-        ToolbarComponent toolbarComponent = new ToolbarComponent() {
+        mToolbarComponent = new ToolbarComponent() {
             @Override protected void setupToolbar(View containerView, View toolbarView) {
                 super.setupToolbar(containerView, toolbarView);
-                if (mBarComponent.getFitWindowMode() != FIT_WINDOW_BOTH) {
+                if (mTranslucentComponent.getFitWindowMode() != FIT_WINDOW_BOTH) {
                     View contentView = ((ViewGroup) containerView).getChildAt(0);
-                    if (mBarComponent.getFitWindowMode() == FIT_TOOLBAR) {
+                    if (mTranslucentComponent.getFitWindowMode() == FIT_TOOLBAR) {
                         int toolbarHeight = toolbarView.getResources()
                                 .getDimensionPixelSize(R.dimen.toolbar_height);
                         int toolbarOffset = Devbox.isKitkat() ? ViewUtils.getSystemBarHeight() : 0;
                         int topMargin = ((MarginLayoutParams) contentView.getLayoutParams()).topMargin;
                         ((MarginLayoutParams) contentView.getLayoutParams()).topMargin =
                                 Math.max(topMargin, toolbarHeight + toolbarOffset);
-                    } else if (mBarComponent.getFitWindowMode() == FIT_WINDOW_TOP) {
+                    } else if (mTranslucentComponent.getFitWindowMode() == FIT_WINDOW_TOP) {
                         ((MarginLayoutParams) contentView.getLayoutParams()).topMargin = 0;
                     }
                 }
             }
         };
 
-        toolbarComponent.loadConfig((ToolbarComponent) getUIComponent(ToolbarComponent.TAG));
-        addUIComponents(toolbarComponent, new TranslucentBarComponent(this));
+        addUIComponents(mToolbarComponent, new TranslucentBarComponent(this));
     }
 
     @Override
     protected void inflateComponents(View containerView, ArrayMap<String, UIComponent> uiComponents) {
-        mBarComponent = getUIComponent(TranslucentBarComponent.TAG);
-        mToolbarComponent = getUIComponent(ToolbarComponent.TAG);
+        // update components, they may be removed before inflate.
+        ToolbarComponent toolbarComponent = getUIComponent(ToolbarComponent.TAG);
+        TranslucentBarComponent translucentBarComponent = getUIComponent(TranslucentBarComponent.TAG);
+
+        if (mToolbarComponent != null && toolbarComponent != null) {
+            toolbarComponent.loadConfig(mToolbarComponent);
+        }
+        if (mTranslucentComponent != null && translucentBarComponent != null) {
+            translucentBarComponent.loadConfig(mTranslucentComponent);
+        }
+        mToolbarComponent = toolbarComponent;
+        mTranslucentComponent = translucentBarComponent;
+
         super.inflateComponents(containerView, uiComponents);
     }
 
     public void setFitSystemWindowMode(@TranslucentBarComponent.FitWindowMode int mode) {
-        if (mBarComponent != null) {
-            mBarComponent.setFitSystemWindowMode(mode);
+        if (mTranslucentComponent != null) {
+            mTranslucentComponent.setFitSystemWindowMode(mode);
         }
     }
 
@@ -102,38 +112,38 @@ public abstract class TranslucentActivity extends ToolbarActivity {
      * switch to full transparent status bar immediately, or configured in onConfigureActivity()
      */
     public void transparentStatusBar() {
-        if (mBarComponent != null) {
-            mBarComponent.transparentStatusBar();
+        if (mTranslucentComponent != null) {
+            mTranslucentComponent.transparentStatusBar();
         }
     }
 
     public void translucentNavBar() {
-        if (mBarComponent != null) {
-            mBarComponent.translucentNavBar();
+        if (mTranslucentComponent != null) {
+            mTranslucentComponent.translucentNavBar();
         }
     }
 
     @BeforeConfigActivity public void lightStatusBar() {
-        if (mBarComponent != null) {
-            mBarComponent.lightStatusBar();
+        if (mTranslucentComponent != null) {
+            mTranslucentComponent.lightStatusBar();
         }
     }
 
 
     protected void enableStatusBarHint(boolean enable) {
-        if (mBarComponent != null) {
-            mBarComponent.enableStatusBarHint(enable);
+        if (mTranslucentComponent != null) {
+            mTranslucentComponent.enableStatusBarHint(enable);
         }
     }
 
     @TranslucentBarComponent.FitWindowMode
     public int getFitWindowMode() {
-        return mBarComponent == null ? FIT_TOOLBAR : mBarComponent.getFitWindowMode();
+        return mTranslucentComponent == null ? FIT_TOOLBAR : mTranslucentComponent.getFitWindowMode();
     }
 
     @SuppressLint("NewApi") @Override protected void onDestroy() {
-        if (mBarComponent != null) {
-            mBarComponent.onDestroy();
+        if (mTranslucentComponent != null) {
+            mTranslucentComponent.onDestroy();
         }
         super.onDestroy();
     }

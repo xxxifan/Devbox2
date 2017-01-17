@@ -57,9 +57,9 @@ public class TranslucentBarComponent implements UIComponent {
     private boolean mTranslucentNavBar;
     private int mFitWindowMode;
     private boolean mDisableStatusBarHint;
+    private boolean mInitFlag;
 
     private WeakReference<BaseActivity> mActivityRef;
-
 
     public TranslucentBarComponent(BaseActivity activity) {
         mActivityRef = new WeakReference<>(activity);
@@ -88,6 +88,7 @@ public class TranslucentBarComponent implements UIComponent {
         }
 
         setTranslucentBar();
+        mInitFlag = true;
     }
 
     @SuppressLint("InlinedApi") protected void setTranslucentBar() {
@@ -167,12 +168,16 @@ public class TranslucentBarComponent implements UIComponent {
      */
     public void transparentStatusBar() {
         mTransparentStatusBar = true;
-        setTranslucentBar();
+        if (mInitFlag) {
+            setTranslucentBar();
+        }
     }
 
     public void translucentNavBar() {
         mTranslucentNavBar = true;
-        setTranslucentBar();
+        if (mInitFlag) {
+            setTranslucentBar();
+        }
     }
 
     public void lightStatusBar() {
@@ -184,6 +189,9 @@ public class TranslucentBarComponent implements UIComponent {
 
     public void enableStatusBarHint(boolean enable) {
         mDisableStatusBarHint = !enable;
+        if (mInitFlag) {
+            setTranslucentBar();
+        }
     }
 
     @FitWindowMode
