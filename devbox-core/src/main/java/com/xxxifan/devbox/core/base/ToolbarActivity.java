@@ -19,7 +19,6 @@ package com.xxxifan.devbox.core.base;
 import android.support.annotation.LayoutRes;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.xxxifan.devbox.core.R;
 import com.xxxifan.devbox.core.base.uicomponent.ToolbarComponent;
@@ -37,13 +36,6 @@ public abstract class ToolbarActivity extends BaseActivity {
     @Override protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
         super.attachContentView(containerView, layoutResID);
         addUIComponents(new ToolbarComponent());
-    }
-
-    /**
-     * @return user defined content view attached to container.
-     */
-    protected View getContentView() {
-        return ((ViewGroup) $(BASE_CONTAINER_ID)).getChildAt(0);
     }
 
     @Override

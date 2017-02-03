@@ -39,6 +39,7 @@ import java.lang.ref.WeakReference;
 
 import static com.xxxifan.devbox.core.Devbox.isKitkat;
 import static com.xxxifan.devbox.core.Devbox.isLollipop;
+import static com.xxxifan.devbox.core.base.BaseActivity.BASE_CONTAINER_ID;
 
 /**
  * Created by xifan on 1/6/17.
@@ -73,7 +74,7 @@ public class TranslucentBarComponent implements UIComponent {
                             @Override
                             public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
                                 setWindowOffset(
-                                        mActivityRef.get().findViewById(BaseActivity.BASE_CONTAINER_ID),
+                                        mActivityRef.get().findViewById(BASE_CONTAINER_ID),
                                         insets.getStableInsetTop()
                                 );
                                 return v.onApplyWindowInsets(insets);
