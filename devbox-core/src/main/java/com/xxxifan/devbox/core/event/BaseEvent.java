@@ -16,8 +16,17 @@
 
 package com.xxxifan.devbox.core.event;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * Created by xifan on 3/30/16.
  */
 public class BaseEvent {
+    public void post() {
+        EventBus.getDefault().post(this);
+    }
+
+    public void postSticky() {
+        EventBus.getDefault().postSticky(this);
+    }
 }
