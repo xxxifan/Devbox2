@@ -1,7 +1,9 @@
 package com.xxxifan.devbox.demo;
 
-import com.xxxifan.devbox.demo.data.model.GithubModel;
 import com.xxxifan.devbox.core.util.FieldChecker;
+import com.xxxifan.devbox.demo.data.model.GithubModel;
+
+import org.junit.Test;
 
 import java.util.ArrayList;
 
@@ -9,8 +11,9 @@ import java.util.ArrayList;
  * Created by xifan on 9/24/16.
  */
 
-public class Test {
-    @org.junit.Test
+public class DemoTest {
+
+    @Test
     public void FieldCheckerTest() {
         GithubModel model = new GithubModel();
         model.documentation_url = "url";
