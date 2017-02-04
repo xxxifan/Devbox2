@@ -22,11 +22,17 @@ import org.greenrobot.eventbus.EventBus;
  * Created by xifan on 3/30/16.
  */
 public class BaseEvent {
-    public void post() {
+    /**
+     * @param targetClass specify target class that will receive this event
+     */
+    public final void post(Class... targetClass) {
         EventBus.getDefault().post(this);
     }
 
-    public void postSticky() {
+    /**
+     * @param targetClass specify target class that will receive this event
+     */
+    public final void postSticky(Class... targetClass) {
         EventBus.getDefault().postSticky(this);
     }
 }

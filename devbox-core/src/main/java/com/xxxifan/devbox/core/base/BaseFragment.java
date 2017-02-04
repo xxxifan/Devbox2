@@ -38,7 +38,6 @@ import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.FragmentEvent;
 import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.xxxifan.devbox.core.R;
-import com.xxxifan.devbox.core.event.BaseEvent;
 import com.xxxifan.devbox.core.util.Asserts;
 import com.xxxifan.devbox.core.util.Fragments;
 import com.xxxifan.devbox.core.util.IOUtils;
@@ -89,7 +88,6 @@ public abstract class BaseFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         lifecycleSubject.onNext(FragmentEvent.CREATE_VIEW);
-        Cannon.load(view);
 
         onSetupFragment(view, savedInstanceState);
 
@@ -169,7 +167,6 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         lifecycleSubject.onNext(FragmentEvent.DESTROY_VIEW);
         super.onDestroyView();
-        Cannon.reset();
     }
 
     @Override
@@ -282,14 +279,6 @@ public abstract class BaseFragment extends Fragment {
         return mDataLoader;
     }
 
-    protected void postEvent(BaseEvent event, Class target) {
-        EventBus.getDefault().post(event);
-    }
-
-    protected void postStickyEvent(BaseEvent event, Class target) {
-        EventBus.getDefault().postSticky(event);
-    }
-
     protected final Observable<FragmentEvent> lifecycle() {
         return lifecycleSubject.asObservable();
     }
@@ -323,31 +312,4 @@ public abstract class BaseFragment extends Fragment {
     protected abstract void onSetupFragment(View view, Bundle savedInstanceState);
 
     public abstract String getSimpleName();
-
-    /**
-     * Stupid thing to post task
-     */
-    protected static class Cannon {
-        static View mView;
-
-        static void load(View view) {
-            mView = view;
-        }
-
-        static void reset() {
-            mView = null;
-        }
-
-        public static void post(Runnable runnable) {
-            if (mView != null) {
-                mView.post(runnable);
-            }
-        }
-
-        public static void postDelayed(Runnable runnable, int delay) {
-            if (mView != null) {
-                mView.postDelayed(runnable, delay);
-            }
-        }
-    }
 }

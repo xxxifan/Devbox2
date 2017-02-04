@@ -16,7 +16,6 @@
 
 package com.xxxifan.devbox.core.base;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -25,7 +24,6 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
@@ -40,7 +38,6 @@ import com.trello.rxlifecycle.android.ActivityEvent;
 import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.xxxifan.devbox.core.R;
 import com.xxxifan.devbox.core.base.uicomponent.UIComponent;
-import com.xxxifan.devbox.core.event.BaseEvent;
 import com.xxxifan.devbox.core.util.IOUtils;
 import com.xxxifan.devbox.core.util.StatisticalUtil;
 import com.xxxifan.devbox.core.util.ViewUtils;
@@ -82,7 +79,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         onConfigureActivity();
         mConfigured = true;
-        Cannon.load(this);
         super.onCreate(savedInstanceState);
         lifecycleSubject.onNext(ActivityEvent.CREATE);
 
@@ -139,7 +135,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override protected void onDestroy() {
         lifecycleSubject.onNext(ActivityEvent.DESTROY);
-        Cannon.reset();
         super.onDestroy();
         if (mDataLoader != null) {
             mDataLoader.destroy();
@@ -303,14 +298,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         return mDataLoader;
     }
 
-    protected final void postEvent(@NonNull BaseEvent event, Class target) {
-        EventBus.getDefault().post(event);
-    }
-
-    protected final void postStickyEvent(@NonNull BaseEvent event, Class target) {
-        EventBus.getDefault().postSticky(event);
-    }
-
     public final Observable<ActivityEvent> lifecycle() {
         return lifecycleSubject.asObservable();
     }
@@ -362,32 +349,4 @@ public abstract class BaseActivity extends AppCompatActivity {
     public interface BackKeyListener {
         boolean onPressed();
     }
-
-    /**
-     * Stupid thing to post task
-     */
-    protected static class Cannon {
-        static Activity mActivity;
-
-        static void load(Activity activity) {
-            mActivity = activity;
-        }
-
-        static void reset() {
-            mActivity = null;
-        }
-
-        public static void post(Runnable runnable) {
-            if (mActivity != null) {
-                mActivity.getWindow().getDecorView().post(runnable);
-            }
-        }
-
-        public static void postDelayed(Runnable runnable, int delay) {
-            if (mActivity != null) {
-                mActivity.getWindow().getDecorView().postDelayed(runnable, delay);
-            }
-        }
-    }
-
 }
