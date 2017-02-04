@@ -19,8 +19,8 @@ buildscript {
         devbox_code = 17011715
 
         // dependencies
-        support_lib = "25.1.0"
-        okhttp = "3.5.0"
+        support_lib = "25.1.1"
+        okhttp = "3.6.0"
         retrofit = "2.1.0"
     }
 }
