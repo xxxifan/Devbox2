@@ -32,7 +32,7 @@ ext {
 
 And app build.gradle file:
 ```groovy
-def devbox_version = "0.6.4"
+def devbox_version = "0.6.6"
 dependencies {
     // ...
     compile "com.github.xxxifan.Devbox2:devbox-core:${devbox_version}"
