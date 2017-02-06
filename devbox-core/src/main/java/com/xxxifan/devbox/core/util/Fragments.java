@@ -165,7 +165,7 @@ public class Fragments {
          */
         public SingleOperator data(@NonNull String key, @Nullable String value) {
             if (fragment != null) {
-                Bundle bundle = new Bundle();
+                Bundle bundle = fragment.getArguments() == null ? new Bundle() : fragment.getArguments();
                 bundle.putString(key, value);
                 fragment.setArguments(bundle);
             } else {
