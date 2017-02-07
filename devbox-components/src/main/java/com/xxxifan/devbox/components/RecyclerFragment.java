@@ -24,7 +24,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.xxxifan.devbox.core.base.BaseFragment;
 import com.xxxifan.devbox.core.base.DataLoader;
@@ -42,7 +41,6 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
 
     private RecyclerView mRecyclerView;
     private RcvAdapterWrapper mRecyclerWrapper;
-    private View mEmptyView;
 
     @Override protected int getLayoutId() {
         return R.layout._internal_fragment_recycler;
@@ -95,11 +93,8 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
     }
 
     public void setEmptyView(View view) {
-        mEmptyView = view;
-        mEmptyView.setVisibility(View.GONE);
-        if (mRecyclerView != null && mRecyclerView.getParent() instanceof FrameLayout) {
-            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            ((ViewGroup) mRecyclerView.getParent()).addView(view, params);
+        if (mRecyclerWrapper != null) {
+            mRecyclerWrapper.setEmptyView(view, mRecyclerView);
         }
     }
 
@@ -144,16 +139,6 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
     public void notifyDataLoaded() {
         if (getAdapterWrapper() != null) {
             getAdapterWrapper().notifyDataSetChanged();
-        }
-
-        if (mEmptyView != null) {
-            if (getAdapter().getItemCount() == 0) {
-                getRecyclerView().setVisibility(View.GONE);
-                mEmptyView.setVisibility(View.VISIBLE);
-            } else {
-                getRecyclerView().setVisibility(View.VISIBLE);
-                mEmptyView.setVisibility(View.GONE);
-            }
         }
     }
 
