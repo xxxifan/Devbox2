@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * Created by xifan on 6/7/16.
  */
-public class Fragments {
+public final class Fragments {
     public static final String TAG = "Fragments";
     public static final String KEY_RESTORE = "restore";
     public static final String KEY_RESTORE_VIEWPAGER = "restore_viewpager";
@@ -103,7 +103,7 @@ public class Fragments {
                 .getClass().getName()) : fragment.getTag();
     }
 
-    public static class SingleOperator {
+    public static final class SingleOperator {
         private WeakReference<FragmentActivity> activityRef;
         private Fragment fragment;
         private String tag;
@@ -290,7 +290,7 @@ public class Fragments {
     }
 
     // TODO: 6/10/16 MultiOperator is not used that much, so I only give it basic into function here.
-    public static class MultiOperator {
+    public static final class MultiOperator {
         private Fragment[] fragments;
         private WeakReference<FragmentActivity> activityRef;
 
