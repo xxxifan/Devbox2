@@ -189,8 +189,8 @@ public class Fragments {
             return this;
         }
 
-        public SingleOperator addToBackStack(boolean add) {
-            this.addToBackStack = add;
+        public SingleOperator addToBackStack() {
+            this.addToBackStack = true;
             return this;
         }
 
