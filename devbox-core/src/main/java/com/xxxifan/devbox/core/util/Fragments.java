@@ -72,6 +72,31 @@ public final class Fragments {
     }
 
     /**
+     * checkout with FRAGMENT_CONTAINER(which is defined in BaseActivity, is R.id.fragment_container
+     * it will use BaseFragment.getSimpleName() as tag, or SimpleClassName if fallback.
+     */
+    @CheckResult
+    public static SingleChildOperator checkout(Fragment hostFragment, Fragment childFragment) {
+        return new SingleChildOperator(hostFragment, childFragment);
+    }
+
+    /**
+     * checkout with specified tag
+     */
+    @CheckResult
+    public static SingleChildOperator checkout(Fragment hostFragment, Fragment childFragment, String tag) {
+        return new SingleChildOperator(hostFragment, childFragment, tag);
+    }
+
+    /**
+     * checkout previously childFragment by tag
+     */
+    @CheckResult
+    public static SingleChildOperator checkout(Fragment hostFragment, String tag) {
+        return new SingleChildOperator(hostFragment, tag);
+    }
+
+    /**
      * add multi fragments
      */
     @CheckResult
@@ -101,6 +126,193 @@ public final class Fragments {
         return Strings.isEmpty(fragment.getTag())
                 ? (fragment instanceof BaseFragment ? ((BaseFragment) fragment).getSimpleName() : fragment
                 .getClass().getName()) : fragment.getTag();
+    }
+
+    public static final class SingleChildOperator {
+        private WeakReference<Fragment> hostFragmentRef;
+        private Fragment childFragment;
+        private String tag;
+        private FragmentTransaction transaction;
+
+        private boolean addToBackStack;
+        private boolean fade;
+        private boolean removeLast;
+        private boolean hideLast = true;
+
+        private SingleChildOperator(Fragment hostFragment, Fragment childFragment) {
+            this(hostFragment, childFragment, getTag(hostFragment));
+        }
+
+        @SuppressLint("CommitTransaction")
+        private SingleChildOperator(Fragment hostFragment, Fragment childFragment, String tag) {
+            hostFragmentRef = new WeakReference<>(hostFragment);
+            this.childFragment = childFragment;
+            this.tag = tag;
+            this.transaction = hostFragment.getChildFragmentManager().beginTransaction();
+        }
+
+        @SuppressLint("CommitTransaction")
+        private SingleChildOperator(Fragment hostFragment, String tag) {
+            hostFragmentRef = new WeakReference<>(hostFragment);
+            this.tag = tag;
+            this.transaction = hostFragment.getChildFragmentManager().beginTransaction();
+
+            // retrieve correct childFragment
+            List<Fragment> fragments = hostFragment.getChildFragmentManager().getFragments();
+            for (Fragment tagFragment : fragments) {
+                if (Strings.equals(tagFragment.getTag(), tag)) {
+                    this.childFragment = tagFragment;
+                    break;
+                }
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        public SingleChildOperator bindPresenter(@NonNull BasePresenter presenter) {
+            presenter.setView(childFragment);
+            return this;
+        }
+
+        /**
+         * setArguments to target childFragment.
+         */
+        public SingleChildOperator data(@NonNull Bundle data) {
+            if (childFragment != null) {
+                childFragment.setArguments(data);
+            } else {
+                Logger.t(TAG).e("childFragment is null, will not add data to arguments");
+            }
+            return this;
+        }
+
+        /**
+         * simple string bundle as argument
+         */
+        public SingleChildOperator data(@NonNull String key, @Nullable String value) {
+            if (childFragment != null) {
+                Bundle bundle = childFragment.getArguments() == null ? new Bundle() : childFragment.getArguments();
+                bundle.putString(key, value);
+                childFragment.setArguments(bundle);
+            } else {
+                Logger.t(TAG).e("childFragment is null, will not add data to arguments");
+            }
+            return this;
+        }
+
+        public SingleChildOperator addSharedElement(View sharedElement, String name) {
+            transaction.addSharedElement(sharedElement, name);
+            return this;
+        }
+
+        public SingleChildOperator setCustomAnimator(@AnimRes int enter, @AnimRes int exit) {
+            transaction.setCustomAnimations(enter, exit);
+            return this;
+        }
+
+        public SingleChildOperator setCustomAnimator(@AnimRes int enter, @AnimRes int exit, @AnimRes int popEnter, @AnimRes int popExit) {
+            transaction.setCustomAnimations(enter, exit, popEnter, popExit);
+            return this;
+        }
+
+        public SingleChildOperator addToBackStack() {
+            this.addToBackStack = true;
+            return this;
+        }
+
+        /**
+         * display fade transition
+         */
+        public SingleChildOperator fade() {
+            this.fade = true;
+            return this;
+        }
+
+        /**
+         * hideLast last fragment, default is true.
+         * if you want last to remove, see {@link #removeLast(boolean)}
+         */
+        public SingleChildOperator hideLast(boolean hideLast) {
+            this.hideLast = hideLast;
+            return this;
+        }
+
+        /**
+         * remove last fragment while checkout.
+         */
+        public SingleChildOperator removeLast(boolean remove) {
+            this.removeLast = remove;
+            return this;
+        }
+
+        public void into(@IdRes int containerId) {
+            if (childFragment == null) {
+                Logger.t(TAG).e("childFragment is null, will do nothing");
+                commit();
+                return;
+            }
+
+            // hide or remove last fragment
+            if (hideLast || removeLast) {
+                List<Fragment> fragments = hostFragmentRef.get().getChildFragmentManager()
+                        .getFragments();
+                if (fragments != null) {
+                    for (Fragment oldFragment : fragments) {
+                        if (oldFragment == null) {
+                            continue;
+                        }
+
+                        if (oldFragment.getId() == containerId) {
+                            if (Strings.equals(oldFragment.getTag(), tag)) {
+                                childFragment = oldFragment;
+                            } else if (oldFragment.isVisible()) {
+                                oldFragment.setUserVisibleHint(false);
+                                transaction.hide(oldFragment);
+                                if (removeLast) {
+                                    Logger.d("last childFragment has been totally removed");
+                                    transaction.remove(oldFragment);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            boolean canAddBackStack = transaction.isAddToBackStackAllowed() && !transaction.isEmpty();
+
+            if (fade) {
+                // noinspection WrongConstant
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            }
+
+            if (addToBackStack) {
+                if (canAddBackStack) {
+                    transaction.addToBackStack(tag);
+                } else {
+                    Logger.t(TAG)
+                            .w("addToBackStack called, but this is not permitted");
+                }
+            }
+
+            if (!childFragment.isAdded()) {
+                transaction.add(containerId, childFragment, tag);
+            }
+
+            transaction.show(childFragment);
+
+            commit();
+        }
+
+        private void commit() {
+            transaction.commitAllowingStateLoss();
+
+            if (childFragment != null && childFragment instanceof BaseFragment) {
+                ((BaseFragment) childFragment).onVisible();
+            }
+
+            transaction = null;
+            childFragment = null;
+            hostFragmentRef.clear();
+        }
     }
 
     public static final class SingleOperator {
