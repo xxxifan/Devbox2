@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.xxxifan.devbox.demo.R;
 import com.xxxifan.devbox.components.TranslucentActivity;
 import com.xxxifan.devbox.core.util.Fragments;
 import com.xxxifan.devbox.core.util.ViewUtils;
+import com.xxxifan.devbox.demo.R;
 
 import java.util.concurrent.TimeUnit;
 
@@ -67,7 +67,7 @@ public class TestFragmentActivity extends TranslucentActivity {
     @OnClick(R.id.main_btn_1)
     public void onFirstClick(View view) {
         Fragments.checkout(this, new TestFragment1(), TestFragment1.TAG + "Bottom")
-                .addToBackStack(true)
+                .addToBackStack()
                 .into(FRAGMENT_CONTAINER);
     }
 
@@ -76,7 +76,7 @@ public class TestFragmentActivity extends TranslucentActivity {
         Bundle bundle = new Bundle();
         bundle.putString("data", "show data");
         Fragments.checkout(this, new TestFragment2(), TestFragment2.TAG + "Bottom")
-                .addToBackStack(true)
+                .addToBackStack()
                 .data(bundle)
                 .into(FRAGMENT_CONTAINER);
     }
