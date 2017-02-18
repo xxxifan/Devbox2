@@ -347,6 +347,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public interface BackKeyListener {
+        /**
+         * @return true if event consumed, which means it will not call any super functions
+         */
         boolean onPressed();
     }
 }
