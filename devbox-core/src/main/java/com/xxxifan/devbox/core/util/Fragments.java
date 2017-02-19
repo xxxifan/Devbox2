@@ -244,11 +244,14 @@ public final class Fragments {
             return this;
         }
 
-        public void into(@IdRes int containerId) {
+        /**
+         * @return success or not
+         */
+        public boolean into(@IdRes int containerId) {
             if (childFragment == null) {
                 Logger.t(TAG).e("childFragment is null, will do nothing");
                 commit();
-                return;
+                return false;
             }
 
             // hide or remove last fragment
@@ -300,6 +303,7 @@ public final class Fragments {
             transaction.show(childFragment);
 
             commit();
+            return true;
         }
 
         private void commit() {
@@ -431,11 +435,14 @@ public final class Fragments {
             return this;
         }
 
-        public void into(@IdRes int containerId) {
+        /**
+         * @return success or not
+         */
+        public boolean into(@IdRes int containerId) {
             if (fragment == null) {
                 Logger.t(TAG).e("fragment is null, will do nothing");
                 commit();
-                return;
+                return false;
             }
 
             // hide or remove last fragment
@@ -486,6 +493,7 @@ public final class Fragments {
             transaction.show(fragment);
 
             commit();
+            return true;
         }
 
         private void commit() {
