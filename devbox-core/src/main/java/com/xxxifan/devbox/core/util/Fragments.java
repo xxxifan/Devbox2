@@ -129,8 +129,9 @@ public final class Fragments {
     }
 
     public static final class SingleChildOperator {
-        private WeakReference<Fragment> hostFragmentRef;
+        private Fragment hostFragment;
         private Fragment childFragment;
+        private BasePresenter presenter;
         private String tag;
         private FragmentTransaction transaction;
 
@@ -145,7 +146,7 @@ public final class Fragments {
 
         @SuppressLint("CommitTransaction")
         private SingleChildOperator(Fragment hostFragment, Fragment childFragment, String tag) {
-            hostFragmentRef = new WeakReference<>(hostFragment);
+            this.hostFragment = hostFragment;
             this.childFragment = childFragment;
             this.tag = tag;
             this.transaction = hostFragment.getChildFragmentManager().beginTransaction();
@@ -153,7 +154,7 @@ public final class Fragments {
 
         @SuppressLint("CommitTransaction")
         private SingleChildOperator(Fragment hostFragment, String tag) {
-            hostFragmentRef = new WeakReference<>(hostFragment);
+            this.hostFragment = hostFragment;
             this.tag = tag;
             this.transaction = hostFragment.getChildFragmentManager().beginTransaction();
 
@@ -167,9 +168,8 @@ public final class Fragments {
             }
         }
 
-        @SuppressWarnings("unchecked")
         public SingleChildOperator bindPresenter(@NonNull BasePresenter presenter) {
-            presenter.setView(childFragment);
+            this.presenter = presenter;
             return this;
         }
 
@@ -247,7 +247,8 @@ public final class Fragments {
         /**
          * @return success or not
          */
-        public boolean into(@IdRes int containerId) {
+
+        @SuppressWarnings("unchecked") public boolean into(@IdRes int containerId) {
             if (childFragment == null) {
                 Logger.t(TAG).e("childFragment is null, will do nothing");
                 commit();
@@ -256,7 +257,7 @@ public final class Fragments {
 
             // hide or remove last fragment
             if (hideLast || removeLast) {
-                List<Fragment> fragments = hostFragmentRef.get().getChildFragmentManager()
+                List<Fragment> fragments = hostFragment.getChildFragmentManager()
                         .getFragments();
                 if (fragments != null) {
                     for (Fragment oldFragment : fragments) {
@@ -266,7 +267,7 @@ public final class Fragments {
 
                         if (oldFragment.getId() == containerId) {
                             if (Strings.equals(oldFragment.getTag(), tag)) {
-                                childFragment = oldFragment;
+                                childFragment = oldFragment; // found previous, use old to keep data
                             } else if (oldFragment.isVisible()) {
                                 oldFragment.setUserVisibleHint(false);
                                 transaction.hide(oldFragment);
@@ -300,6 +301,10 @@ public final class Fragments {
                 transaction.add(containerId, childFragment, tag);
             }
 
+            if (presenter != null) {
+                presenter.setView(childFragment);
+            }
+
             transaction.show(childFragment);
 
             commit();
@@ -315,13 +320,15 @@ public final class Fragments {
 
             transaction = null;
             childFragment = null;
-            hostFragmentRef.clear();
+            presenter = null;
+            hostFragment = null;
         }
     }
 
     public static final class SingleOperator {
-        private WeakReference<FragmentActivity> activityRef;
+        private FragmentActivity activity;
         private Fragment fragment;
+        private BasePresenter presenter;
         private String tag;
         private FragmentTransaction transaction;
 
@@ -336,7 +343,7 @@ public final class Fragments {
 
         @SuppressLint("CommitTransaction")
         private SingleOperator(FragmentActivity activity, Fragment fragment, String tag) {
-            this.activityRef = new WeakReference<>(activity);
+            this.activity = activity;
             this.fragment = fragment;
             this.tag = tag;
             this.transaction = activity.getSupportFragmentManager().beginTransaction();
@@ -344,7 +351,7 @@ public final class Fragments {
 
         @SuppressLint("CommitTransaction")
         private SingleOperator(FragmentActivity activity, String tag) {
-            this.activityRef = new WeakReference<>(activity);
+            this.activity = activity;
             this.tag = tag;
             this.transaction = activity.getSupportFragmentManager().beginTransaction();
 
@@ -358,9 +365,8 @@ public final class Fragments {
             }
         }
 
-        @SuppressWarnings("unchecked")
         public SingleOperator bindPresenter(@NonNull BasePresenter presenter) {
-            presenter.setView(fragment);
+            this.presenter = presenter;
             return this;
         }
 
@@ -438,7 +444,7 @@ public final class Fragments {
         /**
          * @return success or not
          */
-        public boolean into(@IdRes int containerId) {
+        @SuppressWarnings("unchecked") public boolean into(@IdRes int containerId) {
             if (fragment == null) {
                 Logger.t(TAG).e("fragment is null, will do nothing");
                 commit();
@@ -447,7 +453,7 @@ public final class Fragments {
 
             // hide or remove last fragment
             if (hideLast || removeLast) {
-                List<Fragment> fragments = getFragmentList(activityRef.get());
+                List<Fragment> fragments = getFragmentList(activity);
                 if (fragments != null) {
                     for (Fragment oldFragment : fragments) {
                         if (oldFragment == null) {
@@ -456,7 +462,7 @@ public final class Fragments {
 
                         if (oldFragment.getId() == containerId) {
                             if (Strings.equals(oldFragment.getTag(), tag)) {
-                                fragment = oldFragment;
+                                fragment = oldFragment; // found previous, use old to keep data
                             } else if (oldFragment.isVisible()) {
                                 oldFragment.setUserVisibleHint(false);
                                 transaction.hide(oldFragment);
@@ -490,6 +496,10 @@ public final class Fragments {
                 transaction.add(containerId, fragment, tag);
             }
 
+            if (presenter != null) {
+                presenter.setView(fragment);
+            }
+
             transaction.show(fragment);
 
             commit();
@@ -505,7 +515,8 @@ public final class Fragments {
 
             transaction = null;
             fragment = null;
-            activityRef.clear();
+            presenter = null;
+            activity = null;
         }
     }
 
