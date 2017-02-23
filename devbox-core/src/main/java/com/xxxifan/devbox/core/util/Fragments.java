@@ -138,7 +138,6 @@ public final class Fragments {
         private boolean addToBackStack;
         private boolean fade;
         private boolean removeLast;
-        private boolean hideLast = true;
 
         private SingleChildOperator(Fragment hostFragment, Fragment childFragment) {
             this(hostFragment, childFragment, getTag(hostFragment));
@@ -228,15 +227,6 @@ public final class Fragments {
         }
 
         /**
-         * hideLast last fragment, default is true.
-         * if you want last to remove, see {@link #removeLast(boolean)}
-         */
-        public SingleChildOperator hideLast(boolean hideLast) {
-            this.hideLast = hideLast;
-            return this;
-        }
-
-        /**
          * remove last fragment while checkout.
          */
         public SingleChildOperator removeLast(boolean remove) {
@@ -256,7 +246,7 @@ public final class Fragments {
             }
 
             // hide or remove last fragment
-            if (hideLast || removeLast) {
+            if (removeLast) {
                 List<Fragment> fragments = hostFragment.getChildFragmentManager()
                         .getFragments();
                 if (fragments != null) {
@@ -335,7 +325,6 @@ public final class Fragments {
         private boolean addToBackStack;
         private boolean fade;
         private boolean removeLast;
-        private boolean hideLast = true;
 
         private SingleOperator(FragmentActivity activity, Fragment fragment) {
             this(activity, fragment, getTag(fragment));
@@ -425,15 +414,6 @@ public final class Fragments {
         }
 
         /**
-         * hideLast last fragment, default is true.
-         * if you want last to remove, see {@link #removeLast(boolean)}
-         */
-        public SingleOperator hideLast(boolean hideLast) {
-            this.hideLast = hideLast;
-            return this;
-        }
-
-        /**
          * remove last fragment while checkout.
          */
         public SingleOperator removeLast(boolean remove) {
@@ -452,7 +432,7 @@ public final class Fragments {
             }
 
             // hide or remove last fragment
-            if (hideLast || removeLast) {
+            if (removeLast) {
                 List<Fragment> fragments = getFragmentList(activity);
                 if (fragments != null) {
                     for (Fragment oldFragment : fragments) {
