@@ -25,13 +25,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.util.ArrayMap;
+import android.support.v4.view.ViewPager;
 import android.view.View;
-
 import com.orhanobut.logger.Logger;
 import com.xxxifan.devbox.core.base.BaseFragment;
 import com.xxxifan.devbox.core.base.BasePresenter;
-
 import java.lang.ref.WeakReference;
 import java.util.List;
 
@@ -43,64 +44,66 @@ public final class Fragments {
     public static final String KEY_RESTORE = "restore";
     public static final String KEY_RESTORE_VIEWPAGER = "restore_viewpager";
 
+    private static final ArrayMap<String, Integer> REMAIN_POOL = new ArrayMap<>();
+
     private Fragments() {
     }
 
     /**
-     * checkout with FRAGMENT_CONTAINER(which is defined in BaseActivity, is R.id.fragment_container
-     * it will use BaseFragment.getSimpleName() as tag, or SimpleClassName if fallback.
+     * checkout with FRAGMENT_CONTAINER(which is defined in BaseActivity, is
+     * R.id.fragment_container. it will use BaseFragment.getSimpleName() as tag, or SimpleClassName
+     * if fallback.
      */
-    @CheckResult
-    public static SingleOperator checkout(FragmentActivity activity, Fragment fragment) {
+    @CheckResult public static SingleOperator checkout(FragmentActivity activity,
+            Fragment fragment) {
         return new SingleOperator(activity, fragment);
     }
 
     /**
      * checkout with specified tag
      */
-    @CheckResult
-    public static SingleOperator checkout(FragmentActivity activity, Fragment fragment, String tag) {
+    @CheckResult public static SingleOperator checkout(FragmentActivity activity, Fragment fragment,
+            String tag) {
         return new SingleOperator(activity, fragment, tag);
     }
 
     /**
      * checkout previously fragment by tag
      */
-    @CheckResult
-    public static SingleOperator checkout(FragmentActivity activity, String tag) {
+    @CheckResult public static SingleOperator checkout(FragmentActivity activity, String tag) {
         return new SingleOperator(activity, tag);
     }
 
     /**
-     * checkout with FRAGMENT_CONTAINER(which is defined in BaseActivity, is R.id.fragment_container
-     * it will use BaseFragment.getSimpleName() as tag, or SimpleClassName if fallback.
+     * checkout with FRAGMENT_CONTAINER(which is defined in BaseActivity, is
+     * R.id.fragment_container.  it will use BaseFragment.getSimpleName() as tag, or
+     * SimpleClassName
+     * if fallback.
      */
-    @CheckResult
-    public static SingleChildOperator checkout(Fragment hostFragment, Fragment childFragment) {
+    @CheckResult public static SingleChildOperator checkout(Fragment hostFragment,
+            Fragment childFragment) {
         return new SingleChildOperator(hostFragment, childFragment);
     }
 
     /**
      * checkout with specified tag
      */
-    @CheckResult
-    public static SingleChildOperator checkout(Fragment hostFragment, Fragment childFragment, String tag) {
+    @CheckResult public static SingleChildOperator checkout(Fragment hostFragment,
+            Fragment childFragment, String tag) {
         return new SingleChildOperator(hostFragment, childFragment, tag);
     }
 
     /**
      * checkout previously childFragment by tag
      */
-    @CheckResult
-    public static SingleChildOperator checkout(Fragment hostFragment, String tag) {
+    @CheckResult public static SingleChildOperator checkout(Fragment hostFragment, String tag) {
         return new SingleChildOperator(hostFragment, tag);
     }
 
     /**
      * add multi fragments
      */
-    @CheckResult
-    public static MultiOperator add(FragmentActivity activity, Fragment... fragments) {
+    @CheckResult public static MultiOperator add(FragmentActivity activity, Fragment... fragments) {
         if (fragments == null) {
             throw new IllegalArgumentException("Can't accept null fragments");
         }
@@ -123,21 +126,23 @@ public final class Fragments {
     }
 
     private static String getTag(Fragment fragment) {
-        return Strings.isEmpty(fragment.getTag())
-                ? (fragment instanceof BaseFragment ? ((BaseFragment) fragment).getSimpleName() : fragment
-                .getClass().getName()) : fragment.getTag();
+        return Strings.isEmpty(fragment.getTag()) ? (fragment instanceof BaseFragment
+                ? ((BaseFragment) fragment).getSimpleName() : fragment.getClass().getName())
+                : fragment.getTag();
     }
 
     public static final class SingleChildOperator {
         private Fragment hostFragment;
         private Fragment childFragment;
-        private BasePresenter presenter;
-        private String tag;
         private FragmentTransaction transaction;
+        private String tag;
+        private BasePresenter presenter;
 
         private boolean addToBackStack;
         private boolean fade;
         private boolean removeLast;
+        private boolean disableReuse;
+        private int remainCount;
 
         private SingleChildOperator(Fragment hostFragment, Fragment childFragment) {
             this(hostFragment, childFragment, getTag(hostFragment));
@@ -189,7 +194,8 @@ public final class Fragments {
          */
         public SingleChildOperator data(@NonNull String key, @Nullable String value) {
             if (childFragment != null) {
-                Bundle bundle = childFragment.getArguments() == null ? new Bundle() : childFragment.getArguments();
+                Bundle bundle = childFragment.getArguments() == null ? new Bundle()
+                        : childFragment.getArguments();
                 bundle.putString(key, value);
                 childFragment.setArguments(bundle);
             } else {
@@ -208,7 +214,8 @@ public final class Fragments {
             return this;
         }
 
-        public SingleChildOperator setCustomAnimator(@AnimRes int enter, @AnimRes int exit, @AnimRes int popEnter, @AnimRes int popExit) {
+        public SingleChildOperator setCustomAnimator(@AnimRes int enter, @AnimRes int exit,
+                @AnimRes int popEnter, @AnimRes int popExit) {
             transaction.setCustomAnimations(enter, exit, popEnter, popExit);
             return this;
         }
@@ -229,8 +236,28 @@ public final class Fragments {
         /**
          * remove last fragment while checkout.
          */
-        public SingleChildOperator removeLast(boolean remove) {
-            this.removeLast = remove;
+        public SingleChildOperator removeLast() {
+            return removeLast(0);
+        }
+
+        /**
+         * remove last fragment while checkout. it can remain a few of fragment for faster
+         * recovery
+         *
+         * @param remain the number that last fragment will remain
+         */
+        public SingleChildOperator removeLast(int remain) {
+            this.removeLast = true;
+            this.remainCount = remain;
+            return this;
+        }
+
+        /**
+         * Fragments will reuse exists fragment when fragment tag is the same. Disable it will
+         * force to use newly fragment instead of old one.
+         */
+        public SingleChildOperator disableReuse() {
+            this.disableReuse = true;
             return this;
         }
 
@@ -245,33 +272,37 @@ public final class Fragments {
                 return false;
             }
 
+            final String hostTag = getTag(hostFragment);
             // hide or remove last fragment
-            if (removeLast) {
-                List<Fragment> fragments = hostFragment.getChildFragmentManager()
-                        .getFragments();
-                if (fragments != null) {
-                    for (Fragment oldFragment : fragments) {
-                        if (oldFragment == null) {
-                            continue;
-                        }
+            List<Fragment> fragments = hostFragment.getChildFragmentManager().getFragments();
+            if (fragments != null) {
+                for (Fragment oldFragment : fragments) {
+                    if (oldFragment == null || oldFragment.getId() != containerId) {
+                        continue;
+                    }
 
-                        if (oldFragment.getId() == containerId) {
-                            if (Strings.equals(oldFragment.getTag(), tag)) {
-                                childFragment = oldFragment; // found previous, use old to keep data
-                            } else if (oldFragment.isVisible()) {
-                                oldFragment.setUserVisibleHint(false);
-                                transaction.hide(oldFragment);
-                                if (removeLast) {
-                                    Logger.d("last childFragment has been totally removed");
-                                    transaction.remove(oldFragment);
-                                }
+                    if (Strings.equals(oldFragment.getTag(), tag)) {
+                        if (!disableReuse) {
+                            childFragment = oldFragment; // found previous, use old to keep data
+                        }
+                    } else if (oldFragment.isVisible()) {
+                        oldFragment.setUserVisibleHint(false);
+
+                        transaction.hide(oldFragment); // hide other fragment by default.
+                        if (removeLast) {
+                            if (reachRemainPool(hostTag)) {
+                                Logger.d("last childFragment has been totally removed");
+                                transaction.remove(oldFragment);
+                            } else {
+                                transaction.detach(oldFragment);
                             }
                         }
                     }
                 }
             }
 
-            boolean canAddBackStack = transaction.isAddToBackStackAllowed() && !transaction.isEmpty();
+            boolean canAddBackStack =
+                    transaction.isAddToBackStackAllowed() && !transaction.isEmpty();
 
             if (fade) {
                 // noinspection WrongConstant
@@ -282,8 +313,7 @@ public final class Fragments {
                 if (canAddBackStack) {
                     transaction.addToBackStack(tag);
                 } else {
-                    Logger.t(TAG)
-                            .w("addToBackStack called, but this is not permitted");
+                    Logger.t(TAG).w("addToBackStack called, but this is not permitted");
                 }
             }
 
@@ -299,6 +329,29 @@ public final class Fragments {
 
             commit();
             return true;
+        }
+
+        private boolean reachRemainPool(String hostTag) {
+            //V v = get(key);
+            //if (v == null) {
+            //    v = put(key, value);
+            //}
+
+            if (remainCount > 0) {
+                Integer count = REMAIN_POOL.get(hostTag);
+                if (count == null) {
+                    count = 0; // wrap zero integer
+                }
+                if (count -1 > 0) {
+                    REMAIN_POOL.put(hostTag, count - 1);
+                    return false;
+                } else {
+                    REMAIN_POOL.put(hostTag, null);
+                    return true;
+                }
+            } else {
+                return true;
+            }
         }
 
         private void commit() {
@@ -376,7 +429,8 @@ public final class Fragments {
          */
         public SingleOperator data(@NonNull String key, @Nullable String value) {
             if (fragment != null) {
-                Bundle bundle = fragment.getArguments() == null ? new Bundle() : fragment.getArguments();
+                Bundle bundle =
+                        fragment.getArguments() == null ? new Bundle() : fragment.getArguments();
                 bundle.putString(key, value);
                 fragment.setArguments(bundle);
             } else {
@@ -395,7 +449,8 @@ public final class Fragments {
             return this;
         }
 
-        public SingleOperator setCustomAnimator(@AnimRes int enter, @AnimRes int exit, @AnimRes int popEnter, @AnimRes int popExit) {
+        public SingleOperator setCustomAnimator(@AnimRes int enter, @AnimRes int exit,
+                @AnimRes int popEnter, @AnimRes int popExit) {
             transaction.setCustomAnimations(enter, exit, popEnter, popExit);
             return this;
         }
@@ -456,7 +511,8 @@ public final class Fragments {
                 }
             }
 
-            boolean canAddBackStack = transaction.isAddToBackStackAllowed() && !transaction.isEmpty();
+            boolean canAddBackStack =
+                    transaction.isAddToBackStackAllowed() && !transaction.isEmpty();
 
             if (fade) {
                 // noinspection WrongConstant
@@ -467,8 +523,7 @@ public final class Fragments {
                 if (canAddBackStack) {
                     transaction.addToBackStack(tag);
                 } else {
-                    Logger.t(TAG)
-                            .w("addToBackStack called, but this is not permitted");
+                    Logger.t(TAG).w("addToBackStack called, but this is not permitted");
                 }
             }
 
@@ -516,9 +571,8 @@ public final class Fragments {
                 throw new IllegalArgumentException("The length of ids and fragments is not equal.");
             }
 
-            FragmentTransaction transaction = activityRef.get()
-                    .getSupportFragmentManager()
-                    .beginTransaction();
+            FragmentTransaction transaction =
+                    activityRef.get().getSupportFragmentManager().beginTransaction();
             String tag;
             for (int i = 0, s = ids.length; i < s; i++) {
                 tag = getTag(fragments[i]);
