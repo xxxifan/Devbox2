@@ -10,6 +10,7 @@ import com.xxxifan.devbox.core.util.Fragments;
 import com.xxxifan.devbox.core.util.ViewUtils;
 import com.xxxifan.devbox.demo.R;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
@@ -106,6 +107,15 @@ public class TestFragmentActivity extends TranslucentActivity {
 //            }
 //        });
 //    }
+
+    @OnClick(R.id.main_btn_4)
+    public void onRemainClick(View view) {
+        Fragments
+                .checkout(this, new TestFragment2(), "new " + new Random(System.currentTimeMillis())
+                        .nextInt())
+                .removeLast(2)
+                .into(FRAGMENT_CONTAINER);
+    }
 
     @Override
     public String getSimpleName() {
