@@ -290,9 +290,11 @@ public final class Fragments {
 
             // hide or remove last fragment
             final String hostTag = getTag(hostFragment);
+            boolean canRemove = removeLast && consumeRemainPool(hostTag) <= 0;
+
             List<Fragment> fragments = getChildFragmentList(hostFragment);
             for (Fragment oldFragment : fragments) {
-                if (oldFragment == null || oldFragment.getId() != containerId) {
+                if (oldFragment == null || oldFragment.getId() != containerId || !oldFragment.isAdded()) {
                     continue;
                 }
 
@@ -300,17 +302,18 @@ public final class Fragments {
                     if (!disableReuse) {
                         childFragment = oldFragment; // found previous, use old to keep data
                     } else {
+                        Logger.d("reuse disabled, remove");
                         transaction.remove(oldFragment);
                     }
-                } else if (oldFragment.isVisible()) {
-                    oldFragment.setUserVisibleHint(false);
-
-                    transaction.hide(oldFragment); // hide other fragment by default.
-                    if (removeLast) {
-                        if (reachRemainPool(hostTag)) {
-                            Logger.d("last childFragment has been totally removed");
-                            transaction.remove(oldFragment);
-                        }
+                } else {
+                    if (canRemove) {
+                        Logger.d(oldFragment + " removed");
+                        transaction.remove(oldFragment);
+                        canRemove = false;
+                    } else if (oldFragment.isVisible()) {
+                        Logger.d(oldFragment + " hide");
+                        transaction.hide(oldFragment);
+                        oldFragment.setUserVisibleHint(false);
                     }
                 }
             }
@@ -345,28 +348,31 @@ public final class Fragments {
             return true;
         }
 
-        private boolean reachRemainPool(String hostTag) {
-            Logger.d("remain " + remainCount);
+        private int consumeRemainPool(String hostTag) {
             Integer count = REMAIN_POOL.get(hostTag);
-
+            Logger.d("remain " + remainCount + ", get " + count);
             // null pool, initialize it
             if (count == null) {
                 if (remainCount > 0) {
+                    Logger.d("initialize remain pool " + remainCount);
                     REMAIN_POOL.put(hostTag, remainCount);
-                    return false;
+                    return remainCount;
                 } else {
-                    return true;
+                    Logger.d("remain pool not available, return true");
+                    return -1;
                 }
             }
 
             // pool exist, consume it or not.
             if (count-- > 0) {
+                Logger.d(count + " count > 0, consume it");
                 // consume pool
                 REMAIN_POOL.put(hostTag, count);
-                return false;
+                return count;
             } else {
+                Logger.d("count <= 0, pool reached, return true");
                 REMAIN_POOL.put(hostTag, 0);
-                return true;
+                return 0;
             }
         }
 
@@ -532,19 +538,11 @@ public final class Fragments {
                 return false;
             }
 
-            final String activityTag = activity instanceof BaseActivity ?
-                    ((BaseActivity) activity).getSimpleName() : activity.getLocalClassName();
-            final boolean reachRemainPool = removeLast && consumeRemainPool(activityTag) <= 0;
-
             // hide or remove last fragment
             List<Fragment> fragments = getFragmentList(activity);
-            String fragmentsStr = "";
-            for (Fragment fragment1 : fragments) {
-                fragmentsStr += fragment1 + "\n";
-            }
-            Logger.d(fragmentsStr);
-
-            boolean canRemove = reachRemainPool;
+            final String activityTag = activity instanceof BaseActivity ?
+                    ((BaseActivity) activity).getSimpleName() : activity.getLocalClassName();
+            boolean canRemove = removeLast && consumeRemainPool(activityTag) <= 0;
             for (Fragment oldFragment : fragments) {
                 if (oldFragment == null || oldFragment.getId() != containerId || !oldFragment.isAdded()) {
                     continue;
