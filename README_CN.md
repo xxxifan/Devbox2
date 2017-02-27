@@ -22,7 +22,7 @@ ext {
 
 在 app 的 build.gradle 文件里加入
 ```groovy
-def devbox_version = "0.6.6"
+def devbox_version = "0.7.0"
 dependencies {
     // ...
     compile "com.github.xxxifan.Devbox2:devbox-core:${devbox_version}"

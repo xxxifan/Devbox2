@@ -19,12 +19,13 @@ Fragments.checkout(this, new TestFragment(), "test")
 ```
 Fragments.checkout(this, new TestFragment(), "test")
         .data(bundle) // set bundle arguments
-        .addToBackStack(true) // it will use tag name as state name
-        .hideLast(true) // replace last fragment, default is true.
-        .removeLast(true) // remove last fragment while checkout.
         .addSharedElement(view, name)
         .setCustomAnimator(enter, exit)
+        .addToBackStack() // it will use tag name as state name
+        .removeLast(keep) // remove last fragment while checkout.
         .fade() // default fade animation
+        .disableOptimize() // disable transaction optimization while you get into issue.
+        .disableReuse() // it will re-use previously fragment if fragment tag is the same one. disable it if you don't like it.
         .into(FRAGMENT_CONTAINER);
 ```
 
