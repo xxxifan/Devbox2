@@ -57,7 +57,7 @@ public final class Fragments {
      * if fallback.
      */
     @CheckResult public static SingleOperator checkout(FragmentActivity activity,
-                                                       Fragment fragment) {
+            Fragment fragment) {
         return new SingleOperator(activity, fragment);
     }
 
@@ -65,7 +65,7 @@ public final class Fragments {
      * checkout with specified tag
      */
     @CheckResult public static SingleOperator checkout(FragmentActivity activity, Fragment fragment,
-                                                       String tag) {
+            String tag) {
         return new SingleOperator(activity, fragment, tag);
     }
 
@@ -83,7 +83,7 @@ public final class Fragments {
      * if fallback.
      */
     @CheckResult public static SingleChildOperator checkout(Fragment hostFragment,
-                                                            Fragment childFragment) {
+            Fragment childFragment) {
         return new SingleChildOperator(hostFragment, childFragment);
     }
 
@@ -91,7 +91,7 @@ public final class Fragments {
      * checkout with specified tag
      */
     @CheckResult public static SingleChildOperator checkout(Fragment hostFragment,
-                                                            Fragment childFragment, String tag) {
+            Fragment childFragment, String tag) {
         return new SingleChildOperator(hostFragment, childFragment, tag);
     }
 
@@ -139,6 +139,41 @@ public final class Fragments {
                 : fragment.getTag();
     }
 
+    /**
+     * @param tag identify the host fragment will attach to. same tag will share one remain
+     * pool
+     * @return the pool size left.
+     */
+    private static int consumeRemainPool(final int remainCount, final String tag,
+            final int totalCount) {
+        Integer count = REMAIN_POOL.get(tag);
+        Logger.d("remain " + remainCount + ", get " + count + " total " + totalCount);
+        // null pool, initialize it
+        if (count == null) {
+            if (remainCount > 0) {
+                count = Math.max(remainCount - totalCount, 0);
+                REMAIN_POOL.put(tag, count);
+                Logger.d("initialize remain pool " + count);
+                return count;
+            } else {
+                Logger.d("remain pool not available, return true");
+                return -1;
+            }
+        }
+
+        // pool exist, consume it or not.
+        if (count-- > 0) {
+            Logger.d((count + 1) + " count > 0, consume it");
+            // consume pool
+            REMAIN_POOL.put(tag, count);
+            return count;
+        } else {
+            Logger.d("count < 0, pool reached, return true");
+            REMAIN_POOL.remove(tag);
+            return -1;
+        }
+    }
+
     public static final class SingleChildOperator {
         private Fragment hostFragment;
         @Nullable private Fragment childFragment;
@@ -170,7 +205,8 @@ public final class Fragments {
         }
 
         @SuppressLint("CommitTransaction")
-        private SingleChildOperator(@NonNull Fragment hostFragment, @Nullable Fragment childFragment, String tag) {
+        private SingleChildOperator(@NonNull Fragment hostFragment,
+                @Nullable Fragment childFragment, String tag) {
             this.hostFragment = hostFragment;
             this.childFragment = childFragment;
             this.transaction = hostFragment.getChildFragmentManager().beginTransaction();
@@ -222,7 +258,7 @@ public final class Fragments {
         }
 
         public SingleChildOperator setCustomAnimator(@AnimRes int enter, @AnimRes int exit,
-                                                     @AnimRes int popEnter, @AnimRes int popExit) {
+                @AnimRes int popEnter, @AnimRes int popExit) {
             transaction.setCustomAnimations(enter, exit, popEnter, popExit);
             return this;
         }
@@ -288,13 +324,16 @@ public final class Fragments {
                 return false;
             }
 
-            // hide or remove last fragment
             final String hostTag = getTag(hostFragment);
-            boolean canRemove = removeLast && consumeRemainPool(hostTag) <= 0;
+            boolean canRemove =
+                    removeLast && consumeRemainPool(remainCount, hostTag, containerId) < 0;
 
+            // hide or remove last fragment
             List<Fragment> fragments = getChildFragmentList(hostFragment);
             for (Fragment oldFragment : fragments) {
-                if (oldFragment == null || oldFragment.getId() != containerId || !oldFragment.isAdded()) {
+                if (oldFragment == null
+                        || oldFragment.getId() != containerId
+                        || !oldFragment.isAdded()) {
                     continue;
                 }
 
@@ -348,34 +387,6 @@ public final class Fragments {
             return true;
         }
 
-        private int consumeRemainPool(String hostTag) {
-            Integer count = REMAIN_POOL.get(hostTag);
-            Logger.d("remain " + remainCount + ", get " + count);
-            // null pool, initialize it
-            if (count == null) {
-                if (remainCount > 0) {
-                    Logger.d("initialize remain pool " + remainCount);
-                    REMAIN_POOL.put(hostTag, remainCount);
-                    return remainCount;
-                } else {
-                    Logger.d("remain pool not available, return true");
-                    return -1;
-                }
-            }
-
-            // pool exist, consume it or not.
-            if (count-- > 0) {
-                Logger.d(count + " count > 0, consume it");
-                // consume pool
-                REMAIN_POOL.put(hostTag, count);
-                return count;
-            } else {
-                Logger.d("count <= 0, pool reached, return true");
-                REMAIN_POOL.put(hostTag, 0);
-                return 0;
-            }
-        }
-
         private void commit() {
             transaction.commitAllowingStateLoss();
 
@@ -421,7 +432,8 @@ public final class Fragments {
         }
 
         @SuppressLint("CommitTransaction")
-        private SingleOperator(@NonNull FragmentActivity activity, @Nullable Fragment fragment, String tag) {
+        private SingleOperator(@NonNull FragmentActivity activity, @Nullable Fragment fragment,
+                String tag) {
             this.activity = activity;
             this.fragment = fragment;
             this.transaction = activity.getSupportFragmentManager().beginTransaction();
@@ -473,7 +485,7 @@ public final class Fragments {
         }
 
         public SingleOperator setCustomAnimator(@AnimRes int enter, @AnimRes int exit,
-                                                @AnimRes int popEnter, @AnimRes int popExit) {
+                @AnimRes int popEnter, @AnimRes int popExit) {
             transaction.setCustomAnimations(enter, exit, popEnter, popExit);
             return this;
         }
@@ -538,13 +550,19 @@ public final class Fragments {
                 return false;
             }
 
-            // hide or remove last fragment
             List<Fragment> fragments = getFragmentList(activity);
-            final String activityTag = activity instanceof BaseActivity ?
-                    ((BaseActivity) activity).getSimpleName() : activity.getLocalClassName();
-            boolean canRemove = removeLast && consumeRemainPool(activityTag) <= 0;
+            final String activityTag =
+                    activity instanceof BaseActivity ? ((BaseActivity) activity).getSimpleName()
+                            : activity.getLocalClassName();
+            final int addedCount = getAddedCount(fragments, containerId);
+            boolean canRemove =
+                    removeLast && consumeRemainPool(remainCount, activityTag, addedCount) < 0;
+
+            // hide or remove last fragment
             for (Fragment oldFragment : fragments) {
-                if (oldFragment == null || oldFragment.getId() != containerId || !oldFragment.isAdded()) {
+                if (oldFragment == null
+                        || oldFragment.getId() != containerId
+                        || !oldFragment.isAdded()) {
                     continue;
                 }
 
@@ -599,35 +617,18 @@ public final class Fragments {
         }
 
         /**
-         * @param tag identify the host fragment will attach to. same tag will share one remain pool
-         * @return the pool size left.
+         * get added fragments count in this container
          */
-        private int consumeRemainPool(String tag) {
-            Integer count = REMAIN_POOL.get(tag);
-            Logger.d("remain " + remainCount + ", get " + count);
-            // null pool, initialize it
-            if (count == null) {
-                if (remainCount > 0) {
-                    Logger.d("initialize remain pool " + remainCount);
-                    REMAIN_POOL.put(tag, remainCount);
-                    return remainCount;
-                } else {
-                    Logger.d("remain pool not available, return true");
-                    return -1;
+        private int getAddedCount(List<Fragment> fragments, int containerId) {
+            int count = 0;
+            Fragment fragment;
+            for (int i = 0, s = fragments.size(); i < s; i++) {
+                fragment = fragments.get(i);
+                if (fragment != null && fragment.isAdded() && fragment.getId() == containerId) {
+                    count++;
                 }
             }
-
-            // pool exist, consume it or not.
-            if (count-- > 0) {
-                Logger.d(count + " count > 0, consume it");
-                // consume pool
-                REMAIN_POOL.put(tag, count);
-                return count;
-            } else {
-                Logger.d("count <= 0, pool reached, return true");
-                REMAIN_POOL.put(tag, 0);
-                return 0;
-            }
+            return count;
         }
 
         private void commit() {
