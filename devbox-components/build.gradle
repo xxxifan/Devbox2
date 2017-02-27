@@ -29,7 +29,7 @@ dependencies {
 
     // Utils
     compile 'com.jakewharton:butterknife:8.4.0'
-    compile 'top.zibin:Luban:1.0.7'
+    compile 'top.zibin:Luban:1.0.9'
     compile 'com.google.code.gson:gson:2.8.0'
 
     // Optional
