@@ -22,7 +22,7 @@ ext {
 
 在 app 的 build.gradle 文件里加入
 ```groovy
-def devbox_version = "0.7.0"
+def devbox_version = "0.7.1"
 dependencies {
     // ...
     compile "com.github.xxxifan.Devbox2:devbox-core:${devbox_version}"
@@ -73,7 +73,7 @@ buildscript {
     dependencies {
         // ...
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8' // android-apt
-        classpath 'me.tatarka:gradle-retrolambda:3.4.0' // retrolamda
+        classpath 'me.tatarka:gradle-retrolambda:3.5.0' // retrolamda
     }
 }
 ```

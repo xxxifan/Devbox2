@@ -32,7 +32,7 @@ ext {
 
 And app build.gradle file:
 ```groovy
-def devbox_version = "0.7.0"
+def devbox_version = "0.7.1"
 dependencies {
     // ...
     compile "com.github.xxxifan.Devbox2:devbox-core:${devbox_version}"
@@ -84,7 +84,7 @@ buildscript {
     dependencies {
         // ...
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8' // android-apt
-        classpath 'me.tatarka:gradle-retrolambda:3.4.0' // retrolamda
+        classpath 'me.tatarka:gradle-retrolambda:3.5.0' // retrolamda
     }
 }
 ```
