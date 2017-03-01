@@ -174,6 +174,23 @@ public final class Fragments {
         }
     }
 
+
+    /**
+     * get added fragments count in this container
+     */
+    private static int getAddedCount(List<Fragment> fragments, int containerId) {
+        int count = 0;
+        Fragment fragment;
+        for (int i = 0, s = fragments.size(); i < s; i++) {
+            fragment = fragments.get(i);
+            if (fragment != null && fragment.isAdded() && fragment.getId() == containerId) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+
     public static final class SingleChildOperator {
         private Fragment hostFragment;
         @Nullable private Fragment childFragment;
@@ -324,12 +341,13 @@ public final class Fragments {
                 return false;
             }
 
+            List<Fragment> fragments = getChildFragmentList(hostFragment);
             final String hostTag = getTag(hostFragment);
+            final int addedCount = getAddedCount(fragments, containerId);
             boolean canRemove =
-                    removeLast && consumeRemainPool(remainCount, hostTag, containerId) < 0;
+                    removeLast && consumeRemainPool(remainCount, hostTag, addedCount) < 0;
 
             // hide or remove last fragment
-            List<Fragment> fragments = getChildFragmentList(hostFragment);
             for (Fragment oldFragment : fragments) {
                 if (oldFragment == null
                         || oldFragment.getId() != containerId
@@ -614,21 +632,6 @@ public final class Fragments {
 
             commit();
             return true;
-        }
-
-        /**
-         * get added fragments count in this container
-         */
-        private int getAddedCount(List<Fragment> fragments, int containerId) {
-            int count = 0;
-            Fragment fragment;
-            for (int i = 0, s = fragments.size(); i < s; i++) {
-                fragment = fragments.get(i);
-                if (fragment != null && fragment.isAdded() && fragment.getId() == containerId) {
-                    count++;
-                }
-            }
-            return count;
         }
 
         private void commit() {
