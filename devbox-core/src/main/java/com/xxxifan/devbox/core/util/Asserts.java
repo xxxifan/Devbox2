@@ -36,6 +36,10 @@ public class Asserts {
         return object == null;
     }
 
+    public static boolean notNull(Object object) {
+        return object != null;
+    }
+
     public static boolean throwTrue(boolean bool) {
         if (!bool) {
             throw new IllegalArgumentException();
