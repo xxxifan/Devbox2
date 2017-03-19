@@ -16,6 +16,8 @@
 
 package com.xxxifan.devbox.core.util;
 
+import android.support.annotation.Nullable;
+
 /**
  * 一个奇怪的断言工具。
  * 或许是因为在lambda中写null判断时能写起来更方便才写的 (滑稽
@@ -25,18 +27,18 @@ public class Asserts {
 
     private Asserts() {}
 
-    public static <T> T throwNull(T reference) {
+    public static <T> T throwNull(@Nullable T reference) {
         if (reference == null) {
             throw new NullPointerException();
         }
         return reference;
     }
 
-    public static boolean isNull(Object object) {
+    public static boolean isNull(@Nullable Object object) {
         return object == null;
     }
 
-    public static boolean notNull(Object object) {
+    public static boolean notNull(@Nullable Object object) {
         return object != null;
     }
 
