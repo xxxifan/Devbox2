@@ -117,11 +117,11 @@ public class Strings {
     }
 
     public static boolean contains(String source, String key) {
-        return !isEmpty(source) && source.contains(key);
+        return source != null && source.contains(key);
     }
 
     public static boolean equals(String source, String key) {
-        return !isEmpty(source) && source.equals(key);
+        return source != null && source.equals(key);
     }
 
     /**
