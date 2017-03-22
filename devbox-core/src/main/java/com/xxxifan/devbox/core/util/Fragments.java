@@ -205,7 +205,7 @@ public final class Fragments {
         private int remainCount;
 
         private SingleChildOperator(@NonNull Fragment hostFragment, Fragment childFragment) {
-            this(hostFragment, childFragment, getTag(hostFragment));
+            this(hostFragment, childFragment, getTag(childFragment));
         }
 
         @SuppressLint("CommitTransaction")
