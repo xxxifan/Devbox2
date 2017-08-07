@@ -28,6 +28,6 @@
     <View
         android:id="@+id/_internal_toolbar_shadow"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="4dp"
         android:background="@drawable/_internal_toolbar_shadow" />
 </LinearLayout>
