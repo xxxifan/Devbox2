@@ -56,11 +56,11 @@ object Fragments {
     }
 
     fun getFragmentList(activity: FragmentActivity): List<Fragment?> {
-        return activity.supportFragmentManager.fragments ?: ArrayList<Fragment?>()
+        return activity.supportFragmentManager.fragments ?: ArrayList()
     }
 
     fun getChildFragmentList(fragment: Fragment): List<Fragment?> {
-        return fragment.childFragmentManager.fragments ?: ArrayList<Fragment?>()
+        return fragment.childFragmentManager.fragments ?: ArrayList()
     }
 
     fun onSaveInstanceState(fragment: Fragment, outState: Bundle) {
@@ -95,23 +95,23 @@ object Fragments {
         var count: Int? = REMAIN_POOL[tag]
         // null pool, initialize it
         if (count == null) {
-            if (remainCount > 0) {
+            return if (remainCount > 0) {
                 count = Math.max(remainCount - totalCount, 0)
                 REMAIN_POOL.put(tag, count)
-                return count
+                count
             } else {
-                return -1
+                -1
             }
         }
 
         // pool exist, consume it or not.
-        if (count-- > 0) {
+        return if (count-- > 0) {
             // consume pool
             REMAIN_POOL.put(tag, count)
-            return count
+            count
         } else {
             REMAIN_POOL.remove(tag)
-            return -1
+            -1
         }
     }
 
@@ -154,6 +154,7 @@ object Fragments {
                 }
                 else -> throw RuntimeException("host must be android.support.v4.app.FragmentActivity or android.support.v4.app.Fragment")
             }
+
             transaction!!.setAllowOptimization(true)
 
             if (tag != null && fragment == null) { // retrieve correct fragment
