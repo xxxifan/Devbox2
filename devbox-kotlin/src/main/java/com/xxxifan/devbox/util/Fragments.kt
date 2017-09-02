@@ -14,7 +14,6 @@ import android.support.v4.view.ViewPager
 import android.view.View
 import com.xxxifan.devbox.base.BasePresenter
 import com.xxxifan.devbox.base.BaseView
-import java.lang.ref.WeakReference
 import java.util.*
 
 /**
@@ -30,68 +29,19 @@ object Fragments {
     private val REMAIN_POOL = ArrayMap<String, Int>()
 
     /**
-     * checkout with FRAGMENT_CONTAINER(which is defined in BaseActivity, is
-     * R.id.fragment_container. it will use BaseFragment.getSimpleName() as tag, or SimpleClassName
-     * if fallback.
+     * checkout with [BaseActivity.FRAGMENT_CONTAINER].
+     * it will use BaseFragment.getSimpleName() as tag, or SimpleClassName fallback.
      */
     @CheckResult
-    fun checkout(activity: FragmentActivity,
-                 fragment: Fragment): SingleOperator {
-        return SingleOperator(activity, fragment)
+    fun checkout(activity: FragmentActivity, fragment: Fragment? = null,
+                 tag: String? = null): Operator<FragmentActivity> {
+        return Operator(activity, fragment, tag)
     }
 
-    /**
-     * checkout with specified tag
-     */
-    @CheckResult
-    fun checkout(activity: FragmentActivity, fragment: Fragment,
-                 tag: String): SingleOperator {
-        return SingleOperator(activity, fragment, tag)
-    }
-
-    /**
-     * checkout previously fragment by tag
-     */
-    @CheckResult
-    fun checkout(activity: FragmentActivity, tag: String): SingleOperator {
-        return SingleOperator(activity, null, tag)
-    }
-
-    /**
-     * checkout with FRAGMENT_CONTAINER(which is defined in BaseActivity, is
-     * R.id.fragment_container.  it will use BaseFragment.getSimpleName() as tag, or
-     * SimpleClassName
-     * if fallback.
-     */
     @CheckResult
     fun checkout(hostFragment: Fragment,
-                 childFragment: Fragment): SingleChildOperator {
-        return SingleChildOperator(hostFragment, childFragment)
-    }
-
-    /**
-     * checkout with specified tag
-     */
-    @CheckResult
-    fun checkout(hostFragment: Fragment,
-                 childFragment: Fragment, tag: String): SingleChildOperator {
-        return SingleChildOperator(hostFragment, childFragment, tag)
-    }
-
-    /**
-     * checkout previously childFragment by tag
-     */
-    @CheckResult
-    fun checkout(hostFragment: Fragment, tag: String): SingleChildOperator {
-        return SingleChildOperator(hostFragment, null, tag)
-    }
-
-    /**
-     * add multi fragments
-     */
-    @CheckResult
-    fun add(activity: FragmentActivity, vararg fragments: Fragment): MultiOperator {
-        return MultiOperator(activity, arrayOf(*fragments))
+                 childFragment: Fragment? = null, tag: String? = null): Operator<Fragment> {
+        return Operator(hostFragment, childFragment, tag)
     }
 
     /**
@@ -172,13 +122,16 @@ object Fragments {
         return fragments.count { it != null && it.isAdded && it.id == containerId }
     }
 
-
-    class SingleChildOperator @SuppressLint("CommitTransaction")
-    internal constructor(private var hostFragment: Fragment?,
-                         private var childFragment: Fragment? = null, private var tag: String? = null) {
+    @SuppressLint("CommitTransaction")
+    class Operator<HostType>
+    internal constructor(host: HostType,
+                         private var fragment: Fragment? = null, private var tag: String? = null) {
+        private var fragments: List<Fragment?>
         private var transaction: FragmentTransaction? = null
-        private var presenter: BasePresenter<Any>? = null
+        private var hostTag: String
 
+        // config field
+        private var presenter: BasePresenter<Any>? = null
         private var addToBackStack: Boolean = false
         private var fade: Boolean = false
         private var removeLast: Boolean = false
@@ -186,21 +139,31 @@ object Fragments {
         private var remainCount: Int = 0
 
         init {
-            transaction = hostFragment?.childFragmentManager?.beginTransaction()
-            transaction?.setAllowOptimization(true)
-
-            if (childFragment == null) {
-                // retrieve correct childFragment
-                val fragments = getChildFragmentList(hostFragment!!)
-                this.childFragment = fragments.first { it?.tag != tag }
+            val hostActivity = host as? FragmentActivity
+            val hostFragment = host as? Fragment
+            when {
+                hostActivity != null -> {
+                    transaction = hostActivity.supportFragmentManager.beginTransaction()
+                    fragments = getFragmentList(hostActivity)
+                    hostTag = hostActivity.localClassName
+                }
+                hostFragment != null -> {
+                    transaction = hostFragment.childFragmentManager.beginTransaction()
+                    fragments = getChildFragmentList(hostFragment)
+                    hostTag = getTag(hostFragment)
+                }
+                else -> throw RuntimeException("host must be android.support.v4.app.FragmentActivity or android.support.v4.app.Fragment")
             }
+            transaction!!.setAllowOptimization(true)
 
-            if (tag == null && childFragment != null) {
-                tag = getTag(childFragment!!)
+            if (tag != null && fragment == null) { // retrieve correct fragment
+                fragment = fragments.firstOrNull { it?.tag == tag }
+            } else if (fragment != null) { // retrieve correct tag
+                tag = getTag(fragment!!)
             }
         }
 
-        fun <T : BasePresenter<*>?> bindPresenter(presenter: T?): SingleChildOperator {
+        fun <T : BasePresenter<*>?> bindPresenter(presenter: T?): Operator<HostType> {
             presenter?.let { this.presenter = it as BasePresenter<Any> }
             return this
         }
@@ -208,40 +171,47 @@ object Fragments {
         /**
          * setArguments to target fragment.
          */
-        fun data(data: Bundle): SingleChildOperator {
-            childFragment?.arguments = data
+        fun data(data: Bundle): Operator<HostType> {
+            fragment?.arguments = data
             return this
         }
 
         /**
          * simple string bundle as argument
          */
-        fun data(key: String, value: String?): SingleChildOperator {
-            val bundle = childFragment?.arguments ?: Bundle()
+        fun data(key: String, value: String?): Operator<HostType> {
+            val bundle = fragment?.arguments ?: Bundle()
             bundle.putString(key, value)
-            childFragment?.arguments = bundle
+            fragment?.arguments = bundle
             return this
         }
 
-        fun data(key: String, value: Parcelable?): SingleChildOperator {
-            val bundle = childFragment?.arguments ?: Bundle()
+        fun data(key: String, value: Boolean): Operator<HostType> {
+            val bundle = fragment?.arguments ?: Bundle()
+            bundle.putBoolean(key, value)
+            fragment?.arguments = bundle
+            return this
+        }
+
+        fun data(key: String, value: Parcelable?): Operator<HostType> {
+            val bundle = fragment?.arguments ?: Bundle()
             bundle.putParcelable(key, value)
-            childFragment?.arguments = bundle
+            fragment?.arguments = bundle
             return this
         }
 
-        fun addSharedElement(sharedElement: View, name: String): SingleChildOperator {
+        fun addSharedElement(sharedElement: View, name: String): Operator<HostType> {
             transaction!!.addSharedElement(sharedElement, name)
             return this
         }
 
-        fun setCustomAnimator(@AnimRes enter: Int, @AnimRes exit: Int): SingleChildOperator {
+        fun setCustomAnimator(@AnimRes enter: Int, @AnimRes exit: Int): Operator<HostType> {
             transaction!!.setCustomAnimations(enter, exit)
             return this
         }
 
         fun setCustomAnimator(@AnimRes enter: Int, @AnimRes exit: Int,
-                              @AnimRes popEnter: Int, @AnimRes popExit: Int): SingleChildOperator {
+                              @AnimRes popEnter: Int, @AnimRes popExit: Int): Operator<HostType> {
             transaction!!.setCustomAnimations(enter, exit, popEnter, popExit)
             return this
         }
@@ -250,12 +220,12 @@ object Fragments {
          * Fragments use transaction optimization for better performance, if you face issues please
          * disable it.
          */
-        fun disableOptimize(): SingleChildOperator {
+        fun disableOptimize(): Operator<HostType> {
             transaction!!.setAllowOptimization(false)
             return this
         }
 
-        fun addToBackStack(): SingleChildOperator {
+        fun addToBackStack(): Operator<HostType> {
             this.addToBackStack = true
             return this
         }
@@ -263,7 +233,7 @@ object Fragments {
         /**
          * display fade transition
          */
-        fun fade(): SingleChildOperator {
+        fun fade(): Operator<HostType> {
             this.fade = true
             return this
         }
@@ -274,8 +244,7 @@ object Fragments {
 
          * @param remain the number that last fragment will remain
          */
-        @JvmOverloads
-        fun removeLast(remain: Int = 0): SingleChildOperator {
+        fun removeLast(remain: Int = 0): Operator<HostType> {
             this.removeLast = true
             this.remainCount = remain
             return this
@@ -285,7 +254,7 @@ object Fragments {
          * Fragments will reuse exists fragment when fragment tag is the same. Disable it will
          * force to use newly fragment instead of old one.
          */
-        fun disableReuse(): SingleChildOperator {
+        fun disableReuse(): Operator<HostType> {
             this.disableReuse = true
             return this
         }
@@ -293,15 +262,13 @@ object Fragments {
         /**
          * @return success or not
          */
-
         fun into(@IdRes containerId: Int): Boolean {
-            if (childFragment == null) {
+            if (fragment == null) {
                 commit()
                 return false
             }
 
-            val fragments = getChildFragmentList(hostFragment!!)
-            val hostTag = getTag(hostFragment!!)
+            val fragments = this.fragments
             val addedCount = getAddedCount(fragments, containerId)
             var canRemove = removeLast && consumeRemainPool(remainCount, hostTag, addedCount) < 0
 
@@ -312,209 +279,9 @@ object Fragments {
                     .forEach {
                         if (it.tag == tag) {
                             if (!disableReuse) {
-                                childFragment = it // found previous, use old to keep data
-                            } else {
-                                transaction!!.remove(it)
-                            }
-                        } else {
-                            if (canRemove) {
-                                transaction!!.remove(it)
-                                canRemove = false
-                            } else if (it.isVisible) {
-                                transaction!!.hide(it)
-                                it.userVisibleHint = false
-                            }
-                        }
-                    }
-            transaction?.let { transaction ->
-                val canAddBackStack = transaction.isAddToBackStackAllowed && !transaction.isEmpty
-                if (fade) {
-                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                }
-                if (addToBackStack) {
-                    if (canAddBackStack) {
-                        transaction.addToBackStack(tag)
-                    } else {
-                    }
-                }
-
-                if (!childFragment!!.isAdded) {
-                    transaction.add(containerId, childFragment, tag)
-                }
-
-                presenter?.let { (childFragment as? BaseView<BasePresenter<Any>>)?.setPresenter(it) }
-
-                transaction.show(childFragment)
-
-                commit()
-                return true
-            }
-            return false
-        }
-
-        private fun commit() {
-            transaction!!.commitAllowingStateLoss()
-            transaction = null
-            childFragment = null
-            presenter = null
-            hostFragment = null
-        }
-    }
-
-    /**
-     * remove last fragment while checkout.
-     */
-
-    class SingleOperator @SuppressLint("CommitTransaction")
-    internal constructor(private var activity: FragmentActivity?,
-                         private var fragment: Fragment? = null,
-                         private var tag: String? = null) {
-        private var presenter: BasePresenter<Any>? = null
-        private var transaction: FragmentTransaction? = null
-
-        private var addToBackStack: Boolean = false
-        private var fade: Boolean = false
-        private var removeLast: Boolean = false
-        private var disableReuse: Boolean = false
-        private var remainCount: Int = 0
-
-        init {
-            transaction = activity?.supportFragmentManager?.beginTransaction()
-            transaction?.setAllowOptimization(true)
-
-            if (fragment == null) {
-                // retrieve correct fragment
-                val fragments = getFragmentList(activity!!)
-                this.fragment = fragments.first { it?.tag != tag }
-            }
-
-            if (tag == null && fragment != null) {
-                tag = getTag(fragment!!)
-            }
-        }
-
-        fun <T : BasePresenter<*>?> bindPresenter(presenter: T?): SingleOperator {
-            presenter?.let { this.presenter = it as BasePresenter<Any> }
-            return this
-        }
-
-        /**
-         * setArguments to target fragment.
-         */
-        fun data(data: Bundle): SingleOperator {
-            fragment?.arguments = data
-            return this
-        }
-
-        /**
-         * simple string bundle as argument
-         */
-        fun data(key: String, value: String?): SingleOperator {
-            val bundle = fragment?.arguments ?: Bundle()
-            bundle.putString(key, value)
-            fragment?.arguments = bundle
-            return this
-        }
-
-        fun data(key: String, value: Boolean): SingleOperator {
-            val bundle = fragment?.arguments ?: Bundle()
-            bundle.putBoolean(key, value)
-            fragment?.arguments = bundle
-            return this
-        }
-
-        fun data(key: String, value: Parcelable?): SingleOperator {
-            val bundle = fragment?.arguments ?: Bundle()
-            bundle.putParcelable(key, value)
-            fragment?.arguments = bundle
-            return this
-        }
-
-        fun addSharedElement(sharedElement: View, name: String): SingleOperator {
-            transaction!!.addSharedElement(sharedElement, name)
-            return this
-        }
-
-        fun setCustomAnimator(@AnimRes enter: Int, @AnimRes exit: Int): SingleOperator {
-            transaction!!.setCustomAnimations(enter, exit)
-            return this
-        }
-
-        fun setCustomAnimator(@AnimRes enter: Int, @AnimRes exit: Int,
-                              @AnimRes popEnter: Int, @AnimRes popExit: Int): SingleOperator {
-            transaction!!.setCustomAnimations(enter, exit, popEnter, popExit)
-            return this
-        }
-
-        /**
-         * Fragments use transaction optimization for better performance, if you face issues please
-         * disable it.
-         */
-        fun disableOptimize(): SingleOperator {
-            transaction!!.setAllowOptimization(false)
-            return this
-        }
-
-        fun addToBackStack(): SingleOperator {
-            this.addToBackStack = true
-            return this
-        }
-
-        /**
-         * display fade transition
-         */
-        fun fade(): SingleOperator {
-            this.fade = true
-            return this
-        }
-
-        /**
-         * remove last fragment while checkout. it can remain a few of fragment for faster
-         * recovery
-
-         * @param remain the number that last fragment will remain
-         */
-        @JvmOverloads
-        fun removeLast(remain: Int = 0): SingleOperator {
-            this.removeLast = true
-            this.remainCount = remain
-            return this
-        }
-
-        /**
-         * Fragments will reuse exists fragment when fragment tag is the same. Disable it will
-         * force to use newly fragment instead of old one.
-         */
-        fun disableReuse(): SingleOperator {
-            this.disableReuse = true
-            return this
-        }
-
-        /**
-         * @return success or not
-         */
-        fun into(@IdRes containerId: Int): Boolean {
-            if (fragment == null) {
-                commit()
-                return false
-            }
-
-            val fragments = getFragmentList(activity!!)
-            val activityTag = activity!!.localClassName
-            val addedCount = getAddedCount(fragments, containerId)
-            var canRemove = removeLast && consumeRemainPool(remainCount, activityTag, addedCount) < 0
-
-            // hide or remove last fragment
-            fragments
-                    .asSequence()
-                    .filterNotNull()
-                    .filter { it.id == containerId && it.isAdded }
-                    .forEach {
-                        if (it.tag == tag) {
-                            if (!disableReuse) {
                                 fragment = it // found previous, use old to keep data
                             } else {
-                                transaction!!.remove(it)
+                                transaction!!.remove(it) // or replace it
                             }
                         } else {
                             if (canRemove) {
@@ -528,16 +295,12 @@ object Fragments {
                     }
 
             val canAddBackStack = transaction!!.isAddToBackStackAllowed && !transaction!!.isEmpty
+            if (addToBackStack && canAddBackStack) {
+                transaction!!.addToBackStack(tag)
+            }
 
             if (fade) {
                 transaction!!.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-            }
-
-            if (addToBackStack) {
-                if (canAddBackStack) {
-                    transaction!!.addToBackStack(tag)
-                } else {
-                }
             }
 
             if (!fragment!!.isAdded) {
@@ -554,37 +317,9 @@ object Fragments {
 
         private fun commit() {
             transaction!!.commitAllowingStateLoss()
-
             transaction = null
             fragment = null
             presenter = null
-            activity = null
-        }
-    }
-
-    /**
-     * remove last fragment while checkout.
-     */
-
-    // TODO: 6/10/16 MultiOperator is not used that much, so I only give it basic into function here.
-    @SuppressLint("CommitTransaction")
-    class MultiOperator(activity: FragmentActivity, val fragments: Array<Fragment>) {
-        val activityRef: WeakReference<FragmentActivity> = WeakReference(activity)
-
-        fun into(vararg ids: Int) {
-            if (ids.size != fragments.size) {
-                throw IllegalArgumentException("The length of ids and fragments is not equal.")
-            }
-
-            @SuppressLint("CommitTransaction")
-            val transaction = activityRef.get()?.supportFragmentManager?.beginTransaction()
-            transaction?.let { transaction ->
-                fragments.forEachIndexed { index, fragment ->
-                    transaction.replace(ids[index], fragment, getTag(fragment))
-                }
-                transaction.commitAllowingStateLoss()
-            }
-            activityRef.clear()
         }
     }
 }
