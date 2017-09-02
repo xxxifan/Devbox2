@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package com.xxxifan.devbox.core.base;
+package com.xxxifan.devbox.core.ui;
 
 import android.support.annotation.LayoutRes;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.xxxifan.devbox.core.R;
+import com.xxxifan.devbox.core.base.BaseActivity;
 import com.xxxifan.devbox.core.base.uicomponent.ToolbarComponent;
 
 /**

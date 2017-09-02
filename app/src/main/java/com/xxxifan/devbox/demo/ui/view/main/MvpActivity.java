@@ -21,7 +21,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.orhanobut.logger.Logger;
-import com.xxxifan.devbox.core.base.ToolbarActivity;
+import com.xxxifan.devbox.core.ui.ToolbarActivity;
 import com.xxxifan.devbox.core.util.Fragments;
 import com.xxxifan.devbox.demo.R;
 

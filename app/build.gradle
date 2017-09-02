@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion sdk as int
@@ -26,6 +25,6 @@ dependencies {
     compile project(':devbox-core')
     compile project(':devbox-components')
     compile 'in.srain.cube:ultra-ptr:1.0.11'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     testCompile 'junit:junit:4.12'
 }

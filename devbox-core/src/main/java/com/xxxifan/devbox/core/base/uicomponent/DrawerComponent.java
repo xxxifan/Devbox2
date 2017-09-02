@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xxxifan.devbox.components.uicomponent;
+package com.xxxifan.devbox.core.base.uicomponent;
 
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -22,10 +22,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 
-import com.xxxifan.devbox.components.DrawerActivity;
 import com.xxxifan.devbox.core.base.BaseActivity;
-import com.xxxifan.devbox.core.base.ToolbarActivity;
-import com.xxxifan.devbox.core.base.uicomponent.UIComponent;
+import com.xxxifan.devbox.core.ui.DrawerActivity;
+import com.xxxifan.devbox.core.ui.ToolbarActivity;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 

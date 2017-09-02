@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xxxifan.devbox.components;
+package com.xxxifan.devbox.core.ui;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.xxxifan.devbox.core.R;
 import com.xxxifan.devbox.core.base.BaseFragment;
 import com.xxxifan.devbox.core.base.DataLoader;
 import com.xxxifan.devbox.core.util.Asserts;

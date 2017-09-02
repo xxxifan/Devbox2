@@ -1,32 +1,33 @@
 buildscript {
     repositories {
+        google()
         jcenter()
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.android.tools.build:gradle:3.0.0-beta4'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
     }
     ext {
         // sdk
         minSdk = 16
         sdk = 25
-        buildTool = "25.0.2"
+        buildTool = "25.0.3"
 
         // library
         devbox_version = "0.7.3"
         devbox_code = 17032215
 
         // dependencies
-        support_lib = "25.3.0"
-        okhttp = "3.6.0"
-        retrofit = "2.2.0"
+        support_lib = "25.4.0"
+        okhttp = "3.7.0"
+        retrofit = "2.3.0"
     }
 }
 
 allprojects {
     repositories {
+        google()
         jcenter()
         maven { url "https://jitpack.io" }
     }

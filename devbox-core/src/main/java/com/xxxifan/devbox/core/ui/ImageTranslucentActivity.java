@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.xxxifan.devbox.components;
+package com.xxxifan.devbox.core.ui;
 
 import android.support.annotation.LayoutRes;
 import android.view.View;
 
-import static com.xxxifan.devbox.components.uicomponent.TranslucentBarComponent.FIT_WINDOW_TOP;
+import static com.xxxifan.devbox.core.base.uicomponent.TranslucentBarComponent.FIT_WINDOW_TOP;
 
 /**
  * Translucent Activity for Image background. Note the layout will start from status bar,

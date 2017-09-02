@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xxxifan.devbox.components;
+package com.xxxifan.devbox.core.ui;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.LayoutRes;
@@ -23,16 +23,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 
-import com.xxxifan.devbox.components.uicomponent.TranslucentBarComponent;
 import com.xxxifan.devbox.core.Devbox;
-import com.xxxifan.devbox.core.base.ToolbarActivity;
+import com.xxxifan.devbox.core.R;
 import com.xxxifan.devbox.core.base.uicomponent.ToolbarComponent;
+import com.xxxifan.devbox.core.base.uicomponent.TranslucentBarComponent;
 import com.xxxifan.devbox.core.base.uicomponent.UIComponent;
 import com.xxxifan.devbox.core.util.ViewUtils;
 
-import static com.xxxifan.devbox.components.uicomponent.TranslucentBarComponent.FIT_TOOLBAR;
-import static com.xxxifan.devbox.components.uicomponent.TranslucentBarComponent.FIT_WINDOW_BOTH;
-import static com.xxxifan.devbox.components.uicomponent.TranslucentBarComponent.FIT_WINDOW_TOP;
+import static com.xxxifan.devbox.core.base.uicomponent.TranslucentBarComponent.FIT_TOOLBAR;
+import static com.xxxifan.devbox.core.base.uicomponent.TranslucentBarComponent.FIT_WINDOW_BOTH;
+import static com.xxxifan.devbox.core.base.uicomponent.TranslucentBarComponent.FIT_WINDOW_TOP;
 
 
 /**

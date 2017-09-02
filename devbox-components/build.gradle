@@ -21,27 +21,30 @@ dependencies {
     compile 'com.github.franmontiel:PersistentCookieJar:v1.0.0'
     compile "com.squareup.retrofit2:retrofit:${retrofit}"
     compile "com.squareup.retrofit2:adapter-rxjava:${retrofit}"
+    compile "com.squareup.retrofit2:adapter-rxjava2:${retrofit}"
     compile "com.squareup.retrofit2:converter-gson:${retrofit}"
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
-    compile 'com.liulishuo.filedownloader:library:1.4.2'
+    compile 'com.liulishuo.filedownloader:library:1.6.4'
     compile 'cn.dreamtobe.filedownloader:filedownloader-okhttp3-connection:1.0.0'
 
     // Utils
-    compile 'com.jakewharton:butterknife:8.4.0'
-    compile 'top.zibin:Luban:1.0.9'
-    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.jakewharton:butterknife:8.8.1'
+    compile 'top.zibin:Luban:1.1.2'
+    compile 'com.google.code.gson:gson:2.8.1'
+
+    // rx1.x
+    compile 'com.jakewharton.rxrelay:rxrelay:1.2.0'
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar'
+    compile "com.github.VictorAlbertos:RxActivityResult:0.4.1-1.x"
 
     // Optional
-    compile 'jp.wasabeef:glide-transformations:2.0.1'
+    compile 'jp.wasabeef:glide-transformations:2.0.2'
     compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.3.0'
     compile 'com.amitshekhar.android:glide-bitmap-pool:0.0.1'
 
     /*
-     * apt needed
-     *
-     * apply plugin: 'com.neenbedankt.android-apt'
-     * apt 'com.jakewharton:butterknife-compiler:8.4.0'
+     * annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
      */
 }
 

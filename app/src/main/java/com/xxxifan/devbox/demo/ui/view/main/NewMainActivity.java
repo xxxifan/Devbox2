@@ -19,7 +19,7 @@ package com.xxxifan.devbox.demo.ui.view.main;
 import android.os.Bundle;
 import android.view.View;
 
-import com.xxxifan.devbox.core.base.ToolbarActivity;
+import com.xxxifan.devbox.core.ui.ToolbarActivity;
 import com.xxxifan.devbox.core.util.Once;
 import com.xxxifan.devbox.core.util.Strings;
 import com.xxxifan.devbox.core.util.ViewUtils;

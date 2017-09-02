@@ -18,7 +18,7 @@ package com.xxxifan.devbox.demo.ui.view.main;
 
 import android.os.Bundle;
 
-import com.xxxifan.devbox.core.base.ToolbarActivity;
+import com.xxxifan.devbox.core.ui.ToolbarActivity;
 
 /**
  * Created by xifan on 12/20/16.

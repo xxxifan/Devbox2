@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xxxifan.devbox.components.widget;
+package com.xxxifan.devbox.core.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;

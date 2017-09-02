@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xxxifan.devbox.components.uicomponent;
+package com.xxxifan.devbox.core.base.uicomponent;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -25,10 +25,9 @@ import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowManager;
 
-import com.xxxifan.devbox.components.R;
+import com.xxxifan.devbox.core.R;
 import com.xxxifan.devbox.core.base.BaseActivity;
-import com.xxxifan.devbox.core.base.SystemBarTintManager;
-import com.xxxifan.devbox.core.base.uicomponent.UIComponent;
+import com.xxxifan.devbox.core.ui.SystemBarTintManager;
 import com.xxxifan.devbox.core.util.ViewUtils;
 
 import java.lang.annotation.ElementType;

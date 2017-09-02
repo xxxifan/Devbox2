@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xxxifan.devbox.components;
+package com.xxxifan.devbox.core.ui;
 
 import android.support.annotation.LayoutRes;
 import android.support.v4.util.ArrayMap;
@@ -23,15 +23,16 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.xxxifan.devbox.components.uicomponent.DrawerComponent;
+import com.xxxifan.devbox.core.R;
+import com.xxxifan.devbox.core.base.uicomponent.DrawerComponent;
+import com.xxxifan.devbox.core.base.uicomponent.ToolbarComponent;
 import com.xxxifan.devbox.core.base.uicomponent.UIComponent;
 
-import static com.xxxifan.devbox.components.uicomponent.TranslucentBarComponent.FIT_TOOLBAR;
-
 /**
- * Created by xifan on 5/16/16.
+ * Created by xifan on 4/6/16.
  */
-public abstract class TranslucentDrawerActivity extends TranslucentActivity {
+public abstract class DrawerActivity extends ToolbarActivity {
+    public static final int BASE_DRAWER_ID = R.id._internal_drawer_layout;
 
     private DrawerComponent mDrawerComponent;
 
@@ -39,12 +40,11 @@ public abstract class TranslucentDrawerActivity extends TranslucentActivity {
     protected void onConfigureActivity() {
         super.onConfigureActivity();
         setRootLayoutId(R.layout._internal_activity_drawer_base);
-        setFitSystemWindowMode(FIT_TOOLBAR);
     }
 
     @Override protected void attachContentView(View containerView, @LayoutRes int layoutResID) {
         super.attachContentView(containerView, layoutResID);
-        addUIComponents(new DrawerComponent(getDrawerView()));
+        addUIComponents(new DrawerComponent(getDrawerView()), new ToolbarComponent());
     }
 
     @Override
