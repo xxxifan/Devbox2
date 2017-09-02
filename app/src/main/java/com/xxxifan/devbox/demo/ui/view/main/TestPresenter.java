@@ -42,4 +42,8 @@ public class TestPresenter implements MvpContract.Presenter {
     @Override public void onDestroy() {
         mView = null;
     }
+
+    @Override public MvpContract.View getView() {
+        return null;
+    }
 }

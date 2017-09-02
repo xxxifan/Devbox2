@@ -7,15 +7,15 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
+import com.xxxifan.devbox.components.http.Http;
+import com.xxxifan.devbox.core.base.BaseAdapterItem;
+import com.xxxifan.devbox.core.base.DataLoader;
+import com.xxxifan.devbox.core.event.NetworkEvent;
+import com.xxxifan.devbox.core.ui.RecyclerFragment;
+import com.xxxifan.devbox.core.util.ViewUtils;
 import com.xxxifan.devbox.demo.R;
 import com.xxxifan.devbox.demo.data.model.Repo;
 import com.xxxifan.devbox.demo.repository.GithubService;
-import com.xxxifan.devbox.core.base.BaseAdapterItem;
-import com.xxxifan.devbox.core.base.DataLoader;
-import com.xxxifan.devbox.components.RecyclerFragment;
-import com.xxxifan.devbox.core.event.NetworkEvent;
-import com.xxxifan.devbox.core.util.ViewUtils;
-import com.xxxifan.devbox.components.http.Http;
 
 import org.greenrobot.eventbus.Subscribe;
 

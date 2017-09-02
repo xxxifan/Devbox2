@@ -5,7 +5,7 @@ import android.os.StrictMode;
 
 import com.liulishuo.filedownloader.FileDownloader;
 import com.liulishuo.filedownloader.services.DownloadMgrInitialParams;
-import com.orhanobut.logger.LogLevel;
+import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.xxxifan.devbox.components.http.Http;
 import com.xxxifan.devbox.core.Devbox;
@@ -36,11 +36,10 @@ public class App extends Application {
     @Override public void onCreate() {
         super.onCreate();
         sApp = this;
-        Devbox.init(this);
+        Devbox.INSTANCE.init(this);
 
         initHttpComponent();
-
-        Logger.init("DevboxDemo").logLevel(BuildConfig.DEBUG ? LogLevel.FULL : LogLevel.NONE);
+        Logger.addLogAdapter(new AndroidLogAdapter());
         StrictMode.setThreadPolicy((new StrictMode.ThreadPolicy.Builder()).detectDiskReads()
                 .detectDiskWrites()
                 .detectNetwork()

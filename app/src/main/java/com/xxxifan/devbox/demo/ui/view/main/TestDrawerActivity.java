@@ -21,8 +21,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.xxxifan.devbox.core.ui.TranslucentDrawerActivity;
 import com.xxxifan.devbox.demo.R;
-import com.xxxifan.devbox.components.TranslucentDrawerActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

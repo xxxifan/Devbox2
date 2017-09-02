@@ -83,9 +83,9 @@ public class IOUtils {
      * get external cache dir by default, if fails, it return internal cache dir
      */
     public static File getCacheDir() {
-        File dir = Devbox.getAppDelegate().getExternalCacheDir();
+        File dir = Devbox.appDelegate.getExternalCacheDir();
         if (dir == null) {
-            dir = Devbox.getAppDelegate().getCacheDir();
+            dir = Devbox.appDelegate.getCacheDir();
         }
         return dir;
     }

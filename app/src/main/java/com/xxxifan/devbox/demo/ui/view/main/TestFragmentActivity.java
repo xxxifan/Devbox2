@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.xxxifan.devbox.components.TranslucentActivity;
+import com.xxxifan.devbox.core.ui.TranslucentActivity;
 import com.xxxifan.devbox.core.util.Fragments;
 import com.xxxifan.devbox.core.util.ViewUtils;
 import com.xxxifan.devbox.demo.R;
@@ -41,8 +41,8 @@ public class TestFragmentActivity extends TranslucentActivity {
     @Override
     protected void onSetupActivity(Bundle savedInstanceState) {
         ButterKnife.bind(this);
-        Fragments.add(this, new TestFragment1(), new TestFragment2())
-                .into(R.id.container1, R.id.container2);
+        Fragments.INSTANCE.checkout(this, new TestFragment1()).into(R.id.container1);
+        Fragments.INSTANCE.checkout(this, new TestFragment2()).into(R.id.container2);
         setBackKeyListener(new BackKeyListener() {
             private int count = 0;
 
@@ -67,7 +67,7 @@ public class TestFragmentActivity extends TranslucentActivity {
 
     @OnClick(R.id.main_btn_1)
     public void onFirstClick(View view) {
-        Fragments.checkout(this, new TestFragment1(), TestFragment1.TAG + "Bottom")
+        Fragments.INSTANCE.checkout(this, new TestFragment1(), TestFragment1.TAG + "Bottom")
                 .addToBackStack()
                 .into(FRAGMENT_CONTAINER);
     }
@@ -76,7 +76,7 @@ public class TestFragmentActivity extends TranslucentActivity {
     public void onSecondClick(View view) {
         Bundle bundle = new Bundle();
         bundle.putString("data", "show data");
-        Fragments.checkout(this, new TestFragment2(), TestFragment2.TAG + "Bottom")
+        Fragments.INSTANCE.checkout(this, new TestFragment2(), TestFragment2.TAG + "Bottom")
                 .addToBackStack()
                 .data(bundle)
                 .into(FRAGMENT_CONTAINER);
@@ -110,7 +110,7 @@ public class TestFragmentActivity extends TranslucentActivity {
 
     @OnClick(R.id.main_btn_4)
     public void onRemainClick(View view) {
-        Fragments
+        Fragments.INSTANCE
                 .checkout(this, new TestFragment2(), "new " + new Random(System.currentTimeMillis())
                         .nextInt())
                 .removeLast(2)

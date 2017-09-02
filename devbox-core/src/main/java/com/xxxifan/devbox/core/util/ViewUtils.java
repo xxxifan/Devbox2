@@ -89,7 +89,7 @@ public class ViewUtils {
                         return;
                     }
 
-                    Context context = Devbox.getAppDelegate();
+                    Context context = Devbox.appDelegate;
                     // check cm settings
                     ContentResolver resolver = context.getContentResolver();
                     boolean forceCm = Settings.Secure.getInt(resolver, CONFIG_FORCE_NAVBAR, 0) == 1;
@@ -119,11 +119,11 @@ public class ViewUtils {
     }
 
     public static int getDimenInt(@DimenRes int dimenId) {
-        return Devbox.getAppDelegate().getResources().getDimensionPixelSize(dimenId);
+        return Devbox.appDelegate.getResources().getDimensionPixelSize(dimenId);
     }
 
     public static float getDimen(@DimenRes int dimenId) {
-        return Devbox.getAppDelegate().getResources().getDimension(dimenId);
+        return Devbox.appDelegate.getResources().getDimension(dimenId);
     }
 
     public static boolean hasTranslucentNavBar() {
@@ -136,8 +136,7 @@ public class ViewUtils {
 
     public static int getSystemBarHeight() {
         if (sStatusBarHeight == 0) {
-            sStatusBarHeight = readInternalDimen(CONFIG_TOOLBAR_HEIGHT, Devbox
-                    .getAppDelegate()
+            sStatusBarHeight = readInternalDimen(CONFIG_TOOLBAR_HEIGHT, Devbox.appDelegate
                     .getResources(), dp2px(24));
         }
         return sStatusBarHeight;
@@ -160,7 +159,7 @@ public class ViewUtils {
     public static int getNavBarHeight() {
         if (sNavBarHeight == 0) {
             int deviceScreenHeight = getDeviceScreenHeight();
-            int displayHeight = Devbox.getAppDelegate().getResources()
+            int displayHeight = Devbox.appDelegate.getResources()
                     .getDisplayMetrics().heightPixels;
             sNavBarHeight = deviceScreenHeight - displayHeight;
             if (sNavBarHeight <= 0) {
@@ -177,7 +176,7 @@ public class ViewUtils {
     public static float getDensity() {
         if (sDensity == 0) {
             try {
-                DisplayMetrics dm = Devbox.getAppDelegate().getResources().getDisplayMetrics();
+                DisplayMetrics dm = Devbox.appDelegate.getResources().getDisplayMetrics();
                 sDensity = dm.density;
                 sScaledDensity = dm.scaledDensity;
             } catch (Exception e) {
@@ -303,11 +302,11 @@ public class ViewUtils {
     }
 
     public static void showToast(@StringRes int resId, int duration) {
-        Toast.makeText(Devbox.getAppDelegate(), resId, duration).show();
+        Toast.makeText(Devbox.appDelegate, resId, duration).show();
     }
 
     public static void showToast(String toastStr, int duration) {
-        Toast.makeText(Devbox.getAppDelegate(), toastStr, duration).show();
+        Toast.makeText(Devbox.appDelegate, toastStr, duration).show();
     }
 
     public static void showToast(@StringRes int resId) {
@@ -319,11 +318,11 @@ public class ViewUtils {
     }
 
     @ColorInt public static int getCompatColor(@ColorRes int color) {
-        return ContextCompat.getColor(Devbox.getAppDelegate(), color);
+        return ContextCompat.getColor(Devbox.appDelegate, color);
     }
 
     public static Drawable getCompatDrawable(@DrawableRes int res) {
-        return ContextCompat.getDrawable(Devbox.getAppDelegate(), res);
+        return ContextCompat.getDrawable(Devbox.appDelegate, res);
     }
 
     /**
@@ -384,12 +383,12 @@ public class ViewUtils {
     }
 
     private static DisplayMetrics getDisplayMetrics() {
-        Display display = ((WindowManager) Devbox.getAppDelegate()
+        Display display = ((WindowManager) Devbox.appDelegate
                 .getSystemService(Context.WINDOW_SERVICE))
                 .getDefaultDisplay();
         DisplayMetrics metrics = new DisplayMetrics();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            ((WindowManager) Devbox.getAppDelegate().getSystemService(Context.WINDOW_SERVICE))
+            ((WindowManager) Devbox.appDelegate.getSystemService(Context.WINDOW_SERVICE))
                     .getDefaultDisplay().getRealMetrics(metrics);
         } else {
             try {

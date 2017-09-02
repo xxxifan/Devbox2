@@ -1,7 +1,5 @@
 package com.xxxifan.devbox.demo.ui.view.main;
 
-import android.content.Context;
-
 import com.xxxifan.devbox.core.base.BasePresenter;
 import com.xxxifan.devbox.core.base.BaseView;
 
@@ -19,17 +17,13 @@ public class WrongPresenter implements BasePresenter<WrongPresenter.WrongView> {
 
     }
 
+    @Override public WrongView getView() {
+        return null;
+    }
+
     public static class WrongView implements BaseView<WrongPresenter> {
         @Override public void setPresenter(WrongPresenter presenter) {
 
-        }
-
-        @Override public Context getContext() {
-            return null;
-        }
-
-        @Override public String getSimpleName() {
-            return null;
         }
 
         @Override public void showMessage(String msg) {

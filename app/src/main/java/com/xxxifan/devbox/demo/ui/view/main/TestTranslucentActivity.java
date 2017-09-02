@@ -20,7 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.xxxifan.devbox.components.TranslucentActivity;
+import com.xxxifan.devbox.core.ui.TranslucentActivity;
 import com.xxxifan.devbox.demo.R;
 
 import butterknife.ButterKnife;

@@ -36,8 +36,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.ref.WeakReference;
 
-import static com.xxxifan.devbox.core.Devbox.isKitkat;
-import static com.xxxifan.devbox.core.Devbox.isLollipop;
+import static android.os.Build.VERSION_CODES.KITKAT;
+import static android.os.Build.VERSION_CODES.LOLLIPOP;
+import static com.xxxifan.devbox.core.AppExtensionKt.atLeast;
 import static com.xxxifan.devbox.core.base.BaseActivity.BASE_CONTAINER_ID;
 
 /**
@@ -67,7 +68,7 @@ public class TranslucentBarComponent implements UIComponent {
 
     @Override @SuppressLint("NewApi") public void inflate(View containerView) {
         if (getFitWindowMode() != FIT_WINDOW_BOTH) {
-            if (isLollipop()) {
+            if (atLeast(LOLLIPOP)) {
                 mActivityRef.get().getWindow().getDecorView()
                         .setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
                             @Override
@@ -79,7 +80,7 @@ public class TranslucentBarComponent implements UIComponent {
                                 return v.onApplyWindowInsets(insets);
                             }
                         });
-            } else if (isKitkat()) {
+            } else if (atLeast(KITKAT)) {
                 setWindowOffset(
                         containerView,
                         ViewUtils.getSystemBarHeight()
@@ -93,12 +94,12 @@ public class TranslucentBarComponent implements UIComponent {
 
     @SuppressLint("InlinedApi") protected void setTranslucentBar() {
         // setup translucent bar for kitkat devices
-        if (!isKitkat()) {
+        if (!atLeast(KITKAT)) {
             return;
         }
 
         BaseActivity activity = mActivityRef.get();
-        if (activity == null || !isKitkat()) {
+        if (activity == null || !atLeast(KITKAT)) {
             return;
         }
 
@@ -116,7 +117,7 @@ public class TranslucentBarComponent implements UIComponent {
         mSystemBarManager.setStatusBarTintEnabled(!mDisableStatusBarHint);
 
         // lollipop enhance
-        if (isLollipop()) {
+        if (atLeast(LOLLIPOP)) {
             // always use translucent status bar
             Window window = activity.getWindow();
             int uiFlag = window.getDecorView().getSystemUiVisibility() |
@@ -202,7 +203,7 @@ public class TranslucentBarComponent implements UIComponent {
     @SuppressLint("NewApi") public void onDestroy() {
         if (mActivityRef.get() != null) {
             Window window = mActivityRef.get().getWindow();
-            if (isLollipop() && window.getDecorView() != null) {
+            if (atLeast(LOLLIPOP) && window.getDecorView() != null) {
                 window.getDecorView().setOnApplyWindowInsetsListener(null);
             }
         }

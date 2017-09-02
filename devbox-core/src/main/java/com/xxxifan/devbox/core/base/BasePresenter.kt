@@ -1,4 +1,4 @@
-package com.xxxifan.devbox.base
+package com.xxxifan.devbox.core.base
 
 /**
  * Created by xifan on 17-8-1.

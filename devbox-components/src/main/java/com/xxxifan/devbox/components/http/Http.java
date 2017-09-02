@@ -101,7 +101,7 @@ public class Http {
      * @return download id, can use it for task control later
      */
     public static int download(String url, String path, FileDownloadListener listener) {
-        FileDownloader.init(Devbox.getAppDelegate());
+        FileDownloader.init(Devbox.appDelegate);
         int id = FileDownloader.getImpl().create(url)
                 .setPath(path)
                 .setListener(listener)

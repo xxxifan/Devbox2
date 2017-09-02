@@ -1,4 +1,4 @@
-package com.xxxifan.devbox.base
+package com.xxxifan.devbox.core.base
 
 import android.support.annotation.CallSuper
 import android.view.View

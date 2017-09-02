@@ -70,7 +70,7 @@ public class Strings {
      */
     public static String downTimer(long timestamp, int unitLimit) {
         if (sTimeUnits == null) {
-            sTimeUnits = Devbox.getAppDelegate().getResources().getStringArray(R.array.time_unit);
+            sTimeUnits = Devbox.appDelegate.getResources().getStringArray(R.array.time_unit);
         }
         String value = EMPTY;
         long interval = (System.currentTimeMillis() - timestamp) / 1000; // start with seconds

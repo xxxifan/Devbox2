@@ -1,9 +1,9 @@
-package com.xxxifan.devbox.base
+package com.xxxifan.devbox.core.base
 
 import android.app.Activity
 import android.content.Context
 import android.support.v4.app.Fragment
-import com.xxxifan.devbox.Devbox
+import com.xxxifan.devbox.core.Devbox
 
 /**
  * Created by xifan on 17-8-1.

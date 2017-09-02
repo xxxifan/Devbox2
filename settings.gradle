@@ -1,1 +1,1 @@
-include ':app', ':devbox-core', ':devbox-components', ':devbox-kotlin'
+include ':app', ':devbox-core', ':devbox-components'

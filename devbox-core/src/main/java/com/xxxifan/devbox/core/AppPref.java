@@ -29,11 +29,11 @@ public class AppPref {
     }
 
     public static SharedPreferences getPrefs() {
-        return PreferenceManager.getDefaultSharedPreferences(Devbox.getAppDelegate());
+        return PreferenceManager.getDefaultSharedPreferences(Devbox.appDelegate);
     }
 
     public static SharedPreferences getPrefs(String name) {
-        return Devbox.getAppDelegate().getSharedPreferences(name, Context.MODE_PRIVATE);
+        return Devbox.appDelegate.getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 
     public static SharedPreferences.Editor edit() {

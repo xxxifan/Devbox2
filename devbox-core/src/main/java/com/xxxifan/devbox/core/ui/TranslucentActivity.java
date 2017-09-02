@@ -23,13 +23,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 
-import com.xxxifan.devbox.core.Devbox;
 import com.xxxifan.devbox.core.R;
 import com.xxxifan.devbox.core.base.uicomponent.ToolbarComponent;
 import com.xxxifan.devbox.core.base.uicomponent.TranslucentBarComponent;
 import com.xxxifan.devbox.core.base.uicomponent.UIComponent;
 import com.xxxifan.devbox.core.util.ViewUtils;
 
+import static android.os.Build.VERSION_CODES.KITKAT;
+import static com.xxxifan.devbox.core.AppExtensionKt.atLeast;
 import static com.xxxifan.devbox.core.base.uicomponent.TranslucentBarComponent.FIT_TOOLBAR;
 import static com.xxxifan.devbox.core.base.uicomponent.TranslucentBarComponent.FIT_WINDOW_BOTH;
 import static com.xxxifan.devbox.core.base.uicomponent.TranslucentBarComponent.FIT_WINDOW_TOP;
@@ -60,7 +61,7 @@ public abstract class TranslucentActivity extends ToolbarActivity {
                     if (mTranslucentComponent.getFitWindowMode() == FIT_TOOLBAR) {
                         int toolbarHeight = toolbarView.getResources()
                                 .getDimensionPixelSize(R.dimen.toolbar_height);
-                        int toolbarOffset = Devbox.isKitkat() ? ViewUtils.getSystemBarHeight() : 0;
+                        int toolbarOffset = atLeast(KITKAT) ? ViewUtils.getSystemBarHeight() : 0;
                         int topMargin = ((MarginLayoutParams) contentView.getLayoutParams()).topMargin;
                         ((MarginLayoutParams) contentView.getLayoutParams()).topMargin =
                                 Math.max(topMargin, toolbarHeight + toolbarOffset);

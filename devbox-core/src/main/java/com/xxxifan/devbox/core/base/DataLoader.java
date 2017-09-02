@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.os.Looper;
 
 import com.orhanobut.logger.Logger;
+import com.xxxifan.devbox.core.Devbox;
 import com.xxxifan.devbox.core.R;
 import com.xxxifan.devbox.core.event.NetworkEvent;
 
@@ -32,8 +33,6 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
-
-import static com.xxxifan.devbox.core.Devbox.getAppDelegate;
 
 /**
  * Created by xifan on 6/22/16.
@@ -72,7 +71,7 @@ public class DataLoader {
     }
 
     private static boolean hasNetwork() {
-        ConnectivityManager mConnectivityManager = (ConnectivityManager) getAppDelegate()
+        ConnectivityManager mConnectivityManager = (ConnectivityManager) Devbox.appDelegate
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = mConnectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
@@ -93,7 +92,7 @@ public class DataLoader {
             return;
         }
         if (useNetwork && !hasNetwork()) {
-            new NetworkEvent(getAppDelegate().getString(R.string.msg_network_unavailable)).post();
+            new NetworkEvent(Devbox.appDelegate.getString(R.string.msg_network_unavailable)).post();
             isRefreshing.set(false); // reset state
             Logger.t(toString()).d("network not available, dismiss");
             return;
@@ -135,7 +134,7 @@ public class DataLoader {
 
         if (!isDataLoaded() && !isDataEnd() && (lazyLoad || normalLoad)) {
             if (useNetwork && !hasNetwork()) {
-                new NetworkEvent(getAppDelegate().getString(R.string.msg_network_unavailable)).post();
+                new NetworkEvent(Devbox.appDelegate.getString(R.string.msg_network_unavailable)).post();
                 isLoading.set(false); // reset state
                 Logger.t(toString()).d("network not available, dismiss");
                 return;
@@ -167,7 +166,7 @@ public class DataLoader {
             return;
         }
         if (useNetwork && !hasNetwork()) {
-            new NetworkEvent(getAppDelegate().getString(R.string.msg_network_unavailable)).post();
+            new NetworkEvent(Devbox.appDelegate.getString(R.string.msg_network_unavailable)).post();
             isLoading.set(false); // reset state
             Logger.t(toString()).d("network not available, dismiss");
             return;

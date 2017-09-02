@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.xxxifan.devbox.demo.R;
-import com.xxxifan.devbox.components.TranslucentActivity;
+import com.xxxifan.devbox.core.ui.TranslucentActivity;
 import com.xxxifan.devbox.core.util.Fragments;
+import com.xxxifan.devbox.demo.R;
 
 /**
  * Generated for Devbox(https://github.com/xxxifan/Devbox2)
@@ -27,7 +27,7 @@ public class RecyclerActivity extends TranslucentActivity {
     @Override
     protected void onSetupActivity(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            Fragments.checkout(this, new ReposFragment())
+            Fragments.INSTANCE.checkout(this, new ReposFragment())
                     .into(FRAGMENT_CONTAINER);
         }
         translucentNavBar();

@@ -1,4 +1,4 @@
-package com.xxxifan.devbox.util
+package com.xxxifan.devbox.core.util
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -12,8 +12,8 @@ import android.support.v4.app.FragmentTransaction
 import android.support.v4.util.ArrayMap
 import android.support.v4.view.ViewPager
 import android.view.View
-import com.xxxifan.devbox.base.BasePresenter
-import com.xxxifan.devbox.base.BaseView
+import com.xxxifan.devbox.core.base.BasePresenter
+import com.xxxifan.devbox.core.base.BaseView
 import java.util.*
 
 /**
@@ -21,9 +21,9 @@ import java.util.*
  */
 @SuppressLint("RestrictedApi")
 object Fragments {
-    val TAG = "Fragments"
-    val KEY_RESTORE = "restore"
-    val KEY_RESTORE_VIEWPAGER = "restore_viewpager"
+    const val TAG = "Fragments"
+    const val KEY_RESTORE = "restore"
+    const val KEY_RESTORE_VIEWPAGER = "restore_viewpager"
     val DEBUG = false
 
     private val REMAIN_POOL = ArrayMap<String, Int>()
@@ -33,12 +33,14 @@ object Fragments {
      * it will use BaseFragment.getSimpleName() as tag, or SimpleClassName fallback.
      */
     @CheckResult
+    @JvmOverloads
     fun checkout(activity: FragmentActivity, fragment: Fragment? = null,
                  tag: String? = null): Operator<FragmentActivity> {
         return Operator(activity, fragment, tag)
     }
 
     @CheckResult
+    @JvmOverloads
     fun checkout(hostFragment: Fragment,
                  childFragment: Fragment? = null, tag: String? = null): Operator<Fragment> {
         return Operator(hostFragment, childFragment, tag)
@@ -245,6 +247,7 @@ object Fragments {
 
          * @param remain the number that last fragment will remain
          */
+        @JvmOverloads
         fun removeLast(remain: Int = 0): Operator<HostType> {
             this.removeLast = true
             this.remainCount = remain
