@@ -29,18 +29,22 @@ object Fragments {
     private val REMAIN_POOL = ArrayMap<String, Int>()
 
     /**
-     * checkout with [BaseActivity.FRAGMENT_CONTAINER].
-     * it will use BaseFragment.getSimpleName() as tag, or SimpleClassName fallback.
+     * checkout fragment into [com.xxxifan.devbox.core.base.BaseActivity.FRAGMENT_CONTAINER].
+     * it will use BaseFragment.getSimpleName() as tag, or SimpleClassName fallback. For more see
+     * [Operator]
      */
-    @CheckResult
     @JvmOverloads
+    @CheckResult
     fun checkout(activity: FragmentActivity, fragment: Fragment? = null,
                  tag: String? = null): Operator<FragmentActivity> {
         return Operator(activity, fragment, tag)
     }
 
-    @CheckResult
+    /**
+     * [checkout] for fragment host
+     */
     @JvmOverloads
+    @CheckResult
     fun checkout(hostFragment: Fragment,
                  childFragment: Fragment? = null, tag: String? = null): Operator<Fragment> {
         return Operator(hostFragment, childFragment, tag)
@@ -204,16 +208,25 @@ object Fragments {
             return this
         }
 
+        /**
+         * see [FragmentTransaction.addSharedElement]
+         */
         fun addSharedElement(sharedElement: View, name: String): Operator<HostType> {
             transaction!!.addSharedElement(sharedElement, name)
             return this
         }
 
+        /**
+         * see [FragmentTransaction.setCustomAnimations]
+         */
         fun setCustomAnimator(@AnimRes enter: Int, @AnimRes exit: Int): Operator<HostType> {
             transaction!!.setCustomAnimations(enter, exit)
             return this
         }
 
+        /**
+         * see [FragmentTransaction.setCustomAnimations]
+         */
         fun setCustomAnimator(@AnimRes enter: Int, @AnimRes exit: Int,
                               @AnimRes popEnter: Int, @AnimRes popExit: Int): Operator<HostType> {
             transaction!!.setCustomAnimations(enter, exit, popEnter, popExit)
