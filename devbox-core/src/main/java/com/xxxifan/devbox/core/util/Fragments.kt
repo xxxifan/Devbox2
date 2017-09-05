@@ -134,11 +134,12 @@ object Fragments {
 
         // config field
         private var presenter: BasePresenter<Any>? = null
-        private var addToBackStack: Boolean = false
-        private var fade: Boolean = false
-        private var removeLast: Boolean = false
-        private var disableReuse: Boolean = false
-        private var remainCount: Int = 0
+        private var addToBackStack = false
+        private var fade = false
+        private var removeLast = false
+        private var disableReuse = false
+        private var remainCount = 0
+        private var retainInstance = false
 
         init {
             val hostActivity = host as? FragmentActivity
@@ -234,6 +235,14 @@ object Fragments {
         }
 
         /**
+         * make fragment call [Fragment.setRetainInstance(true)]
+         */
+        fun retainInstance(): Operator<HostType> {
+            this.retainInstance = true
+            return this
+        }
+
+        /**
          * display fade transition
          */
         fun fade(): Operator<HostType> {
@@ -312,6 +321,7 @@ object Fragments {
             }
 
             presenter?.let { (fragment as? BaseView<BasePresenter<Any>>)?.setPresenter(it) }
+            fragment?.retainInstance = true
 
             transaction!!.show(fragment)
 
