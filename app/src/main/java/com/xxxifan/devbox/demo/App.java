@@ -36,7 +36,7 @@ public class App extends Application {
     @Override public void onCreate() {
         super.onCreate();
         sApp = this;
-        Devbox.INSTANCE.init(this);
+        Devbox.init(this);
 
         initHttpComponent();
         Logger.addLogAdapter(new AndroidLogAdapter());

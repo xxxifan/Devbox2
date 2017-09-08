@@ -14,7 +14,7 @@ import android.os.Process
 object Devbox {
     lateinit var appDelegate: Context
 
-    fun init(context: Context) {
+    @JvmStatic fun init(context: Context) {
         this.appDelegate = context
     }
 
@@ -22,12 +22,12 @@ object Devbox {
      * Get app package info.
      */
     @Throws(PackageManager.NameNotFoundException::class)
-    fun getPackageInfo(): PackageInfo {
+    @JvmStatic fun getPackageInfo(): PackageInfo {
         val manager = appDelegate.packageManager
         return manager.getPackageInfo(appDelegate.packageName, 0)
     }
 
-    fun getVersionCode(): Long {
+    @JvmStatic fun getVersionCode(): Long {
         return try {
             getPackageInfo().versionCode.toLong()
         } catch (e: Exception) {
@@ -36,7 +36,7 @@ object Devbox {
         }
     }
 
-    fun getVersionName(): String {
+    @JvmStatic fun getVersionName(): String {
         return try {
             getPackageInfo().versionName
         } catch (e: Exception) {
@@ -45,7 +45,7 @@ object Devbox {
         }
     }
 
-    fun isMainProcess(): Boolean {
+    @JvmStatic fun isMainProcess(): Boolean {
         val am = appDelegate.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val processInfos = am.runningAppProcesses
         val mainProcessName = appDelegate.packageName
