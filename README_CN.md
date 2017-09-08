@@ -16,13 +16,13 @@ allprojects {
 ext {
     minSdk = 16 // min sdk is 15, 16 is recommended
     sdk = 25 // target sdk version
-    buildTool = "25.0.2" // your build tool version here
+    buildTool = "25.0.3" // your build tool version here
 }
 ```
 
 在 app 的 build.gradle 文件里加入
 ```groovy
-def devbox_version = "0.7.1"
+def devbox_version = "0.8.0"
 dependencies {
     // ...
     compile "com.github.xxxifan.Devbox2:devbox-core:${devbox_version}"
@@ -65,24 +65,11 @@ public class App extends Application {
 4.有必要时添加混淆规则到你的app文件夹下
 > [proguard-rules.pro](https://github.com/xxxifan/Devbox2/blob/master/library/proguard-rules.pro)
 
-5.如果使用了 ```devbox-componetns``` 模块, Butterknife 和一些三方库需要 android-apt, 以及 retrolambda 支持，需要添加以下代码到你的根目录下的 build.gradle 文件
+~~5.如果使用了 ```devbox-componetns``` 模块, Butterknife 和一些三方库需要 android-apt, 以及 retrolambda 支持，需要添加以下代码到你的根目录下的 build.gradle 文件~~
+
+5. 现无需使用 apt 以及 retrolambda，请使用 annotationProcessor 代替
 
 ```groovy
-buildscript {
-    // ...
-    dependencies {
-        // ...
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8' // android-apt
-        classpath 'me.tatarka:gradle-retrolambda:3.5.0' // retrolamda
-    }
-}
-```
-and your app build.gradle
-
-```groovy
-apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'com.neenbedankt.android-apt'
-
 android {
     compileSdkVersion sdk as int
     buildToolsVersion buildTool as String
@@ -100,7 +87,7 @@ android {
     // ...
     dependencies {
         // optional
-        apt 'com.jakewharton:butterknife-compiler:8.4.0'
+        annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     }
 }
 ```
@@ -120,20 +107,21 @@ android {
 
 ## 指南
 ### Core<br/>
+从 0.8.0 开始将从 Component 包移动一些关键的部件到 Core 包, 让component包的职能更加清晰
 >[BaseActivity](https://github.com/xxxifan/Devbox2/tree/master/doc/BASE_ACTIVITY_CN.md)<br/>
 >[BaseFragment](https://github.com/xxxifan/Devbox2/tree/master/doc/BASE_FRAGMENT_CN.md)<br/>
 >[Fragments](https://github.com/xxxifan/Devbox2/tree/master/doc/FRAGMENTS_CN.md)<br/>
 >[DataLoader](https://github.com/xxxifan/Devbox2/tree/master/doc/DATALOADER_CN.md)<br/>
-
-### Components
-从 0.5.0 开始 Devbox 拆分成了 core 和 components 两个模块，添加你所需要的模块即可，components包含了以下功能
 >DrawerActivity<br/>
 >TranslucentActivity<br/>
 >TranslucentDrawerActivity<br/>
 >ImageTranslucentActivity<br/>
 >RecyclerFragment<br/>
+
+### Components
+从 0.5.0 开始 Devbox 拆分成了 core 和 components 两个模块，添加你所需要的模块即可，components包含了以下功能
 >Http util, 支持普通的请求，上传下载等<br/>
->okhttp, retrofit, glide, butterknife, gson 以及其他一些第三方库.<br/>
+>okhttp, rxJava1, retrofit, glide, butterknife, gson 以及其他一些第三方库.<br/>
 >[查看源码](https://github.com/xxxifan/Devbox2/tree/master/devbox-components)
 
 ### 工具类
@@ -146,7 +134,7 @@ android {
 
 ## License
 ```
-Copyright 2016 xxxifan
+Copyright 2017 xxxifan
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

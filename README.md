@@ -26,13 +26,13 @@ allprojects {
 ext {
     minSdk = 16 // min sdk is 15, 16 is recommended
     sdk = 25 // target sdk version
-    buildTool = "25.0.2" // your build tool version here
+    buildTool = "25.0.3" // your build tool version here
 }
 ```
 
 And app build.gradle file:
 ```groovy
-def devbox_version = "0.7.1"
+def devbox_version = "0.8.0"
 dependencies {
     // ...
     compile "com.github.xxxifan.Devbox2:devbox-core:${devbox_version}"
@@ -76,24 +76,13 @@ public class App extends Application {
 4.feel free to copy a proguard rules to your app project from here
 > [proguard-rules.pro](https://github.com/xxxifan/Devbox2/blob/master/library/proguard-rules.pro)
 
-5.if you use ```devbox-componetns```, Butterknife and some library need android-apt. And also, if you want to enable retrolambda, add following in your root build.gradle
+~~5.if you use ```devbox-componetns```, Butterknife and some library need android-apt. And also, if you want to enable retrolambda, add following in your root build.gradle~~
+
+5.no apt and retrolambda anymore, use annotationProcessor instead.
+
+in your app build.gradle
 
 ```groovy
-buildscript {
-    // ...
-    dependencies {
-        // ...
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8' // android-apt
-        classpath 'me.tatarka:gradle-retrolambda:3.5.0' // retrolamda
-    }
-}
-```
-and your app build.gradle
-
-```groovy
-apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'com.neenbedankt.android-apt'
-
 android {
     compileSdkVersion sdk as int
     buildToolsVersion buildTool as String
@@ -111,7 +100,7 @@ android {
     // ...
     dependencies {
         // optional
-        apt 'com.jakewharton:butterknife-compiler:8.4.0'
+        annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     }
 }
 ```
@@ -133,20 +122,22 @@ see [release tag](https://github.com/xxxifan/Devbox2/releases)
 
 ## Guide
 ### Core<br/>
+From 0.8.0 devbox move some important component back to core package. Leave component as an enhancement.
+
 >[BaseActivity](https://github.com/xxxifan/Devbox2/tree/master/doc/BASE_ACTIVITY_EN.md)<br/>
 >[BaseFragment](https://github.com/xxxifan/Devbox2/tree/master/doc/BASE_FRAGMENT_EN.md)<br/>
 >[Fragments](https://github.com/xxxifan/Devbox2/tree/master/doc/FRAGMENTS_EN.md)<br/>
 >[DataLoader](https://github.com/xxxifan/Devbox2/tree/master/doc/DATALOADER_EN.md)<br/>
-
-### Components
-From 0.5.0 devbox splited into two module, core and components, so feel free to choose what you need. Components package including:
 >DrawerActivity<br/>
 >TranslucentActivity<br/>
 >TranslucentDrawerActivity<br/>
 >ImageTranslucentActivity<br/>
 >RecyclerFragment<br/>
+
+### Components
+From 0.5.0 devbox splited into two module, core and components, so feel free to choose what you need. Components package including:
 >Http util, support normal requests, upload, download<br/>
->okhttp, retrofit, glide, butterknife, gson and some other useful libraries.<br/>
+>okhttp, rxjava1, retrofit, glide, butterknife, gson and some other useful libraries.<br/>
 >[Read Source](https://github.com/xxxifan/Devbox2/tree/master/devbox-components)
 
 ### Utils
@@ -201,7 +192,7 @@ Java files included in library:<br/>
 
 ## License
 ```
-Copyright 2016 xxxifan
+Copyright 2017 xxxifan
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

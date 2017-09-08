@@ -24,13 +24,11 @@ Fragments.checkout(this, new TestFragment(), "test")
         .addToBackStack() // it will use tag name as state name
         .removeLast(keep) // remove last fragment while checkout.
         .fade() // default fade animation
+        .retainInstance() // set retainInstance as true
         .disableOptimize() // disable transaction optimization while you get into issue.
         .disableReuse() // it will re-use previously fragment if fragment tag is the same one. disable it if you don't like it.
         .into(FRAGMENT_CONTAINER);
 ```
 
-同时切换多个
-```
-Fragments.add(this, new Fragment1(), new Fragment2(), new Fragment3())
-        .into(R.id.container1, R.id.container2, R.id.container3);
-```
+~~同时切换多个~~
+比较无用的功能，现已移除
