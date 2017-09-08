@@ -6,8 +6,8 @@ buildscript {
         buildTool = "25.0.3"
 
         // library
-        devbox_version = "0.7.3"
-        devbox_code = 17032215
+        devbox_version = "0.8.0"
+        devbox_code = 17080817
 
         // dependencies
         kotlin_version = '1.1.4-3'
