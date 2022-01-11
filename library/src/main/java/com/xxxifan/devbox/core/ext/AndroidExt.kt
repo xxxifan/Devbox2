@@ -70,22 +70,22 @@ fun Long.toDateStr(pattern: String = "yyyy-MM-dd HH:mm:ss"): String {
 /**
  * convert px float to dp
  */
-fun Float.toDp() = this / (Devbox.appRef.resources?.displayMetrics?.density ?: 1F)
+fun Float.asDp() = this / (Devbox.appRef.resources?.displayMetrics?.density ?: 1F)
 
 /**
  * convert px int to dp
  */
-fun Int.dp() = toFloat().toDp()
+fun Int.asDp() = toFloat().asDp()
 
 /**
  * convert dp to px
  */
-fun Int.px() = this * (Devbox.appRef.resources?.displayMetrics?.density ?: 1F)
+fun Int.asPx() = this * (Devbox.appRef.resources?.displayMetrics?.density ?: 1F)
 
 /**
  * convert dp to px int
  */
-fun Int.pxInt() = (this * (Devbox.appRef.resources?.displayMetrics?.density ?: 1F)).roundToInt()
+fun Int.asPxInt() = (this * (Devbox.appRef.resources?.displayMetrics?.density ?: 1F)).roundToInt()
 
 fun String.md5(): String {
   try {
