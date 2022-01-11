@@ -5,10 +5,9 @@ import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.view.forEach
 import com.xxxifan.devbox.core.R
-import com.xxxifan.devbox.core.ext.pxInt
+import com.xxxifan.devbox.core.ext.asPxInt
 
 /**
  * toolbar配置
@@ -36,7 +35,7 @@ class ToolbarModule {
 
     if (!isTransparentToolbar) {
       // adjust window size
-      val toolbarHeight = 44.pxInt()
+      val toolbarHeight = 44.asPxInt()
       val contentLayout = windowView.findViewById<ViewGroup>(android.R.id.content)
       val contentPadding = toolbarHeight + statusBarHeight
       contentLayout.setPadding(0, contentPadding, 0, 0)
