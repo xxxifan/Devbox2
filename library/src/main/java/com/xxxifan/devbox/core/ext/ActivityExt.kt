@@ -200,3 +200,7 @@ internal class DialogLifecycleObserver(private val dismiss: () -> Unit) : Lifecy
   @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
   fun onDestroy() = dismiss()
 }
+
+fun ActivityResult.success(): Boolean {
+  return resultCode == Activity.RESULT_OK
+}
