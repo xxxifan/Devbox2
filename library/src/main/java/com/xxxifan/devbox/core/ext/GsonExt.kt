@@ -1,6 +1,7 @@
 package com.xxxifan.devbox.core.ext
 
 import com.google.gson.Gson
+import java.io.Reader
 import java.lang.reflect.Type
 
 /**
@@ -19,5 +20,7 @@ fun Any.toJson(): String {
   return gson.toJson(this)
 }
 
-fun <T> String.toGsonModel(clazz: Class<T>) = gson.fromJson(this, clazz)
-fun <T> String.toGsonModel(type: Type) = gson.fromJson<T>(this, type)
+fun <T> String.fromJson(clazz: Class<T>) = gson.fromJson(this, clazz)
+fun <T> String.fromJson(type: Type) = gson.fromJson<T>(this, type)
+fun <T> Reader.fromJson(clazz: Class<T>) = gson.fromJson(this, clazz)
+fun <T> Reader.fromJson(type: Type) = gson.fromJson<T>(this, type)
