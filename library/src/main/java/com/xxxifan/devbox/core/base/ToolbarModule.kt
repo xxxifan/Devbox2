@@ -35,7 +35,7 @@ class ToolbarModule {
 
     if (!isTransparentToolbar) {
       // adjust window size
-      val toolbarHeight = 44.asPxInt()
+      val toolbarHeight = activity.resources.getDimensionPixelSize(R.dimen.toolbar_height)
       val contentLayout = windowView.findViewById<ViewGroup>(android.R.id.content)
       val contentPadding = toolbarHeight + statusBarHeight
       contentLayout.setPadding(0, contentPadding, 0, 0)
