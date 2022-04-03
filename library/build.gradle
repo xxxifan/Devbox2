@@ -37,7 +37,7 @@ android {
 }
 
 def coroutines_version = '1.6.0'
-def lifecycle = "2.4.0"
+def lifecycle = "2.4.1"
 
 dependencies {
 
