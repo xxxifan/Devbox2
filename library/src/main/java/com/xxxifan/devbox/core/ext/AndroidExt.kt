@@ -6,6 +6,7 @@ import android.app.Application
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.graphics.Typeface
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -13,11 +14,11 @@ import android.os.Process
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.xxxifan.devbox.core.BuildConfig
 import com.xxxifan.devbox.core.Devbox
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
@@ -230,6 +231,27 @@ fun TextView.setKeywordText(@ColorInt color: Int, vararg strs: String) {
     while (m.find()) {
       span.setSpan(
         ForegroundColorSpan(color),
+        m.start(),
+        m.end(),
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+      )
+    }
+  }
+
+  text = span
+}
+
+fun TextView.setBoldText(vararg strs: String) {
+  val allText = text
+  if (allText.isEmpty() || strs.isEmpty()) return
+
+  val span = SpannableStringBuilder(allText)
+  strs.forEach {
+    val p = Pattern.compile(it.lowercase())
+    val m = p.matcher(allText.toString().lowercase())
+    while (m.find()) {
+      span.setSpan(
+        StyleSpan(Typeface.BOLD),
         m.start(),
         m.end(),
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
