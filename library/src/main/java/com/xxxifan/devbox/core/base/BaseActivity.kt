@@ -1,6 +1,7 @@
 package com.xxxifan.devbox.core.base
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +14,8 @@ import io.reactivex.disposables.CompositeDisposable
 abstract class BaseActivity : AppCompatActivity() {
 
   /**
-   * ViewBinding object. If bind not initialized, call setContentView() manually.
+   * ViewBinding object. Must be initialized with lazy mode
+   * override val bind by viewBinding(XxxBinding::inflate)
    */
   protected abstract val bind: ViewBinding
 
