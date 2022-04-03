@@ -12,6 +12,9 @@ import io.reactivex.disposables.CompositeDisposable
  */
 abstract class BaseActivity : AppCompatActivity() {
 
+  /**
+   * ViewBinding object. If bind not initialized, call setContentView() manually.
+   */
   protected abstract val bind: ViewBinding
 
   private val eventBus: EventBusModule by lazy { EventBusModule() }
