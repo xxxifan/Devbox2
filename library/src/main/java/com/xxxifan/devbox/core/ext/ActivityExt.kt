@@ -109,11 +109,11 @@ fun Context.request(
   XXPermissions.with(this)
     .permission(permissions)
     .request(object : OnPermissionCallback {
-      override fun onGranted(permissions: MutableList<String>?, all: Boolean) {
+      override fun onGranted(permissions: MutableList<String>, all: Boolean) {
         callback(all)
       }
 
-      override fun onDenied(permissions: MutableList<String>?, never: Boolean) {
+      override fun onDenied(permissions: MutableList<String>, never: Boolean) {
         // 这里使用一个Dialog展示没有这些权限应用程序无法继续运行，询问用户是否去设置中授权。
         denied?.invoke(permissions ?: emptyList())
       }

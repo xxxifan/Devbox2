@@ -109,7 +109,7 @@ fun Location.getAddress(): Address? {
   return if (longitude > 0.0 || latitude > 0.0) {
     val geoCoder = Geocoder(Devbox.appRef)
     try {
-      geoCoder.getFromLocation(latitude, longitude, 1).lastOrNull()
+      geoCoder.getFromLocation(latitude, longitude, 1)?.lastOrNull()
     } catch (e: Exception) {
       e.printStackTrace()
       null

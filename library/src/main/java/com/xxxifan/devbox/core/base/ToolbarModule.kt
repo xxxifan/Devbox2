@@ -56,7 +56,7 @@ class ToolbarModule {
   private fun findChild(viewGroup: ViewGroup, function: (View) -> Unit) {
     if (viewGroup.childCount > 0) {
       viewGroup.forEach {
-        if (it.id == R.id.content) return@forEach
+        if (it.id == android.R.id.content) return@forEach
 
         function(it)
         if (it is ViewGroup) {
