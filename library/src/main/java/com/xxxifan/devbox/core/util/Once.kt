@@ -8,7 +8,7 @@ import android.content.SharedPreferences
 //
 
 /**
- * 检查是否第一次使用该key
+ * check if it's the first time use the key.
  */
 fun SharedPreferences.firstTime(key: String): Boolean {
   if (!getBoolean(key, false)) {

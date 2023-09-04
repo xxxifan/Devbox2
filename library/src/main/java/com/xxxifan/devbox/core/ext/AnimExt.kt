@@ -8,9 +8,7 @@ import android.view.animation.AccelerateInterpolator
 //
 // Created by xxxifan on 2021/8/6.
 //
-/**
- * 动画结束淡出配置
- */
+
 fun View.fadeOut(duration: Long = 300) {
   animate()
     .alpha(0f).setInterpolator(AccelerateDecelerateInterpolator()).setDuration(duration)
@@ -18,9 +16,6 @@ fun View.fadeOut(duration: Long = 300) {
     .start()
 }
 
-/**
- * 动画进入配置
- */
 fun View.fadeIn(duration: Long = 300) {
   alpha = 0f
   animate()

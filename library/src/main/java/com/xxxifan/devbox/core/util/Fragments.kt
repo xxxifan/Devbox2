@@ -7,9 +7,7 @@ import android.view.View
 import androidx.annotation.AnimRes
 import androidx.annotation.CheckResult
 import androidx.annotation.IdRes
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.*
 import androidx.viewpager.widget.ViewPager
 import com.xxxifan.devbox.core.base.BasePresenter
 import com.xxxifan.devbox.core.base.BaseView

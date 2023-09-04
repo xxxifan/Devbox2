@@ -6,10 +6,9 @@ import android.view.MenuItem
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import io.reactivex.disposables.CompositeDisposable
 
 /**
- * activity 封装类 用于管理
+ * basic activity management
  */
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -25,7 +24,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
   protected val TAG = javaClass.simpleName
 
-  val disposables: CompositeDisposable by lazy { CompositeDisposable() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     onPreCreate(savedInstanceState)
@@ -34,6 +32,10 @@ abstract class BaseActivity : AppCompatActivity() {
     setContentView(bind.root)
 
     onSetupActivity(savedInstanceState)
+  }
+
+  fun setToolbarTitle(title: CharSequence?) {
+    toolbarModule.setTitle(title)
   }
 
   override fun onResume() {
@@ -50,7 +52,6 @@ abstract class BaseActivity : AppCompatActivity() {
     super.onDestroy()
     backListener = null
     eventBus.onDestroy(this)
-    disposables.dispose()
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
@@ -110,4 +111,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
   protected open fun onPopFragment() {
   }
+
+  protected inline fun <T : ViewBinding> viewBinding(crossinline bindingInflater: (LayoutInflater) -> T) =
+    lazy(LazyThreadSafetyMode.NONE) { bindingInflater(layoutInflater) }
 }

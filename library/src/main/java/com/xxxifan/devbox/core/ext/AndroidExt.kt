@@ -153,7 +153,7 @@ fun Location?.isLocated(): Boolean {
 fun CoroutineScope.launchCatching(
   context: CoroutineContext = EmptyCoroutineContext,
   start: CoroutineStart = CoroutineStart.DEFAULT,
-  errorHandler: ((e: Throwable) -> Unit)? = null,
+  errorHandler: (suspend (e: Throwable) -> Unit)? = null,
   block: suspend CoroutineScope.() -> Unit
 ): Job {
   return launch(context, start) {
@@ -161,11 +161,24 @@ fun CoroutineScope.launchCatching(
       block()
     } catch (e: Throwable) {
       if (e !is CancellationException) {
-//        debug(e) { e.printStackTrace() }
+        debug(e) { e.printStackTrace() }
         errorHandler?.invoke(e)
       }
     }
   }
+}
+
+fun CoroutineScope.launchIO(
+  errorHandler: (suspend (e: Throwable) -> Unit)? = null,
+  block: suspend CoroutineScope.() -> Unit
+): Job {
+  return launchCatching(Dispatchers.IO, CoroutineStart.DEFAULT, errorHandler, block)
+}
+
+suspend fun <T> withMainContext(
+  block: suspend CoroutineScope.() -> T
+): T {
+  return withContext(Dispatchers.Main, block)
 }
 
 fun String.fillTo(size: Int, fill: String): String {

@@ -1,6 +1,10 @@
 package com.xxxifan.devbox.core.ext
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.widget.EditText
+import android.widget.TextView
 import com.xxxifan.devbox.core.R
 
 //
@@ -8,8 +12,8 @@ import com.xxxifan.devbox.core.R
 //
 
 /**
- * 使用view的tag来存储上次点击时间，用来防止过快点击。
- * @param resetTime 如不需要在点击之后重新计时，需要设为false
+ * prevent click button multiple times, use view's tag to store last click time.
+ * @param resetTime true - reset last click time every click. false - use a single duration to prevent clicks.
  */
 fun View.throttleClick(resetTime: Boolean = true, interval: Long = 300L): Boolean {
   val checkTime = System.currentTimeMillis()
@@ -27,4 +31,41 @@ fun View.throttleClick(resetTime: Boolean = true, interval: Long = 300L): Boolea
       false
     }
   }
+}
+
+/**
+ * Link editTexts input states to `this`. If the state matches the maxState, then `TextView` will be enabled.
+ */
+fun TextView.linkStateTo(vararg editTexts: EditText) {
+  isEnabled = false
+  val state = State(editTexts.size, this)
+  editTexts.forEach {
+    it.addTextChangedListener(object : TextWatcher {
+      private var innerState = 0
+
+      override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+      }
+
+      override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+      }
+
+      override fun afterTextChanged(s: Editable?) {
+        s ?: return
+        val newState = if (s.isNotEmpty()) 1 else 0
+        if (newState != innerState) {
+          innerState = newState
+          if (newState == 1) state.currentState++ else state.currentState--
+        }
+      }
+    })
+  }
+}
+
+private class State(private val maxState: Int, val view: TextView) {
+  var currentState: Int = 0
+    set(value) {
+      field = value
+      view.isEnabled = currentState == maxState
+    }
+
 }

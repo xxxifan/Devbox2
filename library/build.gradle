@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.github.xxxifan'
-version = '0.9.8'
+version = '0.9.9'
 
 android {
   compileSdk 34

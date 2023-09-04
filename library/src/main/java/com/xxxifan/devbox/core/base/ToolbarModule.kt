@@ -5,14 +5,18 @@ import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.forEach
 import com.xxxifan.devbox.core.R
-import com.xxxifan.devbox.core.ext.asPxInt
 
 /**
- * toolbar配置
+ * toolbar module
  */
 class ToolbarModule {
+
+  lateinit var toolbarView: View
+
+  fun isAttached() = this::toolbarView.isInitialized && toolbarView.parent != null
 
   fun attach(activity: Activity, layoutId: Int, isTransparentToolbar: Boolean = false): View {
     val windowView = activity.window.decorView as ViewGroup
@@ -24,13 +28,14 @@ class ToolbarModule {
 
     val statusBarHeight = getStatusBarHeight(activity.resources)
     val root = LayoutInflater.from(windowView.context).inflate(layoutId, windowView)
-    val view = root.findViewById<View>(R.id.toolbar)
+    val toolbarView: View = root.findViewById(R.id.toolbar)
       ?: throw IllegalArgumentException("please set @+/toolbar to toolbar's root view.")
-    view.setPadding(
-      view.paddingLeft,
-      view.paddingTop + statusBarHeight,
-      view.paddingRight,
-      view.bottom
+    this.toolbarView = toolbarView
+    toolbarView.setPadding(
+      toolbarView.paddingLeft,
+      toolbarView.paddingTop + statusBarHeight,
+      toolbarView.paddingRight,
+      toolbarView.bottom
     )
 
     if (!isTransparentToolbar) {
@@ -40,9 +45,8 @@ class ToolbarModule {
       val contentPadding = toolbarHeight + statusBarHeight
       contentLayout.setPadding(0, contentPadding, 0, 0)
     }
-    return view
+    return toolbarView
   }
-
 
   fun getStatusBarHeight(resources: Resources): Int {
     var result = 0
@@ -51,6 +55,12 @@ class ToolbarModule {
       result = resources.getDimensionPixelSize(resourceId)
     }
     return result
+  }
+
+  fun setTitle(title: CharSequence?) {
+    if (isAttached()) {
+      // toolbarView.findViewById<TextView>(R.id.toolbarTitle)?.text = title
+    }
   }
 
   private fun findChild(viewGroup: ViewGroup, function: (View) -> Unit) {
@@ -65,7 +75,6 @@ class ToolbarModule {
       }
     }
   }
-
 }
 
 //fun ToolbarModule.attachDefaultToolbar(

@@ -63,7 +63,7 @@ object ActManager : Application.ActivityLifecycleCallbacks {
   }
 
   /**
-   * 关闭所有 activity
+   * kill all activity.
    */
   @JvmStatic fun killAll() {
     val iterator: MutableIterator<Activity> = activityList.iterator()
@@ -75,14 +75,14 @@ object ActManager : Application.ActivityLifecycleCallbacks {
   }
 
   /**
-   * 指定的 activity class 是否存活(同一个 activity class 可能有多个实例)
+   * check specify activity class is alive.
    */
   @JvmStatic fun <T : Activity> isActivityAlive(activityClass: Class<T>): Boolean {
     return activityList.any { activityClass == it.javaClass }
   }
 
   /**
-   * kill 指定的 activity class
+   * kill specify activity class.
    */
   @JvmStatic fun <T : Activity> killActivity(activityClass: Class<T>) {
     val iterator: MutableIterator<Activity> = activityList.iterator()
